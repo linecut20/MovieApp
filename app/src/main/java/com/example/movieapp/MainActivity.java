@@ -88,7 +88,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void requestPermissionsFunc() {
         ActivityCompat.requestPermissions(this, new String[]{
-                Manifest.permission.INTERNET},
+                Manifest.permission.INTERNET,
+                Manifest.permission.ACCESS_NETWORK_STATE},
                 MODE_PRIVATE);
 
     }

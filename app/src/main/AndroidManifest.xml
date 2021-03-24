@@ -3,6 +3,7 @@
     package="com.example.movieapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -10,14 +11,19 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.MovieApp">
+
+        <meta-data
+            android:name="com.kakao.sdk.Appkey"
+            android:value="@string/kakaoApi" />
+
         <activity android:name=".DuckmanActivity"></activity>
         <activity android:name=".YangActivity" />
         <activity android:name=".JoonActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
