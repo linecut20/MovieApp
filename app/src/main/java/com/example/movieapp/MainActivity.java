@@ -8,7 +8,9 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.movieapp.fragment.FragmentBannerAdapter;
 
@@ -21,7 +23,10 @@ public class MainActivity extends AppCompatActivity {
     private FragmentStateAdapter pageAdapter;
     private int pageNumber = 5;
     //==================================================
-
+    private String kakaoName;
+    private String kakaoEmail;
+    private String kakaoImage;
+    //==================================================
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,9 +35,25 @@ public class MainActivity extends AppCompatActivity {
         //접근권한요청
         requestPermissionsFunc();
 
+        //아이디값 배정
         findViewByIdFunc();
+
+        //카카오 로그인 정보수집 메소드
+        getKakaoInform();
+
+        //상위 메인배너 메소드
         fragmentFunc();
+
+
     }
+
+    private void getKakaoInform() {
+        Intent intent = getIntent();
+        kakaoName = intent.getStringExtra("name");
+        kakaoEmail = intent.getStringExtra("email");
+        kakaoImage = intent.getStringExtra("image");
+    }
+
 
     private void fragmentFunc() {
         //어댑터 및 인디케이터 정의
@@ -93,4 +114,5 @@ public class MainActivity extends AppCompatActivity {
                 MODE_PRIVATE);
 
     }
+
 }
