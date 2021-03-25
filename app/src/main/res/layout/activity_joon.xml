@@ -27,173 +27,237 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="65dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <ImageButton
-                    android:id="@+id/imgbtn1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="47dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/movie_add" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textSize="13dp"
-                    android:layout_gravity="center"
-                    android:text="추가" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="65dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <ImageButton
-                    android:id="@+id/imgbtn2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="47dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/movie_share" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textSize="13dp"
-                    android:layout_gravity="center"
-                    android:text="공유" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="65dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <ImageButton
-                    android:id="@+id/imgbtn3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="47dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/movie_memo" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textSize="13dp"
-                    android:layout_gravity="center"
-                    android:text="메모" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="65dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <ImageButton
-                    android:id="@+id/imgbtn4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="47dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/movie_rating" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textSize="13dp"
-                    android:layout_gravity="center"
-                    android:text="평가" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="65dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <ImageButton
-                    android:id="@+id/imgbtn5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="47dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/movie_naver1" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textSize="13dp"
-                    android:layout_gravity="center"
-                    android:text="리뷰" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="65dp"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <ImageButton
-                    android:id="@+id/imgbtn6"
-                    android:layout_width="wrap_content"
-                    android:layout_height="47dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/movie_small_instagram" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textSize="13dp"
-                    android:layout_gravity="center"
-                    android:text="스토리" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="8dp"
-                android:text="줄거리"
-                android:textSize="17sp"
-                android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tvOverview"
+                android:id="@+id/tvTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:text="줄거리가 없습니다."
                 android:ellipsize="end"
-                android:textSize="14sp" />
+                android:singleLine="true"
+                android:text="영화제목"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvRelease"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0000-00-00"
+                        android:textSize="13sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center_vertical">
+
+                        <RatingBar
+                            android:id="@+id/ratingBar"
+                            style="@style/Base.Widget.AppCompat.RatingBar.Small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:isIndicator="false"
+                            android:numStars="5"
+                            android:stepSize="0.1" />
+
+                        <TextView
+                            android:id="@+id/tvVoteAvg"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="3dp"
+                            android:text="0"
+                            android:textSize="11sp" />
+                    </LinearLayout>
+                    //레이팅바
+            </LinearLayout>
+            //제목 밑
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="65dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/imgbtn1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="47dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/movie_add" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:text="추가"
+                        android:textSize="13dp" />
+                </LinearLayout>
+                //추가
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="65dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/imgbtn2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="47dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/movie_share" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:text="공유"
+                        android:textSize="13dp" />
+                </LinearLayout>
+                //공유
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="65dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/imgbtn3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="47dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/movie_memo" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:text="메모"
+                        android:textSize="13dp" />
+                </LinearLayout>
+                //메모
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="65dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/imgbtn4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="47dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/movie_rating" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:text="평가"
+                        android:textSize="13dp" />
+                </LinearLayout>
+                //평가
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="65dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/imgbtn5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="47dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/movie_naver1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:text="리뷰"
+                        android:textSize="13dp" />
+                </LinearLayout>
+                //네이버
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="65dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:id="@+id/imgbtn6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="47dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/movie_small_instagram" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:text="스토리"
+                        android:textSize="13dp" />
+                </LinearLayout>
+                //인스타
+            </LinearLayout>
+            //버튼 끝
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="줄거리"
+                    android:textSize="17sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvOverview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:ellipsize="end"
+                    android:text="줄거리가 없습니다."
+                    android:textSize="14sp" />
 
 
-            <ImageButton
-                android:id="@+id/ibMore"
-                android:layout_width="50dp"
-                android:layout_height="20dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/movie_more"
-                android:layout_gravity="center"/>
-
-
+                <ImageButton
+                    android:id="@+id/ibMore"
+                    android:layout_width="50dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/movie_more" />
+            </LinearLayout>
+            //줄거리
         </LinearLayout>
-
+        //유튜브 플레이어 밑
     </LinearLayout>
+    //전체 리니어
 </ScrollView>
 
 
