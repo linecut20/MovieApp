@@ -7,12 +7,10 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
-import com.example.movieapp.fragment.FragmentBannerAdapter;
+import adapter.FragmentBannerAdapter;
 
 import me.relex.circleindicator.CircleIndicator3;
 

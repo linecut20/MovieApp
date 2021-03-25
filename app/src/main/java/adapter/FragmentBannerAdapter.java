@@ -1,4 +1,4 @@
-package com.example.movieapp.fragment;
+package adapter;
 
 import android.util.Log;
 
@@ -7,6 +7,11 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.movieapp.MainActivity;
+import com.example.movieapp.fragment.FragmentBanner1;
+import com.example.movieapp.fragment.FragmentBanner2;
+import com.example.movieapp.fragment.FragmentBanner3;
+import com.example.movieapp.fragment.FragmentBanner4;
+import com.example.movieapp.fragment.FragmentBanner5;
 
 public class FragmentBannerAdapter extends FragmentStateAdapter {
     private int count;

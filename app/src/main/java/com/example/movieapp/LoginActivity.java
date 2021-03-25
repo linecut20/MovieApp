@@ -7,10 +7,12 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kakao.auth.ApiErrorCode;
@@ -22,10 +24,13 @@ import com.kakao.usermgmt.callback.MeV2ResponseCallback;
 import com.kakao.usermgmt.response.MeV2Response;
 import com.kakao.util.exception.KakaoException;
 
+import org.w3c.dom.Text;
+
 import java.security.MessageDigest;
 
 public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
+    private TextView tvJoin;
     private SessionCallback sessionCallback;
 
     @Override
@@ -51,6 +56,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private void findViewByIdFunc() {
         btnLogin = findViewById(R.id.btnLogin);
+        tvJoin = findViewById(R.id.tvJoin);
+        tvJoin.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
         sessionCallback = new SessionCallback();
         Session.getCurrentSession().addCallback(sessionCallback);
         //토큰이 아직 유효하다면 바로 로그인처리
