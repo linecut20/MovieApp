@@ -10,6 +10,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -149,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         ivBack.setOnClickListener(v->{
-            drawerLayout.closeDrawer(linearDrawer);
+            drawerLayout.closeDrawer(Gravity.LEFT);
         });
 
     }
