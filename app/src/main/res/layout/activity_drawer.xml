@@ -19,8 +19,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:searchHintIcon="@color/yellow"
-            android:searchIcon="@color/yellow"
+
+            android:background="@color/yellow"
             android:queryHint="검색 하실 영화 제목을 입력해주세요" />
 
         <Button

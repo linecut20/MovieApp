@@ -6,20 +6,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.movieapp.MainActivity;
 import com.example.movieapp.R;
+import com.example.movieapp.SearchAdapter;
 
 public class FragmentSearch extends Fragment {
     private RecyclerView drawerRcyclerView;
     private FrameLayout frameDrawer;
     private SearchView searchBar;
     private Button btnSearch;
+    private MainActivity mainActivity;
+    private SearchAdapter searchAdapter;
+
 
     @Nullable
     @Override
@@ -29,10 +36,21 @@ public class FragmentSearch extends Fragment {
 
         findViewByIdFunc(view);
 
+        setAdapter(container);
+
         eventHandler();
 
 
         return view;
+    }
+
+    private void setAdapter(ViewGroup container) {
+        searchAdapter = new SearchAdapter(container.getContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(container.getContext());
+
+        drawerRcyclerView.setLayoutManager(linearLayoutManager);
+        drawerRcyclerView.setAdapter(searchAdapter);
+
     }
 
     public void eventHandler() {
