@@ -19,16 +19,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-
-            android:background="@color/yellow"
-            android:queryHint="검색 하실 영화 제목을 입력해주세요" />
+            android:searchIcon="@drawable/ic_baseline_search_24"
+            android:closeIcon="@drawable/ic_baseline_clear_24"
+            android:iconifiedByDefault="true"
+            android:queryBackground="@null"
+            android:background="@color/white"
+            android:queryHint="영화 제목을 입력하세요" >
+        </SearchView>
 
         <Button
             android:id="@+id/btnSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="search"
-            android:visibility="invisible"/>
+            android:background="@color/yellow"
+            android:visibility="invisible"
+            android:text="search"/>
 
     </LinearLayout>
 

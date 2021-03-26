@@ -11,12 +11,14 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import adapter.FragmentBannerAdapter;
 
@@ -152,6 +154,18 @@ public class MainActivity extends AppCompatActivity {
         ivBack.setOnClickListener(v->{
             drawerLayout.closeDrawer(Gravity.LEFT);
         });
+
+        searchBar.setOnClickListener(v->{
+            searchBar.setIconified(false);
+            btnSearch.setVisibility(View.VISIBLE);
+
+        });
+        btnSearch.setOnClickListener(v->{
+            String quety = String.valueOf(searchBar.getQuery());
+            Toast.makeText(getApplicationContext(),quety,Toast.LENGTH_SHORT).show();
+
+        });
+
 
     }
 
