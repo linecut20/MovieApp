@@ -1,6 +1,7 @@
 package com.example.movieapp;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -11,7 +12,10 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,9 +54,28 @@ public class LoginActivity extends AppCompatActivity {
     private void loginEventHandler() {
         btnLogin.setOnClickListener(v -> {
             Toast.makeText(getApplicationContext(), "아직 기능 준비중!", Toast.LENGTH_SHORT).show();
+            View dialogView=View.inflate(LoginActivity.this, R.layout.dialog_login, null);
+
+            AlertDialog.Builder dialog = new AlertDialog.Builder(LoginActivity.this);
+            dialog.setTitle("로그인 창");
+            dialog.setIcon(R.mipmap.ic_launcher);
+            dialog.setView(dialogView);
+            dialog.setNegativeButton("입력완료", (dialogInterface, i) -> {
+                EditText edtName=dialogView.findViewById(R.id.edtName);
+                EditText edtEmail=dialogView.findViewById(R.id.edtEmail);
+
+            });
+            dialog.show();
         });
 
+        tvJoin.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
+            intent.putExtra("message","회원가입 시작!");
+            startActivity(intent);
+        });
     }
+
+
 
     private void findViewByIdFunc() {
         btnLogin = findViewById(R.id.btnLogin);
