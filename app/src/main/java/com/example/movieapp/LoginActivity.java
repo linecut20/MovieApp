@@ -52,20 +52,13 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginEventHandler() {
-        btnLogin.setOnClickListener(v -> {
-            Toast.makeText(getApplicationContext(), "아직 기능 준비중!", Toast.LENGTH_SHORT).show();
-            View dialogView=View.inflate(LoginActivity.this, R.layout.dialog_login, null);
-
-            AlertDialog.Builder dialog = new AlertDialog.Builder(LoginActivity.this);
-            dialog.setTitle("로그인 창");
-            dialog.setIcon(R.mipmap.ic_launcher);
-            dialog.setView(dialogView);
-            dialog.setNegativeButton("입력완료", (dialogInterface, i) -> {
-                EditText edtName=dialogView.findViewById(R.id.edtName);
-                EditText edtEmail=dialogView.findViewById(R.id.edtEmail);
-
-            });
-            dialog.show();
+        btnLogin.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 버튼 클릭시 Dialog 호출
+                LoginDialog dialog = new LoginDialog(LoginActivity.this);
+                dialog.show();
+            }
         });
 
         tvJoin.setOnClickListener(view -> {
