@@ -4,19 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.SearchView;
-import android.widget.TextView;
 
 import adapter.FragmentBannerAdapter;
 
@@ -32,16 +28,9 @@ public class MainActivity extends AppCompatActivity {
     private String kakaoName;
     private String kakaoEmail;
     private String kakaoImage;
-    //드로어배너 멤버변수=================================
-    private FrameLayout frameDrawer;
+    //==================================================
     private DrawerLayout drawerLayout;
-    private LinearLayout linearDrawer;
-    private Button btnSearch, btnProfile,btnLikeList;
-    private TextView tvProfileName,tvProfileEmail;
-    private ImageView ivProfilePicture,ivBack;
-    private SearchView searchBar;
-
-
+    private Button button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,8 +48,12 @@ public class MainActivity extends AppCompatActivity {
         //상위 메인배너 메소드
         fragmentFunc();
 
-        //이벤트
-        eventHandler();
+        button.setOnClickListener(v -> {
+            Fragment mid = new MovieInfoDetail();
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.drawerLayout, mid);
+            ft.commit();
+        });
 
     }
 
@@ -122,37 +115,8 @@ public class MainActivity extends AppCompatActivity {
     private void findViewByIdFunc() {
         viewPager2 = findViewById(R.id.viewPager2);
         indicator = findViewById(R.id.indicator);
-        //드로어 멤버변수=============================
-        frameDrawer = findViewById(R.id.frameDrawer);
+        button = findViewById(R.id.button);
         drawerLayout = findViewById(R.id.drawerLayout);
-        searchBar = findViewById(R.id.searchBar);
-        btnSearch = findViewById(R.id.btnSearch);
-        btnProfile = findViewById(R.id.btnProfile);
-        btnLikeList = findViewById(R.id.btnLikeList);
-        tvProfileName = findViewById(R.id.tvProfileName);
-        tvProfileEmail = findViewById(R.id.tvProfileEmail);
-        ivProfilePicture = findViewById(R.id.ivProfilePicture);
-        ivBack = findViewById(R.id.ivBack);
-    }
-    public void eventHandler() {
-
-        //드로어 메뉴 인텐트 이벤트
-        btnLikeList.setOnClickListener(v->{
-
-            Intent intent = new Intent(this,LikeActivity.class);
-            startActivity(intent);
-        });
-
-        btnProfile.setOnClickListener(v->{
-
-            Intent intent = new Intent(this,ProfileActivity.class);
-            startActivity(intent);
-        });
-
-        ivBack.setOnClickListener(v->{
-            drawerLayout.closeDrawer(Gravity.LEFT);
-        });
-
     }
 
     private void requestPermissionsFunc() {

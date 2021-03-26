@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".JoonActivity">
+    android:background="@color/deep_navy"
+    tools:context=".MovieInfoDetail">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,18 +13,18 @@
         android:orientation="vertical">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/posterView"
             android:layout_width="match_parent"
             android:layout_height="300dp" />
 
-        <com.google.android.youtube.player.YouTubePlayerView
-            android:id="@+id/youtube"
-            android:layout_width="match_parent"
-            android:layout_height="203dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="304dp" />
+<!--        <com.google.android.youtube.player.YouTubePlayerView-->
+<!--            android:id="@+id/youtube"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="203dp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_bias="0.0"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            tools:layout_editor_absoluteY="304dp" />-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -36,47 +37,50 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
+                android:textColor="@color/yellow"
                 android:text="영화제목"
                 android:textSize="30sp"
                 android:textStyle="bold" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvYear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/yellow"
+                    android:text="0000-00-00"
+                    android:textSize="13sp" />
+
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:orientation="vertical">
+                    android:gravity="center_vertical">
+
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        style="@style/Base.Widget.AppCompat.RatingBar.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:isIndicator="false"
+                        android:numStars="5"
+                        android:stepSize="0.1" />
 
                     <TextView
-                        android:id="@+id/tvRelease"
+                        android:id="@+id/tvRating"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0000-00-00"
-                        android:textSize="13sp" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:gravity="center_vertical">
-
-                        <RatingBar
-                            android:id="@+id/ratingBar"
-                            style="@style/Base.Widget.AppCompat.RatingBar.Small"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:isIndicator="false"
-                            android:numStars="5"
-                            android:stepSize="0.1" />
-
-                        <TextView
-                            android:id="@+id/tvVoteAvg"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="3dp"
-                            android:text="0"
-                            android:textSize="11sp" />
-                    </LinearLayout>
-                    //레이팅바
+                        android:layout_marginLeft="3dp"
+                        android:textColor="@color/yellow"
+                        android:text="0"
+                        android:textSize="11sp" />
+                </LinearLayout>
+                //레이팅바
             </LinearLayout>
             //제목 밑
 
@@ -89,13 +93,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="65dp"
                     android:layout_weight="1"
+                    android:id="@+id/addLayout"
                     android:orientation="vertical">
 
                     <ImageButton
-                        android:id="@+id/imgbtn1"
+                        android:id="@+id/addBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="47dp"
                         android:layout_gravity="center"
+                        android:background="@android:color/transparent"
                         android:src="@drawable/movie_add" />
 
                     <TextView
@@ -103,6 +109,7 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:text="추가"
+                        android:textColor="@color/yellow"
                         android:textSize="13dp" />
                 </LinearLayout>
                 //추가
@@ -111,13 +118,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="65dp"
                     android:layout_weight="1"
+                    android:id="@+id/shareLayout"
                     android:orientation="vertical">
 
                     <ImageButton
-                        android:id="@+id/imgbtn2"
+                        android:id="@+id/shareBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="47dp"
                         android:layout_gravity="center"
+                        android:background="@android:color/transparent"
                         android:src="@drawable/movie_share" />
 
                     <TextView
@@ -125,6 +134,7 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:text="공유"
+                        android:textColor="@color/yellow"
                         android:textSize="13dp" />
                 </LinearLayout>
                 //공유
@@ -133,13 +143,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="65dp"
                     android:layout_weight="1"
+                    android:id="@+id/memoLayout"
                     android:orientation="vertical">
 
                     <ImageButton
-                        android:id="@+id/imgbtn3"
                         android:layout_width="wrap_content"
                         android:layout_height="47dp"
                         android:layout_gravity="center"
+                        android:background="@android:color/transparent"
                         android:src="@drawable/movie_memo" />
 
                     <TextView
@@ -147,6 +158,7 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:text="메모"
+                        android:textColor="@color/yellow"
                         android:textSize="13dp" />
                 </LinearLayout>
                 //메모
@@ -155,13 +167,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="65dp"
                     android:layout_weight="1"
+                    android:id="@+id/ratingLayout"
                     android:orientation="vertical">
 
                     <ImageButton
-                        android:id="@+id/imgbtn4"
                         android:layout_width="wrap_content"
                         android:layout_height="47dp"
                         android:layout_gravity="center"
+                        android:background="@android:color/transparent"
                         android:src="@drawable/movie_rating" />
 
                     <TextView
@@ -169,6 +182,7 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:text="평가"
+                        android:textColor="@color/yellow"
                         android:textSize="13dp" />
                 </LinearLayout>
                 //평가
@@ -177,35 +191,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="65dp"
                     android:layout_weight="1"
+                    android:id="@+id/instaLayout"
                     android:orientation="vertical">
 
                     <ImageButton
-                        android:id="@+id/imgbtn5"
                         android:layout_width="wrap_content"
                         android:layout_height="47dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/movie_naver1" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:text="리뷰"
-                        android:textSize="13dp" />
-                </LinearLayout>
-                //네이버
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="65dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <ImageButton
-                        android:id="@+id/imgbtn6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="47dp"
-                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
                         android:src="@drawable/movie_small_instagram" />
 
                     <TextView
@@ -213,6 +206,7 @@
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:text="스토리"
+                        android:textColor="@color/yellow"
                         android:textSize="13dp" />
                 </LinearLayout>
                 //인스타
@@ -231,22 +225,24 @@
                     android:layout_marginRight="20dp"
                     android:layout_marginBottom="8dp"
                     android:text="줄거리"
+                    android:textColor="@color/yellow"
                     android:textSize="17sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvOverview"
+                    android:id="@+id/tvStory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:ellipsize="end"
                     android:text="줄거리가 없습니다."
+                    android:textColor="@color/yellow"
                     android:textSize="14sp" />
 
 
                 <ImageButton
-                    android:id="@+id/ibMore"
+                    android:id="@+id/ibMore1"
                     android:layout_width="50dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center"
@@ -256,6 +252,44 @@
             //줄거리
         </LinearLayout>
         //유튜브 플레이어 밑
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="8dp"
+                android:text="네이버 리뷰"
+                android:textColor="@color/yellow"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/reviewList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:ellipsize="end"
+                android:text="리뷰가 없습니다."
+                android:textColor="@color/yellow"
+                android:textSize="14sp" />
+
+
+            <ImageButton
+                android:id="@+id/ibMore2"
+                android:layout_width="50dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:src="@drawable/movie_more" />
+        </LinearLayout>
+        //네이버 리뷰
     </LinearLayout>
     //전체 리니어
 </ScrollView>

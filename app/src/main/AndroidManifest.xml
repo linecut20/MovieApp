@@ -14,8 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ProfileActivity"></activity>
-        <activity android:name=".LikeActivity" />
+        <activity android:name=".LikeActivity"></activity>
         <activity android:name=".SignUpActivity" />
 
         <meta-data
@@ -29,6 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".DuckmanActivity" />
         <activity android:name=".YangActivity" />
         <activity android:name=".JoonActivity" />
         <activity android:name=".MainActivity" />
