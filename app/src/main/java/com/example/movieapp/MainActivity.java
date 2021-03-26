@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     //드로어배너 멤버변수=================================
     private FrameLayout frameDrawer;
     private DrawerLayout drawerLayout;
-    private DrawerLayout linearDrawer;
+    private LinearLayout linearDrawer;
     private Button btnSearch, btnProfile,btnLikeList;
     private TextView tvProfileName,tvProfileEmail;
     private ImageView ivProfilePicture,ivBack;
@@ -140,12 +141,16 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(this,LikeActivity.class);
             startActivity(intent);
         });
+
         btnProfile.setOnClickListener(v->{
 
             Intent intent = new Intent(this,ProfileActivity.class);
             startActivity(intent);
         });
 
+        ivBack.setOnClickListener(v->{
+            drawerLayout.closeDrawer(linearDrawer);
+        });
 
     }
 
