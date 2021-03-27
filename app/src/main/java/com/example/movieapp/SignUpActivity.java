@@ -2,16 +2,43 @@ package com.example.movieapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
+
+import java.io.File;
 
 public class SignUpActivity extends AppCompatActivity {
 
     private Button btnSignUp, btnBack;
     private EditText edtName;
+
+    // 리퀘스트코드
+    private static final int PICK_FROM_CAMERA = 2;
+    private static final int PICK_FROM_ALBUM = 1;
+
+    String TAG = "파일복사";
+
+    //Shared Preference 키값
+    private static final String USER = "User", INIT = "init";
+
+    private Context mContext;
+    private View view;
+
+    private ImageView circleImageView;
+
+    private EditText edtDescription;
+
+    private File tempFile;
+    private File copyFile;
+    private String profileImgPath;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
