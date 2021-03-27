@@ -3,10 +3,10 @@
     android:id="@+id/linearDrawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:layout_gravity="left"
     android:background="@color/deep_navy"
-    android:padding="10dp"
-    android:layout_gravity="left">
+    android:orientation="vertical"
+    android:padding="10dp">
 
 
     <LinearLayout
@@ -19,106 +19,42 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:searchIcon="@drawable/ic_baseline_search_24"
+            android:background="@color/white"
             android:closeIcon="@drawable/ic_baseline_clear_24"
             android:iconifiedByDefault="true"
-            android:queryBackground="@null"
-            android:background="@color/white"
-            android:queryHint="영화 제목을 입력하세요" >
-        </SearchView>
+            android:queryHint="영화 제목을 입력하세요"
+            android:searchIcon="@drawable/ic_baseline_search_24"></SearchView>
 
         <Button
             android:id="@+id/btnSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/yellow"
-            android:visibility="invisible"
-            android:text="search"/>
+            android:text="search"
+            android:visibility="invisible" />
 
     </LinearLayout>
 
     <FrameLayout
-        android:id="@+id/frameDrawer"
+        android:id="@+id/frmDrawer"
+        android:layout_weight="9"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <include
-                    layout="@layout/draw_header"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </LinearLayout>
+        android:layout_height="match_parent"/>
 
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_baseline_favorite_24" />
-
-                <Button
-                    android:id="@+id/btnProfile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="My profile"
-                    android:textColor="@color/yellow"
-                    android:backgroundTint="@color/deep_navy"
-                    android:gravity="left|center_vertical"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_baseline_favorite_24" />
-
-                <Button
-                    android:id="@+id/btnLikeList"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="My List"
-                    android:textColor="@color/yellow"
-                    android:backgroundTint="@color/deep_navy"
-                    android:gravity="left|center_vertical"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </FrameLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="right">
+        android:layout_weight="1"
+        android:gravity="right|bottom">
 
         <ImageButton
             android:id="@+id/ivBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_reply_24"
+            android:background="@color/cardview_shadow_start_color"
             android:gravity="right"
-            android:background="@color/cardview_shadow_start_color"/>
+            android:src="@drawable/ic_baseline_reply_24" />
 
     </LinearLayout>
 
