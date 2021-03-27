@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -20,6 +22,12 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.movieapp.fragment.FragmentProfile;
+import com.example.movieapp.fragment.FragmentSearch;
+
+import java.util.List;
+import java.util.Stack;
+
 import adapter.FragmentBannerAdapter;
 
 import me.relex.circleindicator.CircleIndicator3;
@@ -35,13 +43,17 @@ public class MainActivity extends AppCompatActivity {
     private String kakaoEmail;
     private String kakaoImage;
     //드로어배너 멤버변수=================================
-    private FrameLayout frameDrawer;
+    private FrameLayout frmDrawer, frmProfile, frmSearch;
     private DrawerLayout drawerLayout;
     private LinearLayout linearDrawer;
-    private Button btnSearch, btnProfile,btnLikeList;
-    private TextView tvProfileName,tvProfileEmail;
-    private ImageView ivProfilePicture,ivBack;
+    private Button btnSearch, btnProfile, btnLikeList;
+    private TextView tvProfileName, tvProfileEmail;
+    private ImageView ivProfilePicture, ivBack;
     private SearchView searchBar;
+    private FragmentSearch fragmentSearch;
+    private FragmentProfile fragmentProfile;
+    private boolean flag = false;
+    private long lastTimeBackPressed;
 
 
     @Override
@@ -61,6 +73,10 @@ public class MainActivity extends AppCompatActivity {
         //상위 메인배너 메소드
         fragmentFunc();
 
+        //프레그먼트 전환
+        setSearchFragment();
+
+
         //이벤트
         eventHandler();
 
@@ -79,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         pageAdapter = new FragmentBannerAdapter(this, pageNumber);
         viewPager2.setAdapter(pageAdapter);
         indicator.setViewPager(viewPager2);
-        indicator.createIndicators(pageNumber,0);
+        indicator.createIndicators(pageNumber, 0);
 
         //뷰페이저 orientation 설정
         viewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
@@ -91,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-                if(positionOffset == 0) {
+                if (positionOffset == 0) {
                     viewPager2.setCurrentItem(position);
                 }
             }
@@ -108,9 +124,9 @@ public class MainActivity extends AppCompatActivity {
         final float pageOffset = getResources().getDimensionPixelOffset(R.dimen.offset);
 
         viewPager2.setPageTransformer((page, position) -> {
-            float myOffset = position * -(2*pageOffset + pageMargin);
-            if(viewPager2.getOrientation() == ViewPager2.ORIENTATION_HORIZONTAL) {
-                if(ViewCompat.getLayoutDirection(viewPager2) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+            float myOffset = position * -(2 * pageOffset + pageMargin);
+            if (viewPager2.getOrientation() == ViewPager2.ORIENTATION_HORIZONTAL) {
+                if (ViewCompat.getLayoutDirection(viewPager2) == ViewCompat.LAYOUT_DIRECTION_RTL) {
                     page.setTranslationX(-myOffset);
                 } else {
                     page.setTranslationX(-myOffset);
@@ -125,7 +141,9 @@ public class MainActivity extends AppCompatActivity {
         viewPager2 = findViewById(R.id.viewPager2);
         indicator = findViewById(R.id.indicator);
         //드로어 멤버변수=============================
-        frameDrawer = findViewById(R.id.frameDrawer);
+        frmDrawer = findViewById(R.id.frmDrawer);
+        frmProfile = findViewById(R.id.frmProfile);
+        frmSearch = findViewById(R.id.frmSearch);
         drawerLayout = findViewById(R.id.drawerLayout);
         searchBar = findViewById(R.id.searchBar);
         btnSearch = findViewById(R.id.btnSearch);
@@ -136,43 +154,95 @@ public class MainActivity extends AppCompatActivity {
         ivProfilePicture = findViewById(R.id.ivProfilePicture);
         ivBack = findViewById(R.id.ivBack);
     }
+
     public void eventHandler() {
+/*
 
         //드로어 메뉴 인텐트 이벤트
-        btnLikeList.setOnClickListener(v->{
+        btnLikeList.setOnClickListener(v -> {
 
-            Intent intent = new Intent(this,LikeActivity.class);
+            Intent intent = new Intent(this, LikeActivity.class);
             startActivity(intent);
         });
 
-        btnProfile.setOnClickListener(v->{
+        btnProfile.setOnClickListener(v -> {
 
-            Intent intent = new Intent(this,ProfileActivity.class);
+            Intent intent = new Intent(this, ProfileActivity.class);
             startActivity(intent);
         });
+*/
 
-        ivBack.setOnClickListener(v->{
+        ivBack.setOnClickListener(v -> {
             drawerLayout.closeDrawer(Gravity.LEFT);
         });
 
-        searchBar.setOnClickListener(v->{
+        searchBar.setOnClickListener(v -> {
+            flag = true;
+
+            setSearchFragment();
             searchBar.setIconified(false);
             btnSearch.setVisibility(View.VISIBLE);
 
         });
-        btnSearch.setOnClickListener(v->{
-            String quety = String.valueOf(searchBar.getQuery());
-            Toast.makeText(getApplicationContext(),quety,Toast.LENGTH_SHORT).show();
 
+        btnSearch.setOnClickListener(v -> {
+
+            String quety = String.valueOf(searchBar.getQuery());
+            Toast.makeText(getApplicationContext(), quety, Toast.LENGTH_SHORT).show();
         });
 
 
     }
 
+
+    //드로어 화면 전환하기
+    private void setSearchFragment() {
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+        fragmentSearch = new FragmentSearch();
+        fragmentProfile = new FragmentProfile();
+
+        if (flag ==true ){
+            fragmentTransaction.replace(R.id.frmDrawer, fragmentSearch);
+
+        }else{
+            fragmentTransaction.replace(R.id.frmDrawer, fragmentProfile);
+        }
+        fragmentTransaction.commit();
+        flag = false;
+    }
+
+
+
+    //back 버튼 프레그먼트 종료,앱 종료하기
+    @Override
+    public void onBackPressed() {
+        //fragment 종료하기
+        /*List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
+        if (fragmentList != null){
+            for (Fragment ft : fragmentList) {
+                if (ft instanceof onBackPressedListener) {
+                    ((onBackPressedListener) ft).onBackPressed();
+                }
+            }
+        }*/
+
+        //두 번 클릭시 어플 종료
+        if (System.currentTimeMillis() - lastTimeBackPressed < 2000) {
+            finish();
+            return;
+        }
+        lastTimeBackPressed = System.currentTimeMillis();
+        Toast.makeText(this, "버튼을 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
+    }
+
+
+
     private void requestPermissionsFunc() {
         ActivityCompat.requestPermissions(this, new String[]{
-                Manifest.permission.INTERNET,
-                Manifest.permission.ACCESS_NETWORK_STATE},
+                        Manifest.permission.INTERNET,
+                        Manifest.permission.ACCESS_NETWORK_STATE},
                 MODE_PRIVATE);
 
     }
