@@ -195,36 +195,36 @@ public class MainActivity extends AppCompatActivity {
         ivBack = findViewById(R.id.ivBack);
     }
     public void eventHandler() {
-
-        //드로어 메뉴 인텐트 이벤트
-        btnLikeList.setOnClickListener(v->{
-
-            Intent intent = new Intent(this,LikeActivity.class);
-            startActivity(intent);
-        });
-
-        tvNew.setOnClickListener(v-> {
-            showBottomGridViewTransaction();
-        });
-
-        btnProfile.setOnClickListener(v -> {
-
-            Intent intent = new Intent(this, ProfileActivity.class);
-            startActivity(intent);
-        });
-
-        ivBack.setOnClickListener(v -> {
-            drawerLayout.closeDrawer(Gravity.LEFT);
-        });
-
-        searchBar.setOnClickListener(v -> {
-            flag = true;
-
-            setSearchFragment();
-            searchBar.setIconified(false);
-            btnSearch.setVisibility(View.VISIBLE);
-
-        });
+//
+//        //드로어 메뉴 인텐트 이벤트
+//        btnLikeList.setOnClickListener(v->{
+//
+//            Intent intent = new Intent(this,LikeActivity.class);
+//            startActivity(intent);
+//        });
+//
+//        tvNew.setOnClickListener(v-> {
+//            showBottomGridViewTransaction();
+//        });
+//
+//        btnProfile.setOnClickListener(v -> {
+//
+//            Intent intent = new Intent(this, ProfileActivity.class);
+//            startActivity(intent);
+//        });
+//
+//        ivBack.setOnClickListener(v -> {
+//            drawerLayout.closeDrawer(Gravity.LEFT);
+//        });
+//
+//        searchBar.setOnClickListener(v -> {
+//            flag = true;
+//
+//            setSearchFragment();
+//            searchBar.setIconified(false);
+//            btnSearch.setVisibility(View.VISIBLE);
+//
+//        });
 
         btnSearch.setOnClickListener(v -> {
 
