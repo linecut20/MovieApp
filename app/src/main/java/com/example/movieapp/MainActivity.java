@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvNew;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,8 +119,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
     private void getKakaoInform() {
         Intent intent = getIntent();
         kakaoName = intent.getStringExtra("name");
@@ -135,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         pageAdapter = new FragmentBannerAdapter(this, pageNumber);
         viewPager2.setAdapter(pageAdapter);
         indicator.setViewPager(viewPager2);
-        indicator.createIndicators(pageNumber,0);
+        indicator.createIndicators(pageNumber, 0);
 
         //뷰페이저 orientation 설정
         viewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
@@ -147,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-                if(positionOffset == 0) {
+                if (positionOffset == 0) {
                     viewPager2.setCurrentItem(position);
                 }
             }
@@ -164,9 +161,9 @@ public class MainActivity extends AppCompatActivity {
         final float pageOffset = getResources().getDimensionPixelOffset(R.dimen.offset);
 
         viewPager2.setPageTransformer((page, position) -> {
-            float myOffset = position * -(2*pageOffset + pageMargin);
-            if(viewPager2.getOrientation() == ViewPager2.ORIENTATION_HORIZONTAL) {
-                if(ViewCompat.getLayoutDirection(viewPager2) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+            float myOffset = position * -(2 * pageOffset + pageMargin);
+            if (viewPager2.getOrientation() == ViewPager2.ORIENTATION_HORIZONTAL) {
+                if (ViewCompat.getLayoutDirection(viewPager2) == ViewCompat.LAYOUT_DIRECTION_RTL) {
                     page.setTranslationX(-myOffset);
                 } else {
                     page.setTranslationX(-myOffset);
@@ -194,6 +191,7 @@ public class MainActivity extends AppCompatActivity {
         ivProfilePicture = findViewById(R.id.ivProfilePicture);
         ivBack = findViewById(R.id.ivBack);
     }
+
     public void eventHandler() {
 //
 //        //드로어 메뉴 인텐트 이벤트
@@ -244,16 +242,15 @@ public class MainActivity extends AppCompatActivity {
         fragmentSearch = new FragmentSearch();
         fragmentProfile = new FragmentProfile();
 
-        if (flag ==true ){
+        if (flag == true) {
             fragmentTransaction.replace(R.id.frmDrawer, fragmentSearch);
 
-        }else{
+        } else {
             fragmentTransaction.replace(R.id.frmDrawer, fragmentProfile);
         }
         fragmentTransaction.commit();
         flag = false;
     }
-
 
 
     //back 버튼 프레그먼트 종료,앱 종료하기
@@ -280,8 +277,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void requestPermissionsFunc() {
         ActivityCompat.requestPermissions(this, new String[]{
-                Manifest.permission.INTERNET,
-                Manifest.permission.ACCESS_NETWORK_STATE},
+                        Manifest.permission.INTERNET,
+                        Manifest.permission.ACCESS_NETWORK_STATE},
                 MODE_PRIVATE);
 
     }

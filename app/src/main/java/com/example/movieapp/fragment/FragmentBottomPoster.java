@@ -38,7 +38,7 @@ public class FragmentBottomPoster extends Fragment {
 
     private void adapterFunc() {
         adapter = getArguments().getParcelable("adapter");
-        gridLayoutManager = new GridLayoutManager(context, 2);
+        gridLayoutManager = new GridLayoutManager(context, 3);
         recyclerView.setLayoutManager(gridLayoutManager);
         adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);

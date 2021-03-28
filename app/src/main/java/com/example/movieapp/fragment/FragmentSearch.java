@@ -71,7 +71,6 @@ public class FragmentSearch extends Fragment {
     }
 
     public void findViewByIdFunc(View view) {
-
         drawerRcyclerView = view.findViewById(R.id.drawerRcyclerView);
 //        frameDrawer = view.findViewById(R.id.frameDrawer);
         searchBar = view.findViewById(R.id.searchBar);
