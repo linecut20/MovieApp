@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +43,7 @@ import com.google.gson.JsonParser;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import MovieInfoDAO.TMDBDAO;
 import adapter.FragmentBannerAdapter;
 
 import adapter.MainRecyclerViewAdapter;
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<MovieInfo> movieList = new ArrayList<>();
     private FragmentBottomPoster fragmentBottomPoster = new FragmentBottomPoster();
     //중단 장르 멤버변수=================================
-    private TextView tvNew;
+    private FrameLayout frameLayout_middle;
 
 
     @Override
@@ -109,12 +111,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void movieListFunc() {
-        MyAsyncTask mAsyncTask = new MyAsyncTask();
-        mAsyncTask.execute();
+        //로딩화면
+        ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setMessage("\t영화정보를 가져오는 중입니다");
+        //show dialog
+        progressDialog.show();
+
+        TMDBDAO tmdbdao = new TMDBDAO();
+        tmdbdao.execute();
+        movieList = tmdbdao.getMovieList();
 
         //어댑터 탑재
         adapter = new MainRecyclerViewAdapter(MainActivity.this, movieList);
 
+        //로딩화면 종료
+        progressDialog.dismiss();
         showBottomGridViewTransaction();
     }
 
@@ -283,53 +295,54 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //하단 영화포스터 그리드뷰 제작 메서드
-    private class MyAsyncTask extends AsyncTask<String, Void, MovieInfo[]> {
-        //로딩중 표시
-        ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            progressDialog.setMessage("\t영화정보를 가져오는 중입니다");
-            //show dialog
-            progressDialog.show();
-        }
-
-        @Override
-        protected MovieInfo[] doInBackground(String... strings) {
-            OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder()
-                    .url("https://api.themoviedb.org/3/movie/upcoming?api_key=3816c409634358e152e19eb237829a50&language=ko-KR&page=1")
-                    .build();
-            try {
-                Response response = client.newCall(request).execute();
-                Gson gson = new GsonBuilder().create();
-                JsonParser parser = new JsonParser();
-                JsonElement rootObject = parser.parse(response.body().charStream())
-                        .getAsJsonObject().get("results");
-                MovieInfo[] posts = gson.fromJson(rootObject, MovieInfo[].class);
-                return posts;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(MovieInfo[] result) {
-            super.onPostExecute(result);
-            progressDialog.dismiss();
-            //ArrayList에 차례대로 집어 넣는다.
-            if (result.length > 0) {
-                for (MovieInfo p : result) {
-                    movieList.add(p);
-                }
-            }
-
-        }
-    }
+//    //하단 영화포스터 그리드뷰 제작 메서드
+//    private class MyAsyncTask extends AsyncTask<String, Void, MovieInfo[]> {
+//        //로딩중 표시
+//        ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
+//
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+//            progressDialog.setMessage("\t영화정보를 가져오는 중입니다");
+//            //show dialog
+//            progressDialog.show();
+//        }
+//
+//        @Override
+//        protected MovieInfo[] doInBackground(String... strings) {
+//            OkHttpClient client = new OkHttpClient();
+//            Request request = new Request.Builder()
+//                    .url("https://api.themoviedb.org/3/movie/upcoming?api_key=3816c409634358e152e19eb237829a50&language=ko-KR&page=1")
+//                    .build();
+//            try {
+//                Response response = client.newCall(request).execute();
+//                Gson gson = new GsonBuilder().create();
+//                JsonParser parser = new JsonParser();
+//                JsonElement rootObject = parser.parse(response.body().charStream())
+//                        .getAsJsonObject().get("results");
+//                MovieInfo[] posts = gson.fromJson(rootObject, MovieInfo[].class);
+//                return posts;
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//            return null;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(MovieInfo[] result) {
+//            super.onPostExecute(result);
+//            progressDialog.dismiss();
+//            //ArrayList에 차례대로 집어 넣는다.
+//            if (result.length > 0) {
+//                for (MovieInfo p : result) {
+//                    movieList.add(p);
+//                }
+//            }
+//
+//        }
+//    }
 
     private void showBottomGridViewTransaction() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
