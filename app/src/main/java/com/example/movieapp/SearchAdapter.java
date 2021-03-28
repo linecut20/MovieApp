@@ -20,10 +20,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearcViewhHolder> {
     private Context context;
     private ArrayList<SearchData> searchList;
+    private SearchData searchData;
+
 
     public SearchAdapter(Context context) {
         this.context = context;
@@ -35,12 +38,31 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearcViewh
     @Override
     public SearcViewhHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_list,parent,false);
-        return null;
+        SearcViewhHolder searcViewhHolder = new SearcViewhHolder(view);
+        context = parent.getContext();
+
+        return searcViewhHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull SearcViewhHolder holder, int position) {
         Bitmap movieImg = getMoviePhoto(context , Integer.parseInt(searchList.get(position).getMoviePoster()),200);
+
+        holder.tvMovieName.setText(searchData.getMovieTitle());
+        String  movieInfo = searchData.getMovieInfo();
+        movieInfo = movieInfo.replace("","");
+        holder.tvMovieInfo.setText(movieInfo);
+
+        if (searchData.getMoviePoster()!= null){
+            String url = "";
+
+        }
+
+        holder.itemView.setOnClickListener(v->{
+            String movieTile = searchData.getMovieTitle();
+            String moviePoster = searchData.getMoviePoster();
+            //searchList.onItemSelected
+        });
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -111,12 +133,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearcViewh
             tvMovieName = itemView.findViewById(R.id.tvMovieName);
             tvMovieInfo = itemView.findViewById(R.id.tvMovieInfo);
 
-            itemView.setOnClickListener(v->{
-                int position = getAdapterPosition();
-                if (position != RecyclerView.NO_POSITION){
-                    onItemClickListener.onItemSelected(v,position);
-                }
-            });
         }
     }
 
