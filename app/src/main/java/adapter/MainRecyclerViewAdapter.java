@@ -1,6 +1,9 @@
 package adapter;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,22 +19,44 @@ import java.util.ArrayList;
 
 import model.MovieInfo;
 
-public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerViewAdapter.RecyclerViewHolder> {
+public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerViewAdapter.RecyclerViewHolder> implements Parcelable {
     private ArrayList<MovieInfo> mMovieList;
-    private LayoutInflater mInflate;
     private Context mContext;
 
     //constructor
     public MainRecyclerViewAdapter(Context context, ArrayList<MovieInfo> itemList) {
         this.mContext = context;
-        this.mInflate = LayoutInflater.from(context);
         this.mMovieList = itemList;
     }
+
+    protected MainRecyclerViewAdapter(Parcel in) {
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<MainRecyclerViewAdapter> CREATOR = new Creator<MainRecyclerViewAdapter>() {
+        @Override
+        public MainRecyclerViewAdapter createFromParcel(Parcel in) {
+            return new MainRecyclerViewAdapter(in);
+        }
+
+        @Override
+        public MainRecyclerViewAdapter[] newArray(int size) {
+            return new MainRecyclerViewAdapter[size];
+        }
+    };
 
     @NonNull
     @Override
     public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = mInflate.inflate(R.layout.main_list_item, parent, false);
+        View view =  LayoutInflater.from(parent.getContext()).inflate(R.layout.main_list_item, parent, false);
         RecyclerViewHolder viewHolder = new RecyclerViewHolder(view);
         return viewHolder;
     }
@@ -39,7 +64,7 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
         //포스터만 출력하자.
-        String url = "http://image.tmdb.org/t/p/w500" + mMovieList.get(position).getPoster_path();
+        String url = "https://image.tmdb.org/t/p/w500" + mMovieList.get(position).getPoster_path();
         Glide.with(mContext)
                 .load(url)
                 .centerCrop()

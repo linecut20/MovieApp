@@ -21,7 +21,7 @@ import com.example.movieapp.SearchAdapter;
 
 public class FragmentSearch extends Fragment {
     private RecyclerView drawerRcyclerView;
-    private FrameLayout frameDrawer;
+    private FrameLayout frmDrawer;
     private SearchView searchBar;
     private Button btnSearch;
     private MainActivity mainActivity;
@@ -32,7 +32,7 @@ public class FragmentSearch extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.activity_drawer,container,false);
+        View view = inflater.inflate(R.layout.fragment_drawer_search,container,false);
 
         findViewByIdFunc(view);
 
@@ -73,7 +73,8 @@ public class FragmentSearch extends Fragment {
     public void findViewByIdFunc(View view) {
 
         drawerRcyclerView = view.findViewById(R.id.drawerRcyclerView);
-        frameDrawer = view.findViewById(R.id.frmDrawer);
+        frmDrawer = view.findViewById(R.id.frmDrawer);
+//        frameDrawer = view.findViewById(R.id.frameDrawer);
         searchBar = view.findViewById(R.id.searchBar);
         btnSearch = view.findViewById(R.id.btnSearch);
 
