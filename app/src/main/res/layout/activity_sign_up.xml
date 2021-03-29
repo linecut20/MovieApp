@@ -165,6 +165,7 @@
         android:layout_marginTop="10dp">
 
         <Button
+            android:id="@+id/btnBack"
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
@@ -175,6 +176,7 @@
             android:textSize="15dp"/>
 
         <Button
+            android:id="@+id/btnSignUp"
             android:layout_weight="1"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
