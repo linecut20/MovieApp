@@ -1,5 +1,7 @@
 package com.example.movieapp.fragment;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,25 +21,42 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.movieapp.MainActivity;
 import com.example.movieapp.R;
 import com.example.movieapp.SearchAdapter;
+import com.example.movieapp.SearchData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FragmentSearch extends Fragment {
+    private Context context;
+    private Activity activity;
+
     private RecyclerView drawerRcyclerView;
-    private FrameLayout frameDrawer;
+    private FrameLayout frmDrawer;
     private SearchView searchBar;
     private Button btnSearch;
     private MainActivity mainActivity;
     private SearchAdapter searchAdapter;
 
+    private List<SearchData> list;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.context = context;
+        if (context instanceof Activity) {
+            this.activity = (Activity) context;
+        }
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.activity_drawer,container,false);
+        View view = inflater.inflate(R.layout.fragment_drawer_search, container, false);
 
         findViewByIdFunc(view);
 
-        setAdapter(container);
+        //setAdapter(container);
 
         eventHandler();
 
@@ -55,24 +75,36 @@ public class FragmentSearch extends Fragment {
 
     public void eventHandler() {
 
-        searchBar.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        drawerRcyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public boolean onQueryTextSubmit(String s) {
-                btnSearch.setVisibility(View.VISIBLE);
-                return true;
-            }
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
 
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return true;
+                int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
+                int itemTotalCount = recyclerView.getAdapter().getItemCount();
+                if (lastVisibleItemPosition == (itemTotalCount - 1) && itemTotalCount % 20 == 0) {
+
+                }
+
             }
         });
 
     }
 
+    private void startMovieSearching(final String word) {
+
+        list = new ArrayList<>();
+
+        String query = word;
+        query = query.replace(" ", "+");
+
+
+    }
+
     public void findViewByIdFunc(View view) {
+
         drawerRcyclerView = view.findViewById(R.id.drawerRcyclerView);
-//        frameDrawer = view.findViewById(R.id.frameDrawer);
+        frmDrawer = view.findViewById(R.id.frmDrawer);
         searchBar = view.findViewById(R.id.searchBar);
         btnSearch = view.findViewById(R.id.btnSearch);
 
