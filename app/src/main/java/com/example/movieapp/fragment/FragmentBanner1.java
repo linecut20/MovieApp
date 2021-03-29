@@ -1,6 +1,9 @@
 package com.example.movieapp.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,12 +13,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.movieapp.R;
+
+import java.util.ArrayList;
+
+import MovieInfoDAO.UpcomingTMDBDAO;
+import model.MovieInfo;
 
 
 public class FragmentBanner1 extends Fragment {
     private ImageView iv_main_banner1;
     private int fragNumber;
+    private ArrayList<MovieInfo> movieInfo;
+    private UpcomingTMDBDAO upcomingTMDBDAO;
+    private Context context;
+
 
     //intent로 값을 전달할 수 없음에 번들처리(Activity <-> Fragment)
     //Fragment어댑터에 탑재할 인스턴스 정의
@@ -27,12 +40,14 @@ public class FragmentBanner1 extends Fragment {
         return FB1;
     }
 
-    //생성될 때 fragNumber에 값을 저장
+    //생성될 때 getArguments 처리
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fragNumber = getArguments().getInt("fragnumber1",0);
-
+        upcomingTMDBDAO = new UpcomingTMDBDAO();
+        upcomingTMDBDAO.execute();
+        movieInfo = upcomingTMDBDAO.getList();
     }
 
     @Nullable
@@ -49,4 +64,5 @@ public class FragmentBanner1 extends Fragment {
     public void onStop() {
         super.onStop();
     }
+
 }

@@ -18,17 +18,17 @@ import java.util.ArrayList;
 
 import model.MovieInfo;
 
-public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerViewAdapter.RecyclerViewHolder> implements Parcelable {
+public class BottomRecyclerViewAdapter extends RecyclerView.Adapter<BottomRecyclerViewAdapter.RecyclerViewHolder> implements Parcelable {
     private ArrayList<MovieInfo> mMovieList;
     private Context mContext;
 
     //constructor
-    public MainRecyclerViewAdapter(Context context, ArrayList<MovieInfo> itemList) {
+    public BottomRecyclerViewAdapter(Context context, ArrayList<MovieInfo> itemList) {
         this.mContext = context;
         this.mMovieList = itemList;
     }
 
-    protected MainRecyclerViewAdapter(Parcel in) {
+    protected BottomRecyclerViewAdapter(Parcel in) {
     }
 
     @Override
@@ -40,15 +40,15 @@ public class MainRecyclerViewAdapter extends RecyclerView.Adapter<MainRecyclerVi
         return 0;
     }
 
-    public static final Creator<MainRecyclerViewAdapter> CREATOR = new Creator<MainRecyclerViewAdapter>() {
+    public static final Creator<BottomRecyclerViewAdapter> CREATOR = new Creator<BottomRecyclerViewAdapter>() {
         @Override
-        public MainRecyclerViewAdapter createFromParcel(Parcel in) {
-            return new MainRecyclerViewAdapter(in);
+        public BottomRecyclerViewAdapter createFromParcel(Parcel in) {
+            return new BottomRecyclerViewAdapter(in);
         }
 
         @Override
-        public MainRecyclerViewAdapter[] newArray(int size) {
-            return new MainRecyclerViewAdapter[size];
+        public BottomRecyclerViewAdapter[] newArray(int size) {
+            return new BottomRecyclerViewAdapter[size];
         }
     };
 

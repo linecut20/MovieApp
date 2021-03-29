@@ -14,11 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.movieapp.R;
 
-import adapter.MainRecyclerViewAdapter;
+import adapter.BottomRecyclerViewAdapter;
 
 public class FragmentBottomPoster extends Fragment {
     private RecyclerView recyclerView;
-    private MainRecyclerViewAdapter adapter;
+    private BottomRecyclerViewAdapter adapter;
     private Context context;
     private GridLayoutManager gridLayoutManager;
 

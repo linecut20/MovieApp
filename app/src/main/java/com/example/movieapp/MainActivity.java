@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -33,9 +34,10 @@ import com.example.movieapp.fragment.FragmentSearch;
 import java.util.ArrayList;
 import java.util.List;
 
-import MovieInfoDAO.TMDBDAO;
-import adapter.FragmentBannerAdapter;
-import adapter.MainRecyclerViewAdapter;
+import MovieInfoDAO.TopRatedTMDBDAO;
+import MovieInfoDAO.UpcomingTMDBDAO;
+import adapter.TopBannerFragmentAdapter;
+import adapter.BottomRecyclerViewAdapter;
 import me.relex.circleindicator.CircleIndicator3;
 import model.MovieInfo;
 
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private CircleIndicator3 indicator;
     private FragmentStateAdapter pageAdapter;
     private int pageNumber = 5;
+
     //==================================================
     private String kakaoName;
     private String kakaoEmail;
@@ -63,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     //하단부 영화포스터 그리드뷰==========================
     private RecyclerView recyclerView;
     private FrameLayout bottom_frameLayout;
-    private MainRecyclerViewAdapter adapter;
+    private BottomRecyclerViewAdapter adapter;
     private ArrayList<MovieInfo> movieList = new ArrayList<>();
     private FragmentBottomPoster fragmentBottomPoster = new FragmentBottomPoster();
     //중단 장르 멤버변수=================================
@@ -132,12 +135,12 @@ public class MainActivity extends AppCompatActivity {
         //show dialog
         progressDialog.show();
 
-        TMDBDAO tmdbdao = new TMDBDAO();
+        TopRatedTMDBDAO tmdbdao = new TopRatedTMDBDAO();
         tmdbdao.execute();
         movieList = tmdbdao.getMovieList();
 
         //어댑터 탑재
-        adapter = new MainRecyclerViewAdapter(MainActivity.this, movieList);
+        adapter = new BottomRecyclerViewAdapter(MainActivity.this, movieList);
 
         //로딩화면 종료
         progressDialog.dismiss();
@@ -154,8 +157,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void fragmentFunc() {
+        //메인베너에 backdrops 삽입
+        UpcomingTMDBDAO upcomingTMDBDAO = new UpcomingTMDBDAO();
+        upcomingTMDBDAO.execute();
+
+
+
         //어댑터 및 인디케이터 정의
-        pageAdapter = new FragmentBannerAdapter(this, pageNumber);
+        pageAdapter = new TopBannerFragmentAdapter(this, pageNumber);
         viewPager2.setAdapter(pageAdapter);
         indicator.setViewPager(viewPager2);
         indicator.createIndicators(pageNumber, 0);
@@ -318,55 +327,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-//    //하단 영화포스터 그리드뷰 제작 메서드
-//    private class MyAsyncTask extends AsyncTask<String, Void, MovieInfo[]> {
-//        //로딩중 표시
-//        ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
-//
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-//            progressDialog.setMessage("\t영화정보를 가져오는 중입니다");
-//            //show dialog
-//            progressDialog.show();
-//        }
-//
-//        @Override
-//        protected MovieInfo[] doInBackground(String... strings) {
-//            OkHttpClient client = new OkHttpClient();
-//            Request request = new Request.Builder()
-//                    .url("https://api.themoviedb.org/3/movie/upcoming?api_key=3816c409634358e152e19eb237829a50&language=ko-KR&page=1")
-//                    .build();
-//            try {
-//                Response response = client.newCall(request).execute();
-//                Gson gson = new GsonBuilder().create();
-//                JsonParser parser = new JsonParser();
-//                JsonElement rootObject = parser.parse(response.body().charStream())
-//                        .getAsJsonObject().get("results");
-//                MovieInfo[] posts = gson.fromJson(rootObject, MovieInfo[].class);
-//                return posts;
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(MovieInfo[] result) {
-//            super.onPostExecute(result);
-//            progressDialog.dismiss();
-//            //ArrayList에 차례대로 집어 넣는다.
-//            if (result.length > 0) {
-//                for (MovieInfo p : result) {
-//                    movieList.add(p);
-//                }
-//            }
-//
-//        }
-//    }
-
+    //bottom 화면전환 트랜잭션 구간
     private void showBottomGridViewTransaction() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Bundle bundle = new Bundle(1);

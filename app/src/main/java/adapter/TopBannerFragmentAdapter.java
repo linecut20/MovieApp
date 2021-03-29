@@ -13,10 +13,15 @@ import com.example.movieapp.fragment.FragmentBanner3;
 import com.example.movieapp.fragment.FragmentBanner4;
 import com.example.movieapp.fragment.FragmentBanner5;
 
-public class FragmentBannerAdapter extends FragmentStateAdapter {
+import java.util.ArrayList;
+
+import MovieInfoDAO.UpcomingTMDBDAO;
+import model.MovieInfo;
+
+public class TopBannerFragmentAdapter extends FragmentStateAdapter {
     private int count;
 
-    public FragmentBannerAdapter(@NonNull MainActivity mainActivity, int count) {
+    public TopBannerFragmentAdapter(@NonNull MainActivity mainActivity, int count) {
         super(mainActivity);
         this.count = count;
     }

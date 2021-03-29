@@ -1,12 +1,16 @@
 package MovieInfoDAO;
 
+import android.content.Context;
 import android.os.AsyncTask;
 
+import com.bumptech.glide.Glide;
+import com.example.movieapp.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import model.MovieInfo;
@@ -14,22 +18,19 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class TMDBDAO extends AsyncTask<String, Void, MovieInfo[]> {
-    private ArrayList<MovieInfo> movieList = new ArrayList<>();
-
-    public ArrayList<MovieInfo> getMovieList() {
-        return movieList;
+public class UpcomingTMDBDAO extends AsyncTask<String, Void, MovieInfo[]> {
+    private ArrayList<MovieInfo> list = new ArrayList<>();
+    private Context context;
+    public ArrayList<MovieInfo> getList() {
+        return list;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-//        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-//        progressDialog.setMessage("\t영화정보를 가져오는 중입니다");
-//        //show dialog
-//        progressDialog.show();
     }
 
+    //upcoming의 json 결과물을 추출(메인배너용)
     @Override
     protected MovieInfo[] doInBackground(String... strings) {
         OkHttpClient client = new OkHttpClient();
@@ -47,20 +48,26 @@ public class TMDBDAO extends AsyncTask<String, Void, MovieInfo[]> {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return null;
     }
 
     @Override
     protected void onPostExecute(MovieInfo[] result) {
         super.onPostExecute(result);
-//        progressDialog.dismiss();
-        //ArrayList에 차례대로 집어 넣는다.
+
         if (result.length > 0) {
             for (MovieInfo p : result) {
-                movieList.add(p);
+                list.add(p);
             }
         }
 
-    }
+        ArrayList<Integer> imageList = new ArrayList<>();
+        for(int i=0; i<5;i++) {
+            String url = "https://image.tmdb.org/t/p/w500" + list.get(i).getBackdrop_path();
 
+        }
+
+
+    }
 }
