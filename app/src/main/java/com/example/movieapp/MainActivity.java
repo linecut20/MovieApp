@@ -3,7 +3,10 @@ package com.example.movieapp;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -53,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
     private SearchView searchBar;
     private FragmentSearch fragmentSearch;
     private FragmentProfile fragmentProfile;
-    private boolean flag = false;
     private long lastTimeBackPressed;
     //하단부 영화포스터 그리드뷰==========================
     private RecyclerView recyclerView;
@@ -84,6 +86,9 @@ public class MainActivity extends AppCompatActivity {
 
         //메인 하부 그리드뷰 제작메소드
         movieListFunc();
+
+        //드로어 화면 전환
+        setSearchFragment(false);
 
         //이벤트
         eventHandler();
@@ -202,19 +207,28 @@ public class MainActivity extends AppCompatActivity {
 //            Intent intent = new Intent(this, ProfileActivity.class);
 //            startActivity(intent);
 //        });
-//
-//        ivBack.setOnClickListener(v -> {
-//            drawerLayout.closeDrawer(Gravity.LEFT);
-//        });
-//
-//        searchBar.setOnClickListener(v -> {
-//            flag = true;
-//
-//            setSearchFragment();
-//            searchBar.setIconified(false);
-//            btnSearch.setVisibility(View.VISIBLE);
-//
-//        });
+
+        ivBack.setOnClickListener(v -> {
+            drawerLayout.closeDrawer(Gravity.LEFT);
+        });
+
+        searchBar.setOnClickListener(v -> {
+            setSearchFragment(true);
+            searchBar.setIconifiedByDefault(false);
+            searchBar.setBackgroundColor(Color.WHITE);
+            btnSearch.setVisibility(View.VISIBLE);
+
+        });
+        searchBar.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                setSearchFragment(false);
+                searchBar.setIconifiedByDefault(true);
+                btnSearch.setVisibility(View.INVISIBLE);
+                return true;
+            }
+        });
+
 
         btnSearch.setOnClickListener(v -> {
 
@@ -227,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     //드로어 화면 전환하기
-    private void setSearchFragment() {
+    private void setSearchFragment(Boolean flag) {
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 

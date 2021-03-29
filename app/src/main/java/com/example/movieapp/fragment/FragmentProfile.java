@@ -4,8 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,16 +22,19 @@ import java.util.Objects;
 
 public class FragmentProfile extends Fragment {
     private FrameLayout frmProfile;
+    private ImageView ivProfilePicture;
+    private TextView tvProfileName, tvProfileEmail;
+    private Button btnProfile, btnLikeList;
     private MainActivity mainActivity;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_drawer_main,container,false);
+        View view = inflater.inflate(R.layout.fragment_drawer_main, container, false);
 
         findViewByIdFunc(view);
 
-        setAdapter(container);
+        //setAdapter(container);
 
         eventHandler();
 
@@ -53,7 +59,11 @@ public class FragmentProfile extends Fragment {
     public void findViewByIdFunc(View view) {
 
         frmProfile = view.findViewById(R.id.frmProfile);
-
+        ivProfilePicture = view.findViewById(R.id.ivProfilePicture);
+        tvProfileName = view.findViewById(R.id.tvProfileName);
+        tvProfileEmail = view.findViewById(R.id.tvProfileEmail);
+        btnProfile = view.findViewById(R.id.btnProfile);
+        btnLikeList = view.findViewById(R.id.btnLikeList);
 
     }
 

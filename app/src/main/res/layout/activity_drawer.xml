@@ -19,7 +19,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/white"
             android:closeIcon="@drawable/ic_baseline_clear_24"
             android:iconifiedByDefault="true"
             android:queryHint="영화 제목을 입력하세요"
