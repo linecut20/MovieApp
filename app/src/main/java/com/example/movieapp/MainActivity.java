@@ -1,57 +1,37 @@
 package com.example.movieapp;
 
+import android.Manifest;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.Manifest;
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.view.Gravity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.SearchView;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import com.example.movieapp.fragment.FragmentBottomPoster;
 import com.example.movieapp.fragment.FragmentProfile;
 import com.example.movieapp.fragment.FragmentSearch;
 
-import java.util.List;
-import java.util.Stack;
-
-import com.example.movieapp.fragment.FragmentBottomPoster;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import MovieInfoDAO.TMDBDAO;
 import adapter.FragmentBannerAdapter;
-
 import adapter.MainRecyclerViewAdapter;
 import me.relex.circleindicator.CircleIndicator3;
 import model.MovieInfo;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
     //메인배너 멤버변수==================================
