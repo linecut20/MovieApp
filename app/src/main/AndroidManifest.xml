@@ -17,6 +17,7 @@
         <activity android:name=".DialogMemo"></activity>
         <activity android:name=".ProfileActivity" />
         <activity android:name=".LikeActivity" />
+        <activity android:name=".MovieInfoDetail"></activity>
         <activity android:name=".SignUpActivity" />
 
         <meta-data
@@ -31,7 +32,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".YangActivity" />
-        <activity android:name=".JoonActivity" />
         <activity android:name=".MainActivity" />
     </application>
 

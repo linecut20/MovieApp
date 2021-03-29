@@ -8,13 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +25,8 @@ import com.example.movieapp.SearchData;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import java.util.Objects;
 
 public class FragmentSearch extends Fragment {
     private Context context;
@@ -108,5 +110,12 @@ public class FragmentSearch extends Fragment {
         searchBar = view.findViewById(R.id.searchBar);
         btnSearch = view.findViewById(R.id.btnSearch);
 
+    }
+
+    //프래그먼트 종료
+    private void goToMain(){
+        FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
+        fragmentManager.beginTransaction().remove(FragmentSearch.this).commit();
+        fragmentManager.popBackStack();
     }
 }

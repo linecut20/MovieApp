@@ -290,6 +290,42 @@
                 android:src="@drawable/movie_more" />
         </LinearLayout>
         //네이버 리뷰
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="8dp"
+                android:text="메모"
+                android:textColor="@color/yellow"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvMemo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:ellipsize="end"
+                android:text="메모가 없습니다."
+                android:textColor="@color/yellow"
+                android:textSize="14sp" />
+
+
+            <ImageButton
+                android:id="@+id/ibMore3"
+                android:layout_width="50dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:src="@drawable/movie_more" />
+        </LinearLayout>
     </LinearLayout>
     //전체 리니어
 </ScrollView>

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,7 +24,7 @@ import android.widget.TextView;
 
 import com.google.android.youtube.player.YouTubePlayerView;
 
-public class MovieInfoDetail extends Fragment implements View.OnClickListener {
+public class MovieInfoDetail extends AppCompatActivity implements View.OnClickListener {
     //인스타 그램 공유에 필요한 이미지
     private  static final String MEDIA_TYPE_JPEG = "image/*";
     public static final String NOT_INSTALLED = "Not installed";
@@ -34,7 +35,7 @@ public class MovieInfoDetail extends Fragment implements View.OnClickListener {
     private ImageView posterView;
     private YouTubePlayerView youtube;
     private RatingBar ratingBar;
-    private TextView tvTitle, tvYear, tvRating, tvStory, reviewList;
+    private TextView tvTitle, tvYear, tvRating, tvStory, reviewList, tvMemo;
     private LinearLayout addLayout, shareLayout, memoLayout, ratingLayout,instaLayout;
     private ImageButton ibMore1, ibMore2, addBtn, shareBtn;
     private View view;
@@ -43,13 +44,15 @@ public class MovieInfoDetail extends Fragment implements View.OnClickListener {
     private boolean ib2flag = true;
     private boolean addflag = true;
 
+
+
     @Nullable
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_movie_info_detail, container, false);
 
         //ID 찾아주기
         findViewByIdFunc();
+
 
         ibMore1.setOnClickListener(this);
         ibMore2.setOnClickListener(this);
@@ -58,8 +61,6 @@ public class MovieInfoDetail extends Fragment implements View.OnClickListener {
         memoLayout.setOnClickListener(this);
         memoLayout.setOnClickListener(this);
         memoLayout.setOnClickListener(this);
-
-
 
         return view;
     }
@@ -82,6 +83,7 @@ public class MovieInfoDetail extends Fragment implements View.OnClickListener {
         ibMore2 = view.findViewById(R.id.ibMore2);
         addBtn = view.findViewById(R.id.addBtn);
         shareBtn = view.findViewById(R.id.shareBtn);
+        tvMemo = view.findViewById(R.id.tvMemo);
     }
 
     @Override
@@ -140,9 +142,12 @@ public class MovieInfoDetail extends Fragment implements View.OnClickListener {
 
                 startActivity(Intent.createChooser(shareIntent, "앱을 선택하십시오."));
                 break;
-            case R.id.memoLayout : break;
+            case R.id.memoLayout :
+//                DialogMemo dm = new DialogMemo(MovieInfoDetail.this);
+//                dm.callFunction(tvMemo);
+                break;
             case R.id.ratingLayout :
-
+                showDialog();
 
                 break;
 //            case R.id.instaLayout :
@@ -171,5 +176,28 @@ public class MovieInfoDetail extends Fragment implements View.OnClickListener {
 //                break;
         }//switch
 
+    }
+
+    public void showDialog() {
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        final RatingBar ratingBar = new RatingBar(this);
+        ratingBar.setMax(5);
+
+        dialog.setTitle("영화 평가");
+        dialog.setView(ratingBar);
+
+        dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        dialog.create();
+        dialog.show();
     }
 }

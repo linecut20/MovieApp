@@ -15,10 +15,12 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -29,6 +31,7 @@ import com.example.movieapp.fragment.FragmentProfile;
 import com.example.movieapp.fragment.FragmentSearch;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import MovieInfoDAO.TMDBDAO;
 import adapter.FragmentBannerAdapter;
@@ -95,6 +98,31 @@ public class MainActivity extends AppCompatActivity {
         eventHandler();
 
     }
+//    @Override
+//    public void onBindViewHolder(@NonNRull RecyclerViewHolders holder, final int position) {
+//        //포스터만 출력하자.
+//        String url = mMovieList.get(position).getPoster_path();
+//        Glide.with(mContext)
+//                .load(url)
+//                .centerCrop()
+//                .crossFade()
+//                .into(holder.imageView);
+//
+//        //각 아이템 클릭 이벤트
+//        holder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(mContext, DetailActivity.class);
+//                intent.putExtra("title", mMovieList.get(position).getTitle());
+//                intent.putExtra("original_title", mMovieList.get(position).getOriginal_title());
+//                intent.putExtra("poster_path", mMovieList.get(position).getPoster_path());
+//                intent.putExtra("overview", mMovieList.get(position).getOverview());
+//                intent.putExtra("release_date", mMovieList.get(position).getRelease_date());
+//                mContext.startActivity(intent);
+//                Log.d("Adapter", "Clcked: " + position);
+//            }
+//        });
+//    }
 
     private void movieListFunc() {
         //로딩화면
@@ -179,7 +207,6 @@ public class MainActivity extends AppCompatActivity {
         frmDrawer = findViewById(R.id.frmDrawer);
         frmProfile = findViewById(R.id.frmProfile);
         frmSearch = findViewById(R.id.frmSearch);
-        button = findViewById(R.id.button);
         drawerLayout = findViewById(R.id.drawerLayout);
         searchBar = findViewById(R.id.searchBar);
         btnSearch = findViewById(R.id.btnSearch);
@@ -262,26 +289,26 @@ public class MainActivity extends AppCompatActivity {
 
 
     //back 버튼 프레그먼트 종료,앱 종료하기
-    @Override
-    public void onBackPressed() {
-        //fragment 종료하기
-        /*List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
-        if (fragmentList != null){
-            for (Fragment ft : fragmentList) {
-                if (ft instanceof onBackPressedListener) {
-                    ((onBackPressedListener) ft).onBackPressed();
-                }
-            }
-        }*/
-
-        //두 번 클릭시 어플 종료
-        if (System.currentTimeMillis() - lastTimeBackPressed < 2000) {
-            finish();
-            return;
-        }
-        lastTimeBackPressed = System.currentTimeMillis();
-        Toast.makeText(this, "버튼을 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        //fragment 종료하기
+//        List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
+//        for(Fragment fragment : fragmentList){
+//            if(fragment instanceof onBackPressedListener){
+//                ((onBackPressedListener)fragment).onBackPressed();
+//                return;
+//            }
+//        }
+//
+//        //두 번 클릭시 어플 종료
+//        if(System.currentTimeMillis() - lastTimeBackPressed < 1500){
+//            finish();
+//            return;
+//        }
+//        lastTimeBackPressed = System.currentTimeMillis();
+//        Toast.makeText(this,"'뒤로' 버튼을 한 번 더 누르면 종료됩니다.",Toast.LENGTH_SHORT).show();
+//
+//    }
 
     private void requestPermissionsFunc() {
         ActivityCompat.requestPermissions(this, new String[]{
