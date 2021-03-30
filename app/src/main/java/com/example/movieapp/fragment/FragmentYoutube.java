@@ -13,19 +13,19 @@ import java.util.ResourceBundle;
 public class FragmentYoutube extends YouTubePlayerSupportFragment implements YouTubePlayer.OnInitializedListener {
     private static final String MOVIE_URL = "MOVIE_URL";
 
-    public static FragmentYoutube newInstance(String url) {
-        FragmentYoutube fragment = new FragmentYoutube();
+//    public static FragmentYoutube newInstance(String url) {
+//        FragmentYoutube fragment = new FragmentYoutube();
+//
+//        Bundle args = new Bundle();
+//        args.putString(MOVIE_URL, url);
+//        fragment.setArguments(args);
+//        fragment.init();
+//        return fragment;
+//    }
 
-        Bundle args = new Bundle();
-        args.putString(MOVIE_URL, url);
-        fragment.setArguments(args);
-        fragment.init();
-        return fragment;
-    }
-
-    private void setArguments(Bundle args) {
-        //아님 수정해야함
-    }
+//    private void setArguments(Bundle args) {
+//        //아님 수정해야함
+//    }
 
     private void init() {
 
@@ -35,24 +35,24 @@ public class FragmentYoutube extends YouTubePlayerSupportFragment implements You
 
     @Override
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-        if (!b)
-            youTubePlayer.cueVideo(getArguments().getString(MOVIE_URL), 0);
+//        if (!b)
+//            youTubePlayer.cueVideo(getArguments().getString(MOVIE_URL), 0);
 
     }
 
-    private ResourceBundle getArguments() {
-        //아님 수정해야함
-        return null;
-    }
+//    private ResourceBundle getArguments() {
+//        //아님 수정해야함
+//        return null;
+//    }
 
     @Override
     public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-        Toast.makeText(getContext(), "영상로드실패", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getContext(), "영상로드실패", Toast.LENGTH_SHORT).show();
 
     }
 
-    private Context getContext() {
-        //아님 수정해야함
-        return null;
-    }
+//    private Context getContext() {
+//        //아님 수정해야함
+//        return null;
+//    }
 }

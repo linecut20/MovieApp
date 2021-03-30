@@ -21,12 +21,12 @@
 
         </FrameLayout>
 
-        <FrameLayout
-            android:id="@+id/frameLayout_middle"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/linearLayout_middle"
+            android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:orientation="horizontal" >
-        </FrameLayout>
+            android:orientation="horizontal"
+            android:background="#000023" />
 
         <FrameLayout
             android:id="@+id/frameLayout_bottom"

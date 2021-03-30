@@ -7,12 +7,14 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,21 +27,25 @@ import androidx.core.view.ViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.movieapp.fragment.FragmentBottomPoster;
+import com.example.movieapp.fragment.FragmentMiddleMenu;
 import com.example.movieapp.fragment.FragmentProfile;
 import com.example.movieapp.fragment.FragmentSearch;
 import com.example.movieapp.fragment.FragmentTopBanner;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 import MovieInfoDAO.TopRatedTMDBDAO;
 import MovieInfoDAO.UpcomingTMDBDAO;
 import adapter.BottomRecyclerViewAdapter;
+import adapter.MiddleAdapter;
 import adapter.TopRecyclerViewAdapter;
 import me.relex.circleindicator.CircleIndicator3;
 import model.MovieInfo;
@@ -66,14 +72,17 @@ public class MainActivity extends AppCompatActivity {
     private FragmentProfile fragmentProfile;
     private long lastTimeBackPressed;
     //하단부 영화포스터 그리드뷰==========================
+    private int topRatedCount = 1; // count번째 페이지의 리스트
     private RecyclerView recyclerView;
     private FrameLayout bottom_frameLayout;
     private BottomRecyclerViewAdapter adapter;
-    private ArrayList<MovieInfo> movieList = new ArrayList<>();
-    private FragmentBottomPoster fragmentBottomPoster = new FragmentBottomPoster();
+    private TopRatedTMDBDAO tmdbdao;
+    private ArrayList<MovieInfo> movieList;
+    private FragmentBottomPoster fragmentBottomPoster;
     //중단 장르 멤버변수=================================
-    private FrameLayout frameLayout_middle;
-
+    private String[] middleList = {"최신개봉작","현재상영작","인기영화","개봉예정작","명예의 전당"};
+    private MiddleAdapter middleAdapter;
+    private FragmentMiddleMenu fragmentMiddleMenu;
 
     private Button button;
     @Override
@@ -93,6 +102,9 @@ public class MainActivity extends AppCompatActivity {
         //상위 메인배너 메소드
         fragmentFunc();
 
+        //중단 메뉴버튼 메소드
+        middleMenuFunc();
+
         //메인 하부 그리드뷰 제작메소드
         movieListFunc();
 
@@ -103,6 +115,20 @@ public class MainActivity extends AppCompatActivity {
         eventHandler();
 
     }
+
+    private void middleMenuFunc() {
+        //중단 메뉴탭 어댑터 제작 및 탑재 후 전송
+        middleAdapter = new MiddleAdapter(this, middleList);
+
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Bundle bundle = new Bundle(1);
+        fragmentMiddleMenu = new FragmentMiddleMenu();
+        bundle.putParcelable("adapter", middleAdapter);
+        fragmentMiddleMenu.setArguments(bundle);
+        ft.replace(R.id.linearLayout_middle, fragmentMiddleMenu);
+        ft.commit();
+    }
+
     //하단 그리드뷰 제작 메서드
     public void movieListFunc() {
         //로딩화면
@@ -112,8 +138,10 @@ public class MainActivity extends AppCompatActivity {
         //show dialog
         progressDialog.show();
 
-        TopRatedTMDBDAO tmdbdao = new TopRatedTMDBDAO();
+        tmdbdao = new TopRatedTMDBDAO(topRatedCount);
         tmdbdao.execute();
+
+        movieList = new ArrayList<>();
         movieList = tmdbdao.getMovieList();
 
         //어댑터 탑재
@@ -122,6 +150,8 @@ public class MainActivity extends AppCompatActivity {
         //로딩화면 종료
         progressDialog.dismiss();
         showBottomGridViewTransaction();
+        topRatedCount++;
+        Log.d("topRatedCount",topRatedCount+"페이지 차례");
     }
 
 
@@ -158,7 +188,6 @@ public class MainActivity extends AppCompatActivity {
         tvProfileEmail = findViewById(R.id.tvProfileEmail);
         ivProfilePicture = findViewById(R.id.ivProfilePicture);
         ivbDrawerBack = findViewById(R.id.ivbDrawerBack);
-
     }
 
     public void eventHandler() {
@@ -263,6 +292,7 @@ public class MainActivity extends AppCompatActivity {
     private void showBottomGridViewTransaction() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Bundle bundle = new Bundle(1);
+        fragmentBottomPoster = new FragmentBottomPoster();
         bundle.putParcelable("adapter", adapter);
         fragmentBottomPoster.setArguments(bundle);
         ft.replace(R.id.frameLayout_bottom, fragmentBottomPoster);
@@ -278,5 +308,6 @@ public class MainActivity extends AppCompatActivity {
         ft.replace(R.id.mainFrameLayout, fragmentTopBanner);
         ft.commit();
     }
+
 
 }

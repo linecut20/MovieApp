@@ -16,7 +16,11 @@ import okhttp3.Response;
 
 public class TopRatedTMDBDAO extends AsyncTask<String, Void, MovieInfo[]> {
     private static ArrayList<MovieInfo> movieList = new ArrayList<>();
-    private int count = 1;
+    private int count;
+
+    public TopRatedTMDBDAO(int count) {
+        this.count = count;
+    }
 
     public ArrayList<MovieInfo> getMovieList() {
         return movieList;
@@ -46,7 +50,6 @@ public class TopRatedTMDBDAO extends AsyncTask<String, Void, MovieInfo[]> {
             JsonElement rootObject = parser.parse(response.body().charStream())
                     .getAsJsonObject().get("results");
             MovieInfo[] posts = gson.fromJson(rootObject, MovieInfo[].class);
-            count++;
             return posts;
         } catch (Exception e) {
             e.printStackTrace();

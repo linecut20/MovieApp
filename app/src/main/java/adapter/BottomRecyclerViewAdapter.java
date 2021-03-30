@@ -62,7 +62,7 @@ public class BottomRecyclerViewAdapter extends RecyclerView.Adapter<BottomRecycl
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
-        //포스터만 출력하자.
+        //포스터만 출력.
         String url = "https://image.tmdb.org/t/p/w500" + mMovieList.get(position).getPoster_path();
         Glide.with(mContext)
                 .load(url)
@@ -77,7 +77,6 @@ public class BottomRecyclerViewAdapter extends RecyclerView.Adapter<BottomRecycl
     }
 
 
-    //뷰홀더 - 따로 클래스 파일로 만들어도 된다.
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
         public ImageView iv_main;
 
