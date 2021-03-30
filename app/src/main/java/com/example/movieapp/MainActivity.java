@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -16,12 +15,10 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -30,24 +27,23 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.movieapp.fragment.FragmentBottomPoster;
 import com.example.movieapp.fragment.FragmentProfile;
 import com.example.movieapp.fragment.FragmentSearch;
+import com.example.movieapp.fragment.FragmentTopBanner;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import MovieInfoDAO.TopRatedTMDBDAO;
 import MovieInfoDAO.UpcomingTMDBDAO;
-import adapter.TopBannerFragmentAdapter;
 import adapter.BottomRecyclerViewAdapter;
+import adapter.TopRecyclerViewAdapter;
 import me.relex.circleindicator.CircleIndicator3;
 import model.MovieInfo;
 
 public class MainActivity extends AppCompatActivity {
     //메인배너 멤버변수==================================
-    private ViewPager2 viewPager2;
-    private CircleIndicator3 indicator;
-    private FragmentStateAdapter pageAdapter;
     private int pageNumber = 5;
-
+    private ArrayList<MovieInfo> upcomingList;
+    private TopRecyclerViewAdapter topRecyclerViewAdapter;
+    private FragmentTopBanner fragmentTopBanner = new FragmentTopBanner();
     //==================================================
     private String kakaoName;
     private String kakaoEmail;
@@ -101,31 +97,7 @@ public class MainActivity extends AppCompatActivity {
         eventHandler();
 
     }
-//    @Override
-//    public void onBindViewHolder(@NonNRull RecyclerViewHolders holder, final int position) {
-//        //포스터만 출력하자.
-//        String url = mMovieList.get(position).getPoster_path();
-//        Glide.with(mContext)
-//                .load(url)
-//                .centerCrop()
-//                .crossFade()
-//                .into(holder.imageView);
-//
-//        //각 아이템 클릭 이벤트
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(mContext, DetailActivity.class);
-//                intent.putExtra("title", mMovieList.get(position).getTitle());
-//                intent.putExtra("original_title", mMovieList.get(position).getOriginal_title());
-//                intent.putExtra("poster_path", mMovieList.get(position).getPoster_path());
-//                intent.putExtra("overview", mMovieList.get(position).getOverview());
-//                intent.putExtra("release_date", mMovieList.get(position).getRelease_date());
-//                mContext.startActivity(intent);
-//                Log.d("Adapter", "Clcked: " + position);
-//            }
-//        });
-//    }
+
 
     private void movieListFunc() {
         //로딩화면
@@ -160,58 +132,16 @@ public class MainActivity extends AppCompatActivity {
         //메인베너에 backdrops 삽입
         UpcomingTMDBDAO upcomingTMDBDAO = new UpcomingTMDBDAO();
         upcomingTMDBDAO.execute();
+        upcomingList = upcomingTMDBDAO.getList();
 
-
-
-        //어댑터 및 인디케이터 정의
-        pageAdapter = new TopBannerFragmentAdapter(this, pageNumber);
-        viewPager2.setAdapter(pageAdapter);
-        indicator.setViewPager(viewPager2);
-        indicator.createIndicators(pageNumber, 0);
-
-        //뷰페이저 orientation 설정
-        viewPager2.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
-
-        viewPager2.setCurrentItem(100);
-        viewPager2.setOffscreenPageLimit(4);
-        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            //메인베너가 스크롤될 경우(좌<->우)
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-                if (positionOffset == 0) {
-                    viewPager2.setCurrentItem(position);
-                }
-            }
-
-            //선택될 경우
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-                indicator.animatePageSelected(position % pageNumber);
-            }
-        });
-
-        final float pageMargin = getResources().getDimensionPixelOffset(R.dimen.pageMargin);
-        final float pageOffset = getResources().getDimensionPixelOffset(R.dimen.offset);
-
-        viewPager2.setPageTransformer((page, position) -> {
-            float myOffset = position * -(2 * pageOffset + pageMargin);
-            if (viewPager2.getOrientation() == ViewPager2.ORIENTATION_HORIZONTAL) {
-                if (ViewCompat.getLayoutDirection(viewPager2) == ViewCompat.LAYOUT_DIRECTION_RTL) {
-                    page.setTranslationX(-myOffset);
-                } else {
-                    page.setTranslationX(-myOffset);
-                }
-            } else {
-                page.setTranslationX(myOffset);
-            }
-        });
+        //어댑터 탑재
+        topRecyclerViewAdapter = new TopRecyclerViewAdapter(this, upcomingList);
+        showTopLayoutViewTransaction();
     }
 
+
+
     private void findViewByIdFunc() {
-        viewPager2 = findViewById(R.id.viewPager2);
-        indicator = findViewById(R.id.indicator);
         //드로어 멤버변수=============================
         frmDrawer = findViewById(R.id.frmDrawer);
         frmProfile = findViewById(R.id.frmProfile);
@@ -334,6 +264,16 @@ public class MainActivity extends AppCompatActivity {
         bundle.putParcelable("adapter", adapter);
         fragmentBottomPoster.setArguments(bundle);
         ft.replace(R.id.frameLayout_bottom, fragmentBottomPoster);
+        ft.commit();
+    }
+
+    //top 화면전환 트랙잭션 구간
+    private void showTopLayoutViewTransaction() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        Bundle bundle = new Bundle(1);
+        bundle.putParcelable("adapter", topRecyclerViewAdapter);
+        fragmentTopBanner.setArguments(bundle);
+        ft.replace(R.id.mainFrameLayout, fragmentTopBanner);
         ft.commit();
     }
 

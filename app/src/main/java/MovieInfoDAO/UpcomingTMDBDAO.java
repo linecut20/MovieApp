@@ -21,6 +21,7 @@ import okhttp3.Response;
 public class UpcomingTMDBDAO extends AsyncTask<String, Void, MovieInfo[]> {
     private ArrayList<MovieInfo> list = new ArrayList<>();
     private Context context;
+
     public ArrayList<MovieInfo> getList() {
         return list;
     }
@@ -61,13 +62,6 @@ public class UpcomingTMDBDAO extends AsyncTask<String, Void, MovieInfo[]> {
                 list.add(p);
             }
         }
-
-        ArrayList<Integer> imageList = new ArrayList<>();
-        for(int i=0; i<5;i++) {
-            String url = "https://image.tmdb.org/t/p/w500" + list.get(i).getBackdrop_path();
-
-        }
-
 
     }
 }
