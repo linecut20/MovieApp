@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private Button button;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     private void findViewByIdFunc() {
         //드로어 멤버변수=============================
         frmDrawer = findViewById(R.id.frmDrawer);
@@ -165,11 +166,11 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
 
-        //드로어 메뉴 인텐트 이벤트
+        //드로어 메뉴 닫기 이벤트
         ivbDrawerBack.setOnClickListener(v -> {
             drawerLayout.closeDrawer(Gravity.LEFT);
         });
-
+        //서치뷰 클릭시 프레그먼트 이동, 버튼 visible
         searchView.setOnClickListener(v -> {
             setSearchFragment(true);
             searchView.setIconifiedByDefault(false);
@@ -177,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
             btnSearch.setVisibility(View.VISIBLE);
 
         });
+        //서치뷰 닫기 클릭시 프레그먼트 이동, 버튼 invisible
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
@@ -186,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-
+        //검색 버튼 클릭시 토스트메세지 띄우기
         btnSearch.setOnClickListener(v -> {
 
             String quety = String.valueOf(searchView.getQuery());
@@ -214,9 +216,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //back 버튼 프레그먼트 종료,앱 종료하기
-//    @Override
-//    public void onBackPressed() {
+    //드로어 화면이 열려있을 때, back버튼 이벤트
+    @Override
+    public void onBackPressed() {
 //        //fragment 종료하기
 //        List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
 //        for(Fragment fragment : fragmentList){
@@ -233,8 +235,13 @@ public class MainActivity extends AppCompatActivity {
 //        }
 //        lastTimeBackPressed = System.currentTimeMillis();
 //        Toast.makeText(this,"'뒤로' 버튼을 한 번 더 누르면 종료됩니다.",Toast.LENGTH_SHORT).show();
-//
-//    }
+
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawers();
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     private void requestPermissionsFunc() {
         ActivityCompat.requestPermissions(this, new String[]{
