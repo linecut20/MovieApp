@@ -54,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout linearDrawer;
     private Button btnSearch, btnProfile, btnLikeList;
     private TextView tvProfileName, tvProfileEmail;
-    private ImageView ivProfilePicture, ivBack;
-    private SearchView searchBar;
+    private ImageView ivProfilePicture, ivbDrawerBack;
+    private SearchView searchView;
     private FragmentSearch fragmentSearch;
     private FragmentProfile fragmentProfile;
     private long lastTimeBackPressed;
@@ -147,64 +147,51 @@ public class MainActivity extends AppCompatActivity {
         frmProfile = findViewById(R.id.frmProfile);
         frmSearch = findViewById(R.id.frmSearch);
         drawerLayout = findViewById(R.id.drawerLayout);
-        searchBar = findViewById(R.id.searchBar);
         btnSearch = findViewById(R.id.btnSearch);
         btnProfile = findViewById(R.id.btnProfile);
         btnLikeList = findViewById(R.id.btnLikeList);
+        searchView = findViewById(R.id.searchView);
         tvProfileName = findViewById(R.id.tvProfileName);
         tvProfileEmail = findViewById(R.id.tvProfileEmail);
         ivProfilePicture = findViewById(R.id.ivProfilePicture);
-        ivBack = findViewById(R.id.ivBack);
+        ivbDrawerBack = findViewById(R.id.ivbDrawerBack);
+
     }
 
     public void eventHandler() {
-//
-//        //드로어 메뉴 인텐트 이벤트
-//        btnLikeList.setOnClickListener(v->{
-//
-//            Intent intent = new Intent(this,LikeActivity.class);
-//            startActivity(intent);
-//        });
-//
+
 //        tvNew.setOnClickListener(v-> {
 //            showBottomGridViewTransaction();
 //        });
-//
-//        btnProfile.setOnClickListener(v -> {
-//
-//            Intent intent = new Intent(this, ProfileActivity.class);
-//            startActivity(intent);
-//        });
 
-        ivBack.setOnClickListener(v -> {
+
+        //드로어 메뉴 인텐트 이벤트
+        ivbDrawerBack.setOnClickListener(v -> {
             drawerLayout.closeDrawer(Gravity.LEFT);
         });
 
-        searchBar.setOnClickListener(v -> {
+        searchView.setOnClickListener(v -> {
             setSearchFragment(true);
-            searchBar.setIconifiedByDefault(false);
-            searchBar.setBackgroundColor(Color.WHITE);
+            searchView.setIconifiedByDefault(false);
+            searchView.setBackgroundColor(Color.WHITE);
             btnSearch.setVisibility(View.VISIBLE);
 
         });
-        searchBar.setOnCloseListener(new SearchView.OnCloseListener() {
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
                 setSearchFragment(false);
-                searchBar.setIconifiedByDefault(true);
+                searchView.setIconifiedByDefault(true);
                 btnSearch.setVisibility(View.INVISIBLE);
                 return true;
             }
         });
 
-
         btnSearch.setOnClickListener(v -> {
 
-            String quety = String.valueOf(searchBar.getQuery());
+            String quety = String.valueOf(searchView.getQuery());
             Toast.makeText(getApplicationContext(), quety, Toast.LENGTH_SHORT).show();
         });
-
-
     }
 
 

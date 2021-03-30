@@ -2,12 +2,15 @@ package com.example.movieapp.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -15,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,8 +40,10 @@ public class FragmentSearch extends Fragment {
     private FrameLayout frmDrawer;
     private SearchView searchBar;
     private Button btnSearch;
-    private MainActivity mainActivity;
+    private MainActivity mainActivity = new MainActivity();
     private SearchAdapter searchAdapter;
+    private FragmentProfile fragmentProfile;
+    private ImageButton ivbBack;
 
     private List<SearchData> list;
 
@@ -91,6 +97,15 @@ public class FragmentSearch extends Fragment {
             }
         });
 
+        ivbBack.setOnClickListener(v -> {
+
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            fragmentProfile = new FragmentProfile();
+
+            fragmentTransaction.replace(R.id.frmDrawer, fragmentProfile);
+            fragmentTransaction.commit();
+        });
+
     }
 
     private void startMovieSearching(final String word) {
@@ -107,15 +122,8 @@ public class FragmentSearch extends Fragment {
 
         drawerRcyclerView = view.findViewById(R.id.drawerRcyclerView);
         frmDrawer = view.findViewById(R.id.frmDrawer);
-        searchBar = view.findViewById(R.id.searchBar);
-        btnSearch = view.findViewById(R.id.btnSearch);
+        ivbBack = view.findViewById(R.id.ivbBack);
 
     }
 
-    //프래그먼트 종료
-    private void goToMain(){
-        FragmentManager fragmentManager = Objects.requireNonNull(getActivity()).getSupportFragmentManager();
-        fragmentManager.beginTransaction().remove(FragmentSearch.this).commit();
-        fragmentManager.popBackStack();
-    }
 }
