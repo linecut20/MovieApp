@@ -15,7 +15,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class TopRatedTMDBDAO extends AsyncTask<String, Void, MovieInfo[]> {
-    private ArrayList<MovieInfo> movieList = new ArrayList<>();
+    private static ArrayList<MovieInfo> movieList = new ArrayList<>();
+    private int count = 1;
 
     public ArrayList<MovieInfo> getMovieList() {
         return movieList;
@@ -36,7 +37,7 @@ public class TopRatedTMDBDAO extends AsyncTask<String, Void, MovieInfo[]> {
     protected MovieInfo[] doInBackground(String... strings) {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
-                .url("https://api.themoviedb.org/3/movie/top_rated?api_key=3816c409634358e152e19eb237829a50&language=ko-KR&page=1")
+                .url("https://api.themoviedb.org/3/movie/top_rated?api_key=3816c409634358e152e19eb237829a50&language=ko-KR&page="+count)
                 .build();
         try {
             Response response = client.newCall(request).execute();
@@ -45,6 +46,7 @@ public class TopRatedTMDBDAO extends AsyncTask<String, Void, MovieInfo[]> {
             JsonElement rootObject = parser.parse(response.body().charStream())
                     .getAsJsonObject().get("results");
             MovieInfo[] posts = gson.fromJson(rootObject, MovieInfo[].class);
+            count++;
             return posts;
         } catch (Exception e) {
             e.printStackTrace();

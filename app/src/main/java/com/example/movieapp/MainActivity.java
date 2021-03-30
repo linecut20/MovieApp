@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.Gravity;
@@ -75,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private Button button;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,8 +103,8 @@ public class MainActivity extends AppCompatActivity {
         eventHandler();
 
     }
-
-    private void movieListFunc() {
+    //하단 그리드뷰 제작 메서드
+    public void movieListFunc() {
         //로딩화면
         ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
