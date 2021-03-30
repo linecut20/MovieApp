@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -15,11 +16,13 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -31,6 +34,7 @@ import com.example.movieapp.fragment.FragmentSearch;
 import com.example.movieapp.fragment.FragmentTopBanner;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import MovieInfoDAO.TopRatedTMDBDAO;
 import MovieInfoDAO.UpcomingTMDBDAO;
@@ -100,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     private void movieListFunc() {
         //로딩화면
         ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
@@ -141,7 +144,6 @@ public class MainActivity extends AppCompatActivity {
         showTopLayoutViewTransaction();
     }
 
-
     private void findViewByIdFunc() {
         //드로어 멤버변수=============================
         frmDrawer = findViewById(R.id.frmDrawer);
@@ -163,6 +165,12 @@ public class MainActivity extends AppCompatActivity {
 
 //        tvNew.setOnClickListener(v-> {
 //            showBottomGridViewTransaction();
+//        });
+//
+//        btnProfile.setOnClickListener(v -> {
+//
+//            Intent intent = new Intent(this, ProfileActivity.class);
+//            startActivity(intent);
 //        });
 
 

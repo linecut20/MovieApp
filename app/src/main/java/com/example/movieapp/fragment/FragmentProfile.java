@@ -69,11 +69,8 @@ public class FragmentProfile extends Fragment {
 
         btnMovieReview.setOnClickListener(v->{
 
-        });
-        btnMovieMemo.setOnClickListener(v->{
 
-        });
-
+    });
     }
 
     public void findViewByIdFunc(View view) {
@@ -88,5 +85,4 @@ public class FragmentProfile extends Fragment {
         btnMovieMemo = view.findViewById(R.id.btnMovieMemo);
 
     }
-
-}
+    }
