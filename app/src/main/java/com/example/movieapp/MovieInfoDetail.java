@@ -86,6 +86,7 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
         //ID 찾아주기
         findViewByIdFunc();
 
+        getDataFromMainFunc();
 
         ibMore1.setOnClickListener(this);
         ibMore2.setOnClickListener(this);
@@ -95,12 +96,10 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
         memoLayout.setOnClickListener(this);
         memoLayout.setOnClickListener(this);
 
-        YouTubePlayerFunc();
-
         return view;
     }
 
-    private void YouTubePlayerFunc() {
+    private void getDataFromMainFunc() {
         youtubeList = new ArrayList<Youtube>();
 
         Intent intent = getIntent();
@@ -118,8 +117,11 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
                 .into(posterView);
         tvStory.setText(overview);
         tvYear.setText(release_date);
+//        ratingBar.setRating((float));
 
         YoutubeAsyncTask mProcessTask = new YoutubeAsyncTask();
+        mProcessTask.execute(m_id);
+
     }
 
     private void findViewByIdFunc() {

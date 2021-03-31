@@ -1,6 +1,7 @@
 package adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.movieapp.MovieInfoDetail;
 import com.example.movieapp.R;
 
 import java.util.ArrayList;
@@ -29,6 +31,10 @@ public class BottomRecyclerViewAdapter extends RecyclerView.Adapter<BottomRecycl
     }
 
     protected BottomRecyclerViewAdapter(Parcel in) {
+    }
+
+    public BottomRecyclerViewAdapter() {
+
     }
 
     @Override
@@ -55,7 +61,7 @@ public class BottomRecyclerViewAdapter extends RecyclerView.Adapter<BottomRecycl
     @NonNull
     @Override
     public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view =  LayoutInflater.from(parent.getContext()).inflate(R.layout.main_bottom_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_bottom_item, parent, false);
         RecyclerViewHolder viewHolder = new RecyclerViewHolder(view);
         return viewHolder;
     }
@@ -69,6 +75,21 @@ public class BottomRecyclerViewAdapter extends RecyclerView.Adapter<BottomRecycl
                 .centerCrop()
                 .crossFade()
                 .into(holder.iv_main);
+
+        //각 아이템 클릭 이벤트
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, MovieInfoDetail.class);
+                intent.putExtra("id", mMovieList.get(position).getId());
+                intent.putExtra("title", mMovieList.get(position).getTitle());
+                intent.putExtra("poster_path", mMovieList.get(position).getPoster_path());
+                intent.putExtra("overview", mMovieList.get(position).getOverview());
+                intent.putExtra("release_date", mMovieList.get(position).getRelease_date());
+                intent.putExtra("vote_average", mMovieList.get(position).getVote_average());
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -85,4 +106,5 @@ public class BottomRecyclerViewAdapter extends RecyclerView.Adapter<BottomRecycl
             iv_main = (ImageView) itemView.findViewById(R.id.iv_main);
         }
     }
+
 }

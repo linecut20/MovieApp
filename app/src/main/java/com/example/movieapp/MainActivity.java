@@ -132,13 +132,6 @@ public class MainActivity extends AppCompatActivity {
 
     //하단 그리드뷰 제작 메서드
     public void movieListFunc() {
-        //로딩화면
-        ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.setMessage("\t영화정보를 가져오는 중입니다");
-        //show dialog
-        progressDialog.show();
-
         tmdbdao = new TopRatedTMDBDAO(topRatedCount);
         tmdbdao.execute();
 
@@ -148,8 +141,6 @@ public class MainActivity extends AppCompatActivity {
         //어댑터 탑재
         adapter = new BottomRecyclerViewAdapter(MainActivity.this, movieList);
 
-        //로딩화면 종료
-        progressDialog.dismiss();
         showBottomGridViewTransaction();
         topRatedCount++;
         Log.d("topRatedCount",topRatedCount+"페이지 차례");
@@ -247,6 +238,7 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
         });
+
     }
 
 
