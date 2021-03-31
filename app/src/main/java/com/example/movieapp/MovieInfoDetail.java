@@ -49,6 +49,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import model.MovieInfo;
 import model.Youtube;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -58,6 +59,8 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
 
     private static final int REQUEST_EXTERNAL_STORAGE_CODE = 1;
     boolean permissionCheck = false;
+
+    private MovieInfo movieInfo;
 
     private ImageView posterView;
     private YouTubePlayerView youtube;
@@ -117,7 +120,7 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
                 .into(posterView);
         tvStory.setText(overview);
         tvYear.setText(release_date);
-//        ratingBar.setRating((float));
+        ratingBar.setRating((float) movieInfo.getVote_average() / 2);
 
         YoutubeAsyncTask mProcessTask = new YoutubeAsyncTask();
         mProcessTask.execute(m_id);
@@ -126,7 +129,7 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
 
     private void findViewByIdFunc() {
         posterView = view.findViewById(R.id.posterView);
-        //youtube = view.findViewById(R.id.youtube);
+        youtube = view.findViewById(R.id.youtube);
         ratingBar = view.findViewById(R.id.ratingBar);
         tvTitle = view.findViewById(R.id.tvTitle);
         tvYear = view.findViewById(R.id.tvYear);
