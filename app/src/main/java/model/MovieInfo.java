@@ -1,6 +1,8 @@
 package model;
 
-public class MovieInfo {
+import java.io.Serializable;
+
+public class MovieInfo implements Serializable {
     private int id;
     private String title;
     private String original_title;
