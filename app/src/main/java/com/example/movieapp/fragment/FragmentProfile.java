@@ -67,10 +67,10 @@ public class FragmentProfile extends Fragment {
             startActivity(intent);
         });
 
-        btnMovieReview.setOnClickListener(v -> {
-
-
-        });
+//        btnMovieReview.setOnClickListener(v -> {
+//
+//
+//        });
 //
 //        btnProfileLogout.setOnClickListener(v->{
 //

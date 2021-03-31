@@ -18,8 +18,10 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,14 +33,28 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
-public class MovieInfoDetail extends AppCompatActivity implements View.OnClickListener {
+import model.Youtube;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClickListener {
 
     private static final int REQUEST_EXTERNAL_STORAGE_CODE = 1;
     boolean permissionCheck = false;
@@ -50,10 +66,17 @@ public class MovieInfoDetail extends AppCompatActivity implements View.OnClickLi
     private LinearLayout addLayout, shareLayout, memoLayout, ratingLayout, instaLayout;
     private ImageButton ibMore1, ibMore2, addBtn, shareBtn;
     private View view;
-
+    //더보기를 위해 설정해둔 변수
     private boolean ib1flag = true;
     private boolean ib2flag = true;
     private boolean addflag = true;
+
+    //유튜브 플레이어를 재생하기 위한 변수
+    ArrayList<Youtube> youtubeList;
+    private YouTubePlayerView youTubeView;
+    private String trailer;
+    private String m_id;
+
 
 
     @Nullable
@@ -72,7 +95,31 @@ public class MovieInfoDetail extends AppCompatActivity implements View.OnClickLi
         memoLayout.setOnClickListener(this);
         memoLayout.setOnClickListener(this);
 
+        YouTubePlayerFunc();
+
         return view;
+    }
+
+    private void YouTubePlayerFunc() {
+        youtubeList = new ArrayList<Youtube>();
+
+        Intent intent = getIntent();
+        m_id = intent.getStringExtra("id");
+        String title = intent.getStringExtra("title");
+        String poster_path = intent.getStringExtra("poster_path");
+        String overview = intent.getStringExtra("overview");
+        String release_date = intent.getStringExtra("release_date");
+
+        tvTitle.setText(title);
+        Glide.with(this)
+                .load(poster_path)
+                .centerCrop()
+                .crossFade()
+                .into(posterView);
+        tvStory.setText(overview);
+        tvYear.setText(release_date);
+
+        YoutubeAsyncTask mProcessTask = new YoutubeAsyncTask();
     }
 
     private void findViewByIdFunc() {
@@ -256,6 +303,71 @@ public class MovieInfoDetail extends AppCompatActivity implements View.OnClickLi
                     }
                 }
                 break;
+        }
+    }
+
+    public class YoutubeAsyncTask extends AsyncTask<String, Void, Youtube[]>  {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Youtube[] youtubes) {
+            super.onPostExecute(youtubes);
+
+            //ArrayList에 차례대로 집어 넣는다.
+            if(youtubes.length > 0){
+                for(Youtube p : youtubes){
+                    youtubeList.add(p);
+                }
+
+                //유튜브뷰어를 이용 화면에 출력하자.
+                trailer = youtubeList.get(0).getKey();
+                Log.d("Youtube", "trailer : " + trailer);
+                playVideo(trailer, youTubeView);
+
+            }
+        }
+
+        public void playVideo(final String videoId, YouTubePlayerView youTubeView) {
+            Log.d("Youtube", "trailer: " + videoId);
+            youTubeView.initialize("AIzaSyBNNlLJGRmxNaNa-0RjsG6jdZrlnTnJjzE",
+                    new YouTubePlayer.OnInitializedListener() {
+                        @Override
+                        public void onInitializationSuccess(YouTubePlayer.Provider provider,
+                                                            YouTubePlayer youTubePlayer, boolean b) {
+                            youTubePlayer.cueVideo(videoId);
+
+                        }
+
+                        @Override
+                        public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+
+                        }
+                    });
+        }
+
+        @Override
+        protected Youtube[] doInBackground(String... strings) {
+            String m_id = strings[0];
+
+            OkHttpClient client = new OkHttpClient();
+            Request request = new Request.Builder()
+                    .url("https://api.themoviedb.org/3/movie/"+m_id+"/videos?api_key=AIzaSyBNNlLJGRmxNaNa-0RjsG6jdZrlnTnJjzE")
+                    .build();
+            try {
+                Response response = client.newCall(request).execute();
+                Gson gson = new GsonBuilder().create();
+                JsonParser parser = new JsonParser();
+                JsonElement rootObject = parser.parse(response.body().charStream())
+                        .getAsJsonObject().get("results");
+                Youtube[] posts = gson.fromJson(rootObject, Youtube[].class);
+                return posts;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
         }
     }
 }
