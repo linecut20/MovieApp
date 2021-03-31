@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import com.example.movieapp.R;
 public class MiddleAdapter extends RecyclerView.Adapter<MiddleAdapter.RecyclerViewHolder> implements Parcelable {
     private Context context;
     private String[] middleList;
+    private OnItemClickListener mListener;
 
     public MiddleAdapter(Context context, String[] middleList) {
         this.context = context;
@@ -75,6 +77,14 @@ public class MiddleAdapter extends RecyclerView.Adapter<MiddleAdapter.RecyclerVi
     @Override
     public int getItemCount() {
         return middleList.length;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(View view, int position);
+    }
+
+    public void setOnItemClickListener (OnItemClickListener listener) {
+        this.mListener = listener;
     }
 
 }

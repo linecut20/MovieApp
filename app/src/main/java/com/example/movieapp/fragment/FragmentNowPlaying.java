@@ -20,8 +20,8 @@ import com.example.movieapp.R;
 
 import adapter.BottomRecyclerViewAdapter;
 
-public class FragmentTopRated extends Fragment {
-    private RecyclerView rvTopRated;
+public class FragmentNowPlaying extends Fragment {
+    private RecyclerView rvNowPlaying;
     private BottomRecyclerViewAdapter adapter;
     private Context context;
     private GridLayoutManager gridLayoutManager;
@@ -30,18 +30,18 @@ public class FragmentTopRated extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.main_bottom_top_rated,container,false);
+        View view = inflater.inflate(R.layout.main_bottom_now_playing,container,false);
 
-        rvTopRated = view.findViewById(R.id.rvTopRated);
+        rvNowPlaying = view.findViewById(R.id.rvNowPlaying);
         adapterFunc();
 
         //리사이클러뷰가 최하단에 도달할 경우, 다음 페이지의 목록을 로드
-        rvTopRated.setOnScrollChangeListener(new View.OnScrollChangeListener(){
+        rvNowPlaying.setOnScrollChangeListener(new View.OnScrollChangeListener(){
             @Override
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-                if(!rvTopRated.canScrollVertically(1)) {
+                if(!rvNowPlaying.canScrollVertically(1)) {
                     Log.d("바텀그리드뷰", "last Position...");
-                    ((MainActivity)getActivity()).movieListFunc(4);
+                    ((MainActivity)getActivity()).movieListFunc(1);
                 }
             }
         });
@@ -51,8 +51,8 @@ public class FragmentTopRated extends Fragment {
     private void adapterFunc() {
         adapter = getArguments().getParcelable("adapter");
         gridLayoutManager = new GridLayoutManager(context, 3);
-        rvTopRated.setLayoutManager(gridLayoutManager);
+        rvNowPlaying.setLayoutManager(gridLayoutManager);
         adapter.notifyDataSetChanged();
-        rvTopRated.setAdapter(adapter);
+        rvNowPlaying.setAdapter(adapter);
     }
 }

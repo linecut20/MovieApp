@@ -34,7 +34,6 @@ public class TMDBDAO extends AsyncTask<String, Void, MovieInfo[]> {
     }
 
 
-    //top_rated 메뉴의 JSON result를 추출
     @Override
     protected MovieInfo[] doInBackground(String... strings) {
         OkHttpClient client = new OkHttpClient();

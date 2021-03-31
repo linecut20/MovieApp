@@ -33,10 +33,6 @@ public class BottomRecyclerViewAdapter extends RecyclerView.Adapter<BottomRecycl
     protected BottomRecyclerViewAdapter(Parcel in) {
     }
 
-    public BottomRecyclerViewAdapter() {
-
-    }
-
     @Override
     public void writeToParcel(Parcel dest, int flags) {
     }
@@ -74,7 +70,7 @@ public class BottomRecyclerViewAdapter extends RecyclerView.Adapter<BottomRecycl
                 .load(url)
                 .centerCrop()
                 .crossFade()
-                .into(holder.iv_main);
+                .into(holder.iv_bottom);
 
         //각 아이템 클릭 이벤트
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -99,11 +95,11 @@ public class BottomRecyclerViewAdapter extends RecyclerView.Adapter<BottomRecycl
 
 
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
-        public ImageView iv_main;
+        public ImageView iv_bottom;
 
         public RecyclerViewHolder(View itemView) {
             super(itemView);
-            iv_main = (ImageView) itemView.findViewById(R.id.iv_main);
+            iv_bottom = (ImageView) itemView.findViewById(R.id.iv_bottom);
         }
     }
 
