@@ -8,12 +8,22 @@ import androidx.annotation.RequiresApi;
 import java.util.Objects;
 
 public class SearchData {
+    private int id;
     private String moviePoster, movieTitle, movieInfo;
 
-    public SearchData(String moviePoster, String movieTitle, String movieInfo) {
+    public SearchData(int id,String moviePoster, String movieTitle, String movieInfo) {
+        this.id = id;
         this.moviePoster = moviePoster;
         this.movieTitle = movieTitle;
         this.movieInfo = movieInfo;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getMoviePoster() {
@@ -46,19 +56,21 @@ public class SearchData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SearchData that = (SearchData) o;
-        return Objects.equals(movieTitle, that.movieTitle);
+        return id == that.id &&
+                Objects.equals(movieTitle, that.movieTitle);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public int hashCode() {
-        return Objects.hash( movieTitle );
+        return Objects.hash(id, movieTitle);
     }
 
     @Override
     public String toString() {
         return "SearchData{" +
-                "moviePoster='" + moviePoster + '\'' +
+                "id=" + id +
+                ", moviePoster='" + moviePoster + '\'' +
                 ", movieTitle='" + movieTitle + '\'' +
                 ", movieInfo='" + movieInfo + '\'' +
                 '}';

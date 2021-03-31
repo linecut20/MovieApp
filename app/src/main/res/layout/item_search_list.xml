@@ -22,21 +22,22 @@
             android:layout_gravity="center_vertical">
 
             <TextView
-                android:id="@+id/tvMovieName"
+                android:id="@+id/tvMovieTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="영화제목"
-                android:textSize="20dp"
+                android:textSize="18dp"
                 android:textStyle="bold"
                 android:textColor="@color/gold"
-                android:layout_gravity="left"/>
+                android:layout_gravity="left"
+                android:layout_marginBottom="10dp"/>
 
             <TextView
                 android:id="@+id/tvMovieInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="줄거리보단 영화 정보가 더 나을 듯 합니다"
-                android:textSize="15dp"
+                android:text="줄거리정도"
+                android:textSize="14dp"
                 android:textStyle="bold"
                 android:textColor="@color/gold"
                 android:layout_gravity="left"/>

@@ -3,13 +3,17 @@ package com.example.movieapp.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,11 +24,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.movieapp.MainActivity;
 import com.example.movieapp.R;
+
+import adapter.BottomRecyclerViewAdapter;
 import adapter.SearchAdapter;
+import model.MovieInfo;
+
 import com.example.movieapp.SearchData;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.movieapp.MainActivity.searchDataList;
 
 public class FragmentSearch extends Fragment {
     private Context context;
@@ -33,13 +43,16 @@ public class FragmentSearch extends Fragment {
     private RecyclerView drawerRcyclerView;
     private FrameLayout frmDrawer;
     private SearchView searchView;
+    private EditText edtSearch;
     private Button btnSearch;
-    private MainActivity mainActivity = new MainActivity();
-    private SearchAdapter searchAdapter;
     private FragmentProfile fragmentProfile;
+    private FragmentSearch fragmentSearch;
     private ImageButton ivbBack;
 
-    private List<SearchData> list;
+    private MainActivity mainActivity = new MainActivity();
+    private SearchAdapter searchAdapter;
+
+    private ArrayList<MovieInfo> arrayList = new ArrayList<>();
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -58,7 +71,9 @@ public class FragmentSearch extends Fragment {
 
         findViewByIdFunc(view);
 
-        //setAdapter(container);
+        makeAdapter(container);
+
+        settingAdapterDataList(searchDataList);
 
         eventHandler();
 
@@ -66,18 +81,25 @@ public class FragmentSearch extends Fragment {
         return view;
     }
 
-    private void setAdapter(ViewGroup container) {
-        searchAdapter = new SearchAdapter(container.getContext());
+    private void settingAdapterDataList(ArrayList<MovieInfo> searchDataList) {
+        searchAdapter.setSearchList(searchDataList);
+        drawerRcyclerView.setAdapter(searchAdapter);
+        searchAdapter.notifyDataSetChanged();
+
+    }
+
+    private void makeAdapter(ViewGroup container) {
+
+        searchAdapter = new SearchAdapter(searchDataList,context);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(container.getContext());
 
         drawerRcyclerView.setLayoutManager(linearLayoutManager);
         drawerRcyclerView.setAdapter(searchAdapter);
-
     }
 
     public void eventHandler() {
 
-        drawerRcyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        /*drawerRcyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -90,7 +112,7 @@ public class FragmentSearch extends Fragment {
 
             }
         });
-
+*/
         ivbBack.setOnClickListener(v -> {
 
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
@@ -102,15 +124,17 @@ public class FragmentSearch extends Fragment {
 
     }
 
+/*
     private void startMovieSearching(final String word) {
 
-        list = new ArrayList<>();
+
 
         String query = word;
         query = query.replace(" ", "+");
 
 
     }
+*/
 
     public void findViewByIdFunc(View view) {
 
