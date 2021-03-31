@@ -21,7 +21,7 @@ import com.example.movieapp.R;
 
 import adapter.BottomRecyclerViewAdapter;
 
-public class FragmentBottomPoster extends Fragment {
+public class FragmentTopRated extends Fragment {
     private RecyclerView recyclerView;
     private BottomRecyclerViewAdapter adapter;
     private Context context;
@@ -42,7 +42,7 @@ public class FragmentBottomPoster extends Fragment {
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if(!recyclerView.canScrollVertically(1)) {
                     Log.d("바텀그리드뷰", "last Position...");
-                    ((MainActivity)getActivity()).movieListFunc();
+                    ((MainActivity)getActivity()).movieListFunc(5);
                 }
             }
         });
