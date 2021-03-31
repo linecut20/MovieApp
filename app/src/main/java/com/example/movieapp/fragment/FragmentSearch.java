@@ -2,7 +2,6 @@ package com.example.movieapp.fragment;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,27 +9,22 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.movieapp.MainActivity;
 import com.example.movieapp.R;
-import com.example.movieapp.SearchAdapter;
+import adapter.SearchAdapter;
 import com.example.movieapp.SearchData;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import java.util.Objects;
 
 public class FragmentSearch extends Fragment {
     private Context context;
@@ -38,7 +32,7 @@ public class FragmentSearch extends Fragment {
 
     private RecyclerView drawerRcyclerView;
     private FrameLayout frmDrawer;
-    private SearchView searchBar;
+    private SearchView searchView;
     private Button btnSearch;
     private MainActivity mainActivity = new MainActivity();
     private SearchAdapter searchAdapter;
@@ -121,6 +115,7 @@ public class FragmentSearch extends Fragment {
     public void findViewByIdFunc(View view) {
 
         drawerRcyclerView = view.findViewById(R.id.drawerRcyclerView);
+        searchView = view.findViewById(R.id.searchView);
         frmDrawer = view.findViewById(R.id.frmDrawer);
         ivbBack = view.findViewById(R.id.ivbBack);
 

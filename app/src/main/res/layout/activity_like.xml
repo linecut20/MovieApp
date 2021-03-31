@@ -8,8 +8,20 @@
     android:background="@color/deep_navy"
     tools:context=".LikeActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerLike"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="My Like List"
+            app:titleTextColor="@color/yellow"/>
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/likeListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

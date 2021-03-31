@@ -25,9 +25,9 @@ import java.util.Objects;
 
 public class FragmentProfile extends Fragment {
     private FrameLayout frmProfile;
-    private ImageView ivProfilePicture;
+    private ImageView crIvProfilePicture;
     private TextView tvProfileName, tvProfileEmail;
-    private Button btnProfile, btnLikeList,btnMovieReview,btnMovieMemo;
+    private Button btnProfile, btnLikeList, btnProfileLogout;
     private MainActivity mainActivity = new MainActivity();
 
     @Nullable
@@ -67,22 +67,26 @@ public class FragmentProfile extends Fragment {
             startActivity(intent);
         });
 
-        btnMovieReview.setOnClickListener(v->{
+        btnMovieReview.setOnClickListener(v -> {
 
 
-    });
+        });
+//
+//        btnProfileLogout.setOnClickListener(v->{
+//
+//        });
+
     }
 
     public void findViewByIdFunc(View view) {
 
         frmProfile = view.findViewById(R.id.frmProfile);
-        ivProfilePicture = view.findViewById(R.id.ivProfilePicture);
+        crIvProfilePicture = view.findViewById(R.id.crIvProfilePicture);
         tvProfileName = view.findViewById(R.id.tvProfileName);
         tvProfileEmail = view.findViewById(R.id.tvProfileEmail);
         btnProfile = view.findViewById(R.id.btnProfile);
         btnLikeList = view.findViewById(R.id.btnLikeList);
-        btnMovieReview = view.findViewById(R.id.btnMovieReview);
-        btnMovieMemo = view.findViewById(R.id.btnMovieMemo);
+        btnProfileLogout = view.findViewById(R.id.btnProfileLogout);
 
     }
-    }
+}

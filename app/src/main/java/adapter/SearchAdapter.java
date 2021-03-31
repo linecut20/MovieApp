@@ -1,4 +1,4 @@
-package com.example.movieapp;
+package adapter;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -10,17 +10,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.utils.widget.MockView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.movieapp.R;
+import com.example.movieapp.SearchData;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearcViewhHolder> {
     private Context context;

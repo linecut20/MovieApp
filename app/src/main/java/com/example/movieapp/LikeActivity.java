@@ -7,11 +7,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.os.Bundle;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 
 public class LikeActivity extends AppCompatActivity {
-    private RecyclerView recyclerLike;
+    private ListView likeListView;
     private Context context;
 
     @Override
@@ -19,9 +20,8 @@ public class LikeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_like);
 
-        recyclerLike = findViewById(R.id.recyclerLike);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-        recyclerLike.setLayoutManager(linearLayoutManager);
+        likeListView = findViewById(R.id.likeListView);
+
 
 
     }

@@ -51,6 +51,7 @@ import me.relex.circleindicator.CircleIndicator3;
 import model.MovieInfo;
 
 public class MainActivity extends AppCompatActivity {
+    public Object setFragmentSearchView;
     //메인배너 멤버변수==================================
     private int pageNumber = 5;
     private ArrayList<MovieInfo> upcomingList;
@@ -64,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
     private FrameLayout frmDrawer, frmProfile, frmSearch;
     private DrawerLayout drawerLayout;
     private LinearLayout linearDrawer;
-    private Button btnSearch, btnProfile, btnLikeList;
+    private Button btnSearch, btnProfile, btnLikeList,btnProfileLogout;
     private TextView tvProfileName, tvProfileEmail;
-    private ImageView ivProfilePicture, ivbDrawerBack;
+    private ImageView crIvProfilePicture, ivbDrawerBack;
     private SearchView searchView;
     private FragmentSearch fragmentSearch;
     private FragmentProfile fragmentProfile;
@@ -183,10 +184,11 @@ public class MainActivity extends AppCompatActivity {
         btnSearch = findViewById(R.id.btnSearch);
         btnProfile = findViewById(R.id.btnProfile);
         btnLikeList = findViewById(R.id.btnLikeList);
+        btnProfileLogout = findViewById(R.id.btnProfileLogout);
         searchView = findViewById(R.id.searchView);
         tvProfileName = findViewById(R.id.tvProfileName);
         tvProfileEmail = findViewById(R.id.tvProfileEmail);
-        ivProfilePicture = findViewById(R.id.ivProfilePicture);
+        crIvProfilePicture = findViewById(R.id.crIvProfilePicture);
         ivbDrawerBack = findViewById(R.id.ivbDrawerBack);
     }
 
@@ -207,6 +209,8 @@ public class MainActivity extends AppCompatActivity {
         ivbDrawerBack.setOnClickListener(v -> {
             drawerLayout.closeDrawer(Gravity.LEFT);
         });
+
+        
         //서치뷰 클릭시 프레그먼트 이동, 버튼 visible
         searchView.setOnClickListener(v -> {
             setSearchFragment(true);
@@ -215,21 +219,33 @@ public class MainActivity extends AppCompatActivity {
             btnSearch.setVisibility(View.VISIBLE);
 
         });
-        //서치뷰 닫기 클릭시 프레그먼트 이동, 버튼 invisible
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+        
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onClose() {
-                setSearchFragment(false);
-                searchView.setIconifiedByDefault(true);
-                btnSearch.setVisibility(View.INVISIBLE);
-                return true;
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
             }
         });
+
+        
         //검색 버튼 클릭시 토스트메세지 띄우기
         btnSearch.setOnClickListener(v -> {
 
-            String quety = String.valueOf(searchView.getQuery());
-            Toast.makeText(getApplicationContext(), quety, Toast.LENGTH_SHORT).show();
+            String query = String.valueOf(searchView.getQuery());
+            Toast.makeText(getApplicationContext(), query, Toast.LENGTH_SHORT).show();
+        });
+
+        //로그아웃하기
+        btnProfileLogout.setOnClickListener(v->{
+            Toast.makeText(getApplicationContext(),"세션만료. 로그인을 해주세요",Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -251,6 +267,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
         flag = false;
     }
+
 
 
     //드로어 화면이 열려있을 때, back버튼 이벤트
@@ -278,6 +295,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             super.onBackPressed();
         }
+
     }
 
     private void requestPermissionsFunc() {

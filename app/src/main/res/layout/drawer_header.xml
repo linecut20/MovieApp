@@ -10,12 +10,14 @@
     android:padding="10dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <ImageView
-        android:id="@+id/ivProfilePicture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:src="@drawable/ic_baseline_person_24" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/crIvProfilePicture"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/kakao_default_profile_image" />
 
     <TextView
         android:id="@+id/tvProfileName"
@@ -23,7 +25,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
         android:text="어디서 온 누군가의 이름"
-        android:textSize="20dp"
+        android:textSize="18dp"
         android:textStyle="bold"
         android:textColor="@color/deep_navy"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
@@ -32,8 +34,8 @@
         android:id="@+id/tvProfileEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:textColor="@color/deep_navy"
         android:textSize="15dp"
         android:text="someone123@naver.com" />

@@ -4,6 +4,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/deep_navy">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolBarSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <SearchView
+                android:id="@+id/searchView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:iconifiedByDefault="true"
+                android:queryHint="영화 제목을 입력하세요"
+                android:closeIcon="@drawable/ic_baseline_clear_24"
+                android:searchIcon="@drawable/ic_baseline_search_24" />
+
+            <Button
+                android:id="@+id/btnSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/yellow"
+                android:textColor="@color/deep_navy"
+                android:text="search"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+
+
+    </androidx.appcompat.widget.Toolbar>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -60,56 +94,6 @@
                 android:backgroundTint="@color/deep_navy"
                 android:gravity="left|center_vertical"
                 android:text="My List"
-                android:textColor="@color/yellow"
-                android:textSize="16dp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_baseline_favorite_24" />
-
-            <Button
-                android:id="@+id/btnMovieReview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/deep_navy"
-                android:gravity="left|center_vertical"
-                android:text="My Rieview"
-                android:textColor="@color/yellow"
-                android:textSize="16dp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_baseline_favorite_24" />
-
-            <Button
-                android:id="@+id/btnMovieMemo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/deep_navy"
-                android:gravity="left|center_vertical"
-                android:text="My Memo"
                 android:textColor="@color/yellow"
                 android:textSize="16dp"
                 android:textStyle="bold" />
