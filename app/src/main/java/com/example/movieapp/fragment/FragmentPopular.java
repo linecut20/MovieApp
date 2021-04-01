@@ -18,13 +18,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.movieapp.MainActivity;
 import com.example.movieapp.R;
 
+import java.util.ArrayList;
+
+import MovieInfoDAO.TMDBDAO;
 import adapter.BottomRecyclerViewAdapter;
+import model.MovieInfo;
 
 public class FragmentPopular extends Fragment {
     private RecyclerView rvPopular;
     private BottomRecyclerViewAdapter adapter;
     private Context context;
+    private TMDBDAO tmdbdao;
+    private int count = 1;
     private GridLayoutManager gridLayoutManager;
+    private ArrayList<MovieInfo> list;
+
+    public FragmentPopular(Context context) {
+        this.context = context;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Nullable
@@ -33,6 +44,11 @@ public class FragmentPopular extends Fragment {
         View view = inflater.inflate(R.layout.main_bottom_popular,container,false);
 
         rvPopular = view.findViewById(R.id.rvPopular);
+        gridLayoutManager = new GridLayoutManager(context, 3);
+        tmdbdao = new TMDBDAO("popular",count);
+        tmdbdao.execute();
+        list = new ArrayList<>();
+        list = tmdbdao.getMovieList();
         adapterFunc();
 
         //리사이클러뷰가 최하단에 도달할 경우, 다음 페이지의 목록을 로드
@@ -40,8 +56,9 @@ public class FragmentPopular extends Fragment {
             @Override
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if(!rvPopular.canScrollVertically(1)) {
+                    count++;
                     Log.d("바텀그리드뷰", "last Position...");
-                    ((MainActivity)getActivity()).movieListFunc(2);
+                    adapterFunc();
                 }
             }
         });
@@ -49,10 +66,9 @@ public class FragmentPopular extends Fragment {
     }
 
     private void adapterFunc() {
-        adapter = getArguments().getParcelable("adapter");
-        gridLayoutManager = new GridLayoutManager(context, 3);
+        adapter = new BottomRecyclerViewAdapter(context, list);
         rvPopular.setLayoutManager(gridLayoutManager);
-        adapter.notifyDataSetChanged();
         rvPopular.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 }

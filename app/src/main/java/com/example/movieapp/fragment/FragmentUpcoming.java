@@ -18,13 +18,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.movieapp.MainActivity;
 import com.example.movieapp.R;
 
+import java.util.ArrayList;
+
+import MovieInfoDAO.TMDBDAO;
 import adapter.BottomRecyclerViewAdapter;
+import model.MovieInfo;
 
 public class FragmentUpcoming extends Fragment {
     private RecyclerView rvUpcoming;
     private BottomRecyclerViewAdapter adapter;
-    private Context context;
+    private Context context = getContext();
+    private TMDBDAO tmdbdao;
+    private int count = 1;
     private GridLayoutManager gridLayoutManager;
+    private ArrayList<MovieInfo> list;
+
+    public FragmentUpcoming(Context context) {
+        this.context = context;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Nullable
@@ -33,6 +44,11 @@ public class FragmentUpcoming extends Fragment {
         View view = inflater.inflate(R.layout.main_bottom_upcoming,container,false);
 
         rvUpcoming = view.findViewById(R.id.rvUpcoming);
+        gridLayoutManager = new GridLayoutManager(context, 3);
+        tmdbdao = new TMDBDAO("upcoming",count);
+        tmdbdao.execute();
+        list = new ArrayList<>();
+        list = tmdbdao.getMovieList();
         adapterFunc();
 
         //리사이클러뷰가 최하단에 도달할 경우, 다음 페이지의 목록을 로드
@@ -40,8 +56,9 @@ public class FragmentUpcoming extends Fragment {
             @Override
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if(!rvUpcoming.canScrollVertically(1)) {
+                    count++;
                     Log.d("바텀그리드뷰", "last Position...");
-                    ((MainActivity)getActivity()).movieListFunc(3);
+                    adapterFunc();
                 }
             }
         });
@@ -49,10 +66,9 @@ public class FragmentUpcoming extends Fragment {
     }
 
     private void adapterFunc() {
-        adapter = getArguments().getParcelable("adapter");
-        gridLayoutManager = new GridLayoutManager(context, 3);
+        adapter = new BottomRecyclerViewAdapter(context, list);
         rvUpcoming.setLayoutManager(gridLayoutManager);
-        adapter.notifyDataSetChanged();
         rvUpcoming.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 }

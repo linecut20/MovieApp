@@ -39,5 +39,6 @@ public class FragmentTopBanner extends Fragment {
         linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         topRecyclerView.setLayoutManager(linearLayoutManager);
         topRecyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 }

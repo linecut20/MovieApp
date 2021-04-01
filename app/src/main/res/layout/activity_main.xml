@@ -26,7 +26,37 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:orientation="horizontal"
-            android:background="#000023" />
+            android:background="#000023" >
+
+            <Button
+                android:id="@+id/btnNowPlaying"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="현재상영작"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/btnPopular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="인기작"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/btnUpcoming"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="개봉예정작"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/btnToprated"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="명예의 전당"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
 
         <FrameLayout
             android:id="@+id/frameLayout_bottom"

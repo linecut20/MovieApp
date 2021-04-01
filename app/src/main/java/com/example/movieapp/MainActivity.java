@@ -1,3 +1,4 @@
+
 package com.example.movieapp;
 
 import android.Manifest;
@@ -20,12 +21,12 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.movieapp.fragment.FragmentNowPlaying;
 import com.example.movieapp.fragment.FragmentPopular;
 import com.example.movieapp.fragment.FragmentTopRated;
-import com.example.movieapp.fragment.FragmentMiddleMenu;
 import com.example.movieapp.fragment.FragmentProfile;
 import com.example.movieapp.fragment.FragmentSearch;
 import com.example.movieapp.fragment.FragmentTopBanner;
@@ -35,7 +36,6 @@ import java.util.ArrayList;
 
 import MovieInfoDAO.TMDBDAO;
 import adapter.BottomRecyclerViewAdapter;
-import adapter.MiddleAdapter;
 import adapter.TopRecyclerViewAdapter;
 import model.MovieInfo;
 
@@ -62,31 +62,16 @@ public class MainActivity extends AppCompatActivity {
     private FragmentProfile fragmentProfile;
     private long lastTimeBackPressed;
     //하단부 영화포스터 그리드뷰==========================
-    private static final int NOW_PLAYING = 1;
-    private static final int POPULAR = 2;
-    private static final int UPCOMING = 3;
-    private static final int TOP_RATED = 4;
-    private int nowPlayingCount = 1;
-    private int popularCount = 1;
-    private int upcomingCount = 1;
-    private int topRatedCount = 1;
     private RecyclerView recyclerView;
     private FrameLayout bottom_frameLayout;
-    private BottomRecyclerViewAdapter adapter_nowPlaying;
-    private BottomRecyclerViewAdapter adapter_popular;
-    private BottomRecyclerViewAdapter adapter_upcoming;
-    private BottomRecyclerViewAdapter adapter_topRated;
     private TMDBDAO tmdbdao;
     private ArrayList<MovieInfo> movieList;
     private FragmentNowPlaying fragmentNowPlaying;
     private FragmentPopular fragmentPopular;
     private FragmentTopRated fragmentTopRated;
     private FragmentUpcoming fragmentUpcoming;
-    private String[] tagList = {"now_playing", "popular", "upcoming", "top_rated"};
     //중단 장르 멤버변수=================================
-    private String[] middleList = {"현재상영작", "인기영화", "개봉예정작", "명예의 전당"};
-    private MiddleAdapter middleAdapter;
-    private FragmentMiddleMenu fragmentMiddleMenu;
+    private Button btnNowPlaying, btnPopular, btnUpcoming, btnToprated;
 
 
     @Override
@@ -106,70 +91,18 @@ public class MainActivity extends AppCompatActivity {
         //상위 메인배너 메소드
         fragmentFunc();
 
-        //중단 메뉴버튼 메소드
-        middleMenuFunc();
-
-        //메인 하부 그리드뷰 제작메소드(현재상영작으로 시작)
-        movieListFunc(NOW_PLAYING);
-
         //드로어 화면 전환
         setSearchFragment(false);
-
         //이벤트
         eventHandler();
 
-    }
+        //초기화면 지정하기
+        btnNowPlaying.performClick();
+        topRecyclerViewAdapter.notifyDataSetChanged();
 
 
-    private void middleMenuFunc() {
-        //중단 메뉴탭 어댑터 제작 및 탑재 후 전송
-        middleAdapter = new MiddleAdapter(this, middleList);
-
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        Bundle bundle = new Bundle(1);
-        fragmentMiddleMenu = new FragmentMiddleMenu();
-        bundle.putParcelable("adapter", middleAdapter);
-        fragmentMiddleMenu.setArguments(bundle);
-        ft.replace(R.id.linearLayout_middle, fragmentMiddleMenu);
-        ft.commit();
-    }
-
-    //하단 그리드뷰 제작 메서드
-    public void movieListFunc(int tagNumber) {
-        switch (tagNumber) {
-            case NOW_PLAYING:
-                tmdbdao = new TMDBDAO(tagList[0], nowPlayingCount);
-                nowPlayingCount++;
-                executeFunc(NOW_PLAYING);
-                showBottomGridViewNowPlaying();
-                break;
-
-            case POPULAR:
-                tmdbdao = new TMDBDAO(tagList[1], popularCount);
-                popularCount++;
-                executeFunc(POPULAR);
-                showBottomGridViewPopular();
-                break;
-
-            case UPCOMING:
-                tmdbdao = new TMDBDAO(tagList[2], upcomingCount);
-                upcomingCount++;
-                executeFunc(UPCOMING);
-                showBottomGridViewUpcoming();
-                break;
-
-            case TOP_RATED:
-                tmdbdao = new TMDBDAO(tagList[3], topRatedCount);
-                topRatedCount++;
-                executeFunc(TOP_RATED);
-                showBottomGridViewTopRated();
-                break;
-            default:
-                break;
-        }
 
     }
-
 
     private void getKakaoInform() {
         Intent intent = getIntent();
@@ -181,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void fragmentFunc() {
         //메인베너에 backdrops 삽입
-        tmdbdao = new TMDBDAO(tagList[2], upcomingCount);
+        tmdbdao = new TMDBDAO("upcoming", 1);
         tmdbdao.execute();
         upcomingList = tmdbdao.getMovieList();
 
@@ -205,9 +138,15 @@ public class MainActivity extends AppCompatActivity {
         tvProfileEmail = findViewById(R.id.tvProfileEmail);
         crIvProfilePicture = findViewById(R.id.crIvProfilePicture);
         ivbDrawerBack = findViewById(R.id.ivbDrawerBack);
+        //중단 메뉴버튼===============================
+        btnNowPlaying = findViewById(R.id.btnNowPlaying);
+        btnPopular = findViewById(R.id.btnPopular);
+        btnUpcoming = findViewById(R.id.btnUpcoming);
+        btnToprated = findViewById(R.id.btnToprated);
     }
 
     public void eventHandler() {
+
 
 //        tvNew.setOnClickListener(v-> {
 //            showBottomGridViewTransaction();
@@ -263,8 +202,21 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        middleAdapter.setOnItemClickListener((view, position) -> {
-            movieListFunc(position);
+        //중단메뉴버튼 이벤트
+        btnNowPlaying.setOnClickListener(v-> {
+            showBottomGridViewNowPlaying();
+        });
+
+        btnPopular.setOnClickListener(v-> {
+            showBottomGridViewPopular();
+        });
+
+        btnUpcoming.setOnClickListener(v-> {
+            showBottomGridViewUpcoming();
+        });
+
+        btnToprated.setOnClickListener(v-> {
+            showBottomGridViewTopRated();
         });
     }
 
@@ -321,16 +273,12 @@ public class MainActivity extends AppCompatActivity {
                         Manifest.permission.INTERNET,
                         Manifest.permission.ACCESS_NETWORK_STATE},
                 MODE_PRIVATE);
-
     }
 
     //NowPlaying 트랜잭션
     private void showBottomGridViewNowPlaying() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        Bundle bundle = new Bundle(1);
-        fragmentNowPlaying = new FragmentNowPlaying();
-        bundle.putParcelable("adapter", adapter_nowPlaying);
-        fragmentNowPlaying.setArguments(bundle);
+        fragmentNowPlaying = new FragmentNowPlaying(MainActivity.this);
         ft.replace(R.id.frameLayout_bottom, fragmentNowPlaying);
         ft.commit();
     }
@@ -338,10 +286,7 @@ public class MainActivity extends AppCompatActivity {
     //Popular 트랜잭션
     private void showBottomGridViewPopular() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        Bundle bundle = new Bundle(1);
-        fragmentPopular = new FragmentPopular();
-        bundle.putParcelable("adapter", adapter_popular);
-        fragmentPopular.setArguments(bundle);
+        fragmentPopular = new FragmentPopular(MainActivity.this);
         ft.replace(R.id.frameLayout_bottom, fragmentPopular);
         ft.commit();
     }
@@ -349,10 +294,7 @@ public class MainActivity extends AppCompatActivity {
     //Upcoming 트랜잭션
     private void showBottomGridViewUpcoming() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        Bundle bundle = new Bundle(1);
-        fragmentUpcoming = new FragmentUpcoming();
-        bundle.putParcelable("adapter", adapter_upcoming);
-        fragmentUpcoming.setArguments(bundle);
+        fragmentUpcoming = new FragmentUpcoming(MainActivity.this);
         ft.replace(R.id.frameLayout_bottom, fragmentUpcoming);
         ft.commit();
     }
@@ -360,10 +302,7 @@ public class MainActivity extends AppCompatActivity {
     //Top_Rated 트랜잭션
     private void showBottomGridViewTopRated() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        Bundle bundle = new Bundle(1);
-        fragmentTopRated = new FragmentTopRated();
-        bundle.putParcelable("adapter", adapter_topRated);
-        fragmentTopRated.setArguments(bundle);
+        fragmentTopRated = new FragmentTopRated(MainActivity.this);
         ft.replace(R.id.frameLayout_bottom, fragmentTopRated);
         ft.commit();
     }
@@ -377,28 +316,5 @@ public class MainActivity extends AppCompatActivity {
         ft.replace(R.id.mainFrameLayout, fragmentTopBanner);
         ft.commit();
     }
-
-    //어댑터 탑재기능 메소드
-    private void executeFunc(int tagNumber) {
-        tmdbdao.execute();
-        movieList = new ArrayList<>();
-        movieList = tmdbdao.getMovieList();
-
-        switch (tagNumber) {
-            case NOW_PLAYING:
-                adapter_nowPlaying = new BottomRecyclerViewAdapter(MainActivity.this, movieList);
-                break;
-            case POPULAR:
-                adapter_popular = new BottomRecyclerViewAdapter(MainActivity.this, movieList);
-                break;
-            case UPCOMING:
-                adapter_upcoming = new BottomRecyclerViewAdapter(MainActivity.this, movieList);
-                break;
-            case TOP_RATED:
-                adapter_topRated = new BottomRecyclerViewAdapter(MainActivity.this, movieList);
-                break;
-        }
-    }
-
 
 }
