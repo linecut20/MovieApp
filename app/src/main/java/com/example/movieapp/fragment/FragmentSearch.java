@@ -34,6 +34,9 @@ import com.example.movieapp.SearchData;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.movieapp.MainActivity.searchDataList;
+
+
 public class FragmentSearch extends Fragment {
     private Context context;
     private Activity activity;
@@ -47,7 +50,6 @@ public class FragmentSearch extends Fragment {
     private FragmentSearch fragmentSearch;
     private ImageButton ivbBack;
 
-    private MainActivity mainActivity = new MainActivity();
     private SearchAdapter searchAdapter;
 
     private ArrayList<MovieInfo> arrayList = new ArrayList<>();
@@ -58,6 +60,7 @@ public class FragmentSearch extends Fragment {
         this.context = context;
         if (context instanceof Activity) {
             this.activity = (Activity) context;
+            arrayList = searchDataList;
         }
     }
 
@@ -71,7 +74,7 @@ public class FragmentSearch extends Fragment {
 
         makeAdapter(container);
 
-//        settingAdapterDataList(searchDataList);
+        settingAdapterDataList(searchDataList);
 
         eventHandler();
 
@@ -88,29 +91,19 @@ public class FragmentSearch extends Fragment {
 
     private void makeAdapter(ViewGroup container) {
 
-//        searchAdapter = new SearchAdapter(searchDataList,context);
+        searchAdapter = new SearchAdapter(arrayList,context);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(container.getContext());
 
         drawerRcyclerView.setLayoutManager(linearLayoutManager);
         drawerRcyclerView.setAdapter(searchAdapter);
+
+
+        //SearchAdapter searchAdapter = new SearchAdapter(searchDataList,getContext());
+
     }
 
     public void eventHandler() {
 
-        /*drawerRcyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastCompletelyVisibleItemPosition();
-                int itemTotalCount = recyclerView.getAdapter().getItemCount();
-                if (lastVisibleItemPosition == (itemTotalCount - 1) && itemTotalCount % 20 == 0) {
-
-                }
-
-            }
-        });
-*/
         ivbBack.setOnClickListener(v -> {
 
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
@@ -119,20 +112,8 @@ public class FragmentSearch extends Fragment {
             fragmentTransaction.replace(R.id.frmDrawer, fragmentProfile);
             fragmentTransaction.commit();
         });
-
     }
 
-/*
-    private void startMovieSearching(final String word) {
-
-
-
-        String query = word;
-        query = query.replace(" ", "+");
-
-
-    }
-*/
 
     public void findViewByIdFunc(View view) {
 

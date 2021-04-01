@@ -36,6 +36,8 @@ import java.util.ArrayList;
 
 import MovieInfoDAO.TMDBDAO;
 import adapter.BottomRecyclerViewAdapter;
+//import adapter.MiddleAdapter;
+import adapter.SearchAdapter;
 import adapter.TopRecyclerViewAdapter;
 import model.MovieInfo;
 
@@ -61,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
     private FragmentSearch fragmentSearch;
     private FragmentProfile fragmentProfile;
     private long lastTimeBackPressed;
+
+    public static ArrayList<MovieInfo> searchDataList = new ArrayList<>();
+
     //하단부 영화포스터 그리드뷰==========================
     private RecyclerView recyclerView;
     private FrameLayout bottom_frameLayout;
@@ -151,13 +156,6 @@ public class MainActivity extends AppCompatActivity {
 //        tvNew.setOnClickListener(v-> {
 //            showBottomGridViewTransaction();
 //        });
-//
-//        btnProfile.setOnClickListener(v -> {
-//
-//            Intent intent = new Intent(this, ProfileActivity.class);
-//            startActivity(intent);
-//        });
-
 
         //드로어 메뉴 닫기 이벤트
         ivbDrawerBack.setOnClickListener(v -> {
@@ -165,35 +163,25 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        //서치뷰 클릭시 프레그먼트 이동, 버튼 visible
+        //서치뷰 클릭시 프레그먼트 이동
         searchView.setOnClickListener(v -> {
             setSearchFragment(true);
-            searchView.setIconifiedByDefault(false);
-            searchView.setBackgroundColor(Color.WHITE);
-            btnSearch.setVisibility(View.VISIBLE);
-
         });
-
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
+                findMovieFunc(s);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
+
                 return false;
             }
         });
 
-
-        //검색 버튼 클릭시 토스트메세지 띄우기
-//        btnSearch.setOnClickListener(v -> {
-//
-//            String query = String.valueOf(searchView.getQuery());
-//            Toast.makeText(getApplicationContext(), query, Toast.LENGTH_SHORT).show();
-//        });
 
         //로그아웃하기
         btnProfileLogout.setOnClickListener(v -> {
@@ -220,6 +208,26 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //검색시 입력받은 영화가 있는지 찾아주는 함수
+    public void findMovieFunc(String s){
+
+        ArrayList<MovieInfo> movieInfoArrayList = new ArrayList<>();
+        movieInfoArrayList = tmdbdao.getMovieList();
+
+        String query = String.valueOf(searchView.getQuery());
+
+        for (MovieInfo mi : movieInfoArrayList){
+
+            if (mi.getTitle().equals(query)){
+
+                if (searchDataList.size() == 0 ){
+                    searchDataList.add(mi);
+                }
+
+            }
+        }
+    }
+
 
     //드로어 화면 전환하기
     private void setSearchFragment(Boolean flag) {
@@ -243,29 +251,12 @@ public class MainActivity extends AppCompatActivity {
     //드로어 화면이 열려있을 때, back버튼 이벤트
     @Override
     public void onBackPressed() {
-//        //fragment 종료하기
-//        List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
-//        for(Fragment fragment : fragmentList){
-//            if(fragment instanceof onBackPressedListener){
-//                ((onBackPressedListener)fragment).onBackPressed();
-//                return;
-//            }
-//        }
-//
-//        //두 번 클릭시 어플 종료
-//        if(System.currentTimeMillis() - lastTimeBackPressed < 1500){
-//            finish();
-//            return;
-//        }
-//        lastTimeBackPressed = System.currentTimeMillis();
-//        Toast.makeText(this,"'뒤로' 버튼을 한 번 더 누르면 종료됩니다.",Toast.LENGTH_SHORT).show();
 
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawers();
         } else {
             super.onBackPressed();
         }
-
     }
 
     private void requestPermissionsFunc() {

@@ -82,15 +82,28 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearcViewh
 
     @Override
     public void onBindViewHolder(@NonNull SearcViewhHolder holder, int position) {
-        String url = "https://image.tmdb.org/t/p/w500"+ searchList.get(position).getPoster_path() + searchList.get(position).getTitle() + searchList.get(position).getOverview() ;
+        String url = "https://image.tmdb.org/t/p/w500"+ searchList.get(position).getPoster_path() ;
         Glide.with(context)
                 .load(url)
                 .centerCrop()
                 .crossFade()
                 .into(holder.ivPost);
-                //.into(holder.tvMovieTitle, holder.tvMovieInfo);
+
+        holder.tvMovieTitle.setText(searchList.get(position).getTitle());
+        holder.tvMovieInfo.setText(searchList.get(position).getOverview()+"... (더보기)");
 
 
+        //각 아이템 클릭 이벤트
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, MovieInfoDetail.class);
+                MovieInfo movieInfo = searchList.get(position);
+                intent.putExtra("movieInfo", movieInfo);
+                context.startActivity(intent);
+            }
+        });
+/*
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,7 +116,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearcViewh
                 intent.putExtra("vote_average", searchList.get(position).getVote_average());
                 context.startActivity(intent);
             }
-        });
+        });*/
     }
 
 
