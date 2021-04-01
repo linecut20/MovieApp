@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.example.movieapp.MovieInfoDetail;
 import com.example.movieapp.R;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import model.MovieInfo;
@@ -77,12 +79,8 @@ public class BottomRecyclerViewAdapter extends RecyclerView.Adapter<BottomRecycl
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, MovieInfoDetail.class);
-                intent.putExtra("id", mMovieList.get(position).getId());
-                intent.putExtra("title", mMovieList.get(position).getTitle());
-                intent.putExtra("poster_path", mMovieList.get(position).getPoster_path());
-                intent.putExtra("overview", mMovieList.get(position).getOverview());
-                intent.putExtra("release_date", mMovieList.get(position).getRelease_date());
-                intent.putExtra("vote_average", mMovieList.get(position).getVote_average());
+                MovieInfo movieInfo = mMovieList.get(position);
+                intent.putExtra("movieInfo", movieInfo);
                 mContext.startActivity(intent);
             }
         });
@@ -102,5 +100,4 @@ public class BottomRecyclerViewAdapter extends RecyclerView.Adapter<BottomRecycl
             iv_bottom = (ImageView) itemView.findViewById(R.id.iv_bottom);
         }
     }
-
 }

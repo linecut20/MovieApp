@@ -1,5 +1,6 @@
 package com.example.movieapp;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
@@ -13,14 +14,13 @@ import android.widget.Toast;
 
 public class DialogMemo extends AppCompatActivity {
 
-    private Context context;
-
-    public DialogMemo(Context context){
-        this.context = context;
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     public void callFunction(final TextView tvMemo){
-        final Dialog dig = new Dialog(context);
+        final Dialog dig = new Dialog(getApplicationContext());
 
         //다이얼로그 메모의 레이아웃 설정
         dig.setContentView(R.layout.activity_dialog_memo);
@@ -36,13 +36,13 @@ public class DialogMemo extends AppCompatActivity {
                 // '확인' 버튼 클릭시 메인 액티비티에서 설정한 tvMemo에
                 // 커스텀 다이얼로그에서 입력한 메시지를 대입한다.
                 tvMemo.setText(message.getText().toString());
-                Toast.makeText(context, "\"" +  message.getText().toString() + "\" 을 입력하였습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "\"" +  message.getText().toString() + "\" 을 입력하였습니다.", Toast.LENGTH_SHORT).show();
 
                 // 커스텀 다이얼로그를 종료한다.
                 dig.dismiss();
         });
         cancelBtn.setOnClickListener((view) -> {
-                Toast.makeText(context, "취소 했습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "취소 했습니다.", Toast.LENGTH_SHORT).show();
 
                 // 커스텀 다이얼로그를 종료한다.
                 dig.dismiss();

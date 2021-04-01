@@ -54,4 +54,5 @@ public class MovieInfo implements Serializable {
     public double getVote_average() {
         return vote_average;
     }
+
 }

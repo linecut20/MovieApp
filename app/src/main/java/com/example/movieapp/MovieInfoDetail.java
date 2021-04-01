@@ -80,16 +80,30 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
     private String trailer;
     private String m_id;
 
+    @Override
+    protected void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+        setContentView(R.layout.activity_movie_info_detail);
 
+        findViewByIdFunc();
+
+        ibMore1.setOnClickListener(this);
+        ibMore2.setOnClickListener(this);
+        addLayout.setOnClickListener(this);
+        shareLayout.setOnClickListener(this);
+        memoLayout.setOnClickListener(this);
+        memoLayout.setOnClickListener(this);
+        memoLayout.setOnClickListener(this);
+
+        getDataFromMainFunc();
+
+    }
 
     @Nullable
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_movie_info_detail, container, false);
 
         //ID 찾아주기
-        findViewByIdFunc();
-
-        getDataFromMainFunc();
 
         ibMore1.setOnClickListener(this);
         ibMore2.setOnClickListener(this);
@@ -103,49 +117,46 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
     }
 
     private void getDataFromMainFunc() {
+
         youtubeList = new ArrayList<Youtube>();
 
         Intent intent = getIntent();
-        m_id = intent.getStringExtra("id");
-        String title = intent.getStringExtra("title");
-        String poster_path = intent.getStringExtra("poster_path");
-        String overview = intent.getStringExtra("overview");
-        String release_date = intent.getStringExtra("release_date");
+        MovieInfo movieInfo = (MovieInfo) intent.getSerializableExtra("movieInfo");
 
-        tvTitle.setText(title);
+        String url = "https://image.tmdb.org/t/p/w500" + movieInfo.getBackdrop_path();
         Glide.with(this)
-                .load(poster_path)
+                .load(url)
                 .centerCrop()
                 .crossFade()
                 .into(posterView);
-        tvStory.setText(overview);
-        tvYear.setText(release_date);
+        tvTitle.setText(movieInfo.getTitle());
+        tvStory.setText(movieInfo.getOverview());
+        tvYear.setText(movieInfo.getRelease_date());
         ratingBar.setRating((float) movieInfo.getVote_average() / 2);
 
         YoutubeAsyncTask mProcessTask = new YoutubeAsyncTask();
-        mProcessTask.execute(m_id);
 
     }
 
     private void findViewByIdFunc() {
-        posterView = view.findViewById(R.id.posterView);
-        youtube = view.findViewById(R.id.youtube);
-        ratingBar = view.findViewById(R.id.ratingBar);
-        tvTitle = view.findViewById(R.id.tvTitle);
-        tvYear = view.findViewById(R.id.tvYear);
-        tvRating = view.findViewById(R.id.tvRating);
-        tvStory = view.findViewById(R.id.tvStory);
-        reviewList = view.findViewById(R.id.reviewList);
-        addLayout = (LinearLayout) view.findViewById(R.id.addLayout);
-        shareLayout = (LinearLayout) view.findViewById(R.id.shareLayout);
-        memoLayout = (LinearLayout) view.findViewById(R.id.memoLayout);
-        ratingLayout = view.findViewById(R.id.ratingLayout);
-        instaLayout = (LinearLayout) view.findViewById(R.id.instaLayout);
-        ibMore1 = view.findViewById(R.id.ibMore1);
-        ibMore2 = view.findViewById(R.id.ibMore2);
-        addBtn = view.findViewById(R.id.addBtn);
-        shareBtn = view.findViewById(R.id.shareBtn);
-        tvMemo = view.findViewById(R.id.tvMemo);
+        posterView = findViewById(R.id.posterView);
+        youtube = findViewById(R.id.youtube);
+        ratingBar = findViewById(R.id.ratingBar);
+        tvTitle = findViewById(R.id.tvTitle);
+        tvYear = findViewById(R.id.tvYear);
+        tvRating = findViewById(R.id.tvRating);
+        tvStory = findViewById(R.id.tvStory);
+        reviewList = findViewById(R.id.reviewList);
+        addLayout = (LinearLayout) findViewById(R.id.addLayout);
+        shareLayout = (LinearLayout) findViewById(R.id.shareLayout);
+        memoLayout = (LinearLayout) findViewById(R.id.memoLayout);
+        ratingLayout = findViewById(R.id.ratingLayout);
+        instaLayout = (LinearLayout) findViewById(R.id.instaLayout);
+        ibMore1 = findViewById(R.id.ibMore1);
+        ibMore2 = findViewById(R.id.ibMore2);
+        addBtn = findViewById(R.id.addBtn);
+        shareBtn = findViewById(R.id.shareBtn);
+        tvMemo = findViewById(R.id.tvMemo);
     }
 
     @Override
@@ -195,8 +206,8 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
                 startActivity(Intent.createChooser(shareIntent, "앱을 선택하십시오."));
                 break;
             case R.id.memoLayout:
-                DialogMemo dm = new DialogMemo(MovieInfoDetail.this);
-                dm.callFunction(tvMemo);
+                Intent intent = new Intent(this, DialogMemo.class);
+                startActivity(intent);
                 break;
             case R.id.ratingLayout:
                 showDialog();
@@ -249,31 +260,31 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
 
                     break;
                 }//switch
+        }
+    }
+
+    public void showDialog() {
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        final RatingBar ratingBar = new RatingBar(this);
+        ratingBar.setMax(5);
+
+        dialog.setTitle("영화 평가");
+        dialog.setView(ratingBar);
+
+        dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
             }
-        }
-
-        public void showDialog() {
-            final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-            final RatingBar ratingBar = new RatingBar(this);
-            ratingBar.setMax(5);
-
-            dialog.setTitle("영화 평가");
-            dialog.setView(ratingBar);
-
-            dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.dismiss();
-                }
-            }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.cancel();
-                }
-            });
-            dialog.create();
-            dialog.show();
-        }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        dialog.create();
+        dialog.show();
+    }
 
     public void onRequestPermission() {
         int permissionReadStorage = ContextCompat.checkSelfPermission(getApplicationContext(),
@@ -311,68 +322,25 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
         }
     }
 
-    public class YoutubeAsyncTask extends AsyncTask<String, Void, Youtube[]>  {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
+    public class YoutubeAsyncTask {
 
-        @Override
-        protected void onPostExecute(Youtube[] youtubes) {
-            super.onPostExecute(youtubes);
+    }
 
-            //ArrayList에 차례대로 집어 넣는다.
-            if(youtubes.length > 0){
-                for(Youtube p : youtubes){
-                    youtubeList.add(p);
-                }
+    public void playVideo(final String videoId, YouTubePlayerView youTubeView) {
+        Log.d("Youtube", "trailer: " + videoId);
+        youTubeView.initialize("AIzaSyBNNlLJGRmxNaNa-0RjsG6jdZrlnTnJjzE",
+                new YouTubePlayer.OnInitializedListener() {
+                    @Override
+                    public void onInitializationSuccess(YouTubePlayer.Provider provider,
+                                                        YouTubePlayer youTubePlayer, boolean b) {
+                        youTubePlayer.cueVideo(videoId);
 
-                //유튜브뷰어를 이용 화면에 출력하자.
-                trailer = youtubeList.get(0).getKey();
-                Log.d("Youtube", "trailer : " + trailer);
-                playVideo(trailer, youTubeView);
+                    }
 
-            }
-        }
+                    @Override
+                    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
 
-        public void playVideo(final String videoId, YouTubePlayerView youTubeView) {
-            Log.d("Youtube", "trailer: " + videoId);
-            youTubeView.initialize("AIzaSyBNNlLJGRmxNaNa-0RjsG6jdZrlnTnJjzE",
-                    new YouTubePlayer.OnInitializedListener() {
-                        @Override
-                        public void onInitializationSuccess(YouTubePlayer.Provider provider,
-                                                            YouTubePlayer youTubePlayer, boolean b) {
-                            youTubePlayer.cueVideo(videoId);
-
-                        }
-
-                        @Override
-                        public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-
-                        }
-                    });
-        }
-
-        @Override
-        protected Youtube[] doInBackground(String... strings) {
-            String m_id = strings[0];
-
-            OkHttpClient client = new OkHttpClient();
-            Request request = new Request.Builder()
-                    .url("https://api.themoviedb.org/3/movie/"+m_id+"/videos?api_key=AIzaSyBNNlLJGRmxNaNa-0RjsG6jdZrlnTnJjzE")
-                    .build();
-            try {
-                Response response = client.newCall(request).execute();
-                Gson gson = new GsonBuilder().create();
-                JsonParser parser = new JsonParser();
-                JsonElement rootObject = parser.parse(response.body().charStream())
-                        .getAsJsonObject().get("results");
-                Youtube[] posts = gson.fromJson(rootObject, Youtube[].class);
-                return posts;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
+                    }
+                });
     }
 }
