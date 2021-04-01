@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 import model.MovieInfo;
 
-public class BottomRecyclerViewAdapter extends RecyclerView.Adapter<BottomRecyclerViewAdapter.RecyclerViewHolder> implements Parcelable {
+public class BottomRecyclerViewAdapter extends RecyclerView.Adapter<BottomRecyclerViewAdapter.RecyclerViewHolder> {
     private ArrayList<MovieInfo> mMovieList;
     private Context mContext;
 
@@ -31,30 +31,6 @@ public class BottomRecyclerViewAdapter extends RecyclerView.Adapter<BottomRecycl
         this.mContext = context;
         this.mMovieList = itemList;
     }
-
-    protected BottomRecyclerViewAdapter(Parcel in) {
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<BottomRecyclerViewAdapter> CREATOR = new Creator<BottomRecyclerViewAdapter>() {
-        @Override
-        public BottomRecyclerViewAdapter createFromParcel(Parcel in) {
-            return new BottomRecyclerViewAdapter(in);
-        }
-
-        @Override
-        public BottomRecyclerViewAdapter[] newArray(int size) {
-            return new BottomRecyclerViewAdapter[size];
-        }
-    };
 
     @NonNull
     @Override
