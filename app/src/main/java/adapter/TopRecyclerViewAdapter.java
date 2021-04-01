@@ -49,7 +49,7 @@ public class TopRecyclerViewAdapter extends RecyclerView.Adapter<TopRecyclerView
     @Override
     public void onBindViewHolder(@NonNull TopRecyclerViewAdapter.RecyclerViewHolder holder, int position) {
         //포스터만 출력하자.
-        String url = "https://image.tmdb.org/t/p/w500" + list.get(position).getBackdrop_path();
+        String url = "https://image.tmdb.org/t/p/w1280" + list.get(position).getBackdrop_path();
         Glide.with(context)
                 .load(url)
                 .centerCrop()
