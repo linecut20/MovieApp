@@ -34,8 +34,6 @@ import com.example.movieapp.SearchData;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.movieapp.MainActivity.searchDataList;
-
 public class FragmentSearch extends Fragment {
     private Context context;
     private Activity activity;
@@ -73,7 +71,7 @@ public class FragmentSearch extends Fragment {
 
         makeAdapter(container);
 
-        settingAdapterDataList(searchDataList);
+//        settingAdapterDataList(searchDataList);
 
         eventHandler();
 
@@ -90,7 +88,7 @@ public class FragmentSearch extends Fragment {
 
     private void makeAdapter(ViewGroup container) {
 
-        searchAdapter = new SearchAdapter(searchDataList,context);
+//        searchAdapter = new SearchAdapter(searchDataList,context);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(container.getContext());
 
         drawerRcyclerView.setLayoutManager(linearLayoutManager);

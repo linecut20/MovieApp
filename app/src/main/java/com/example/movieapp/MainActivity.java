@@ -249,11 +249,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         //검색 버튼 클릭시 토스트메세지 띄우기
-        btnSearch.setOnClickListener(v -> {
-
-            String query = String.valueOf(searchView.getQuery());
-            Toast.makeText(getApplicationContext(), query, Toast.LENGTH_SHORT).show();
-        });
+//        btnSearch.setOnClickListener(v -> {
+//
+//            String query = String.valueOf(searchView.getQuery());
+//            Toast.makeText(getApplicationContext(), query, Toast.LENGTH_SHORT).show();
+//        });
 
         //로그아웃하기
         btnProfileLogout.setOnClickListener(v -> {
