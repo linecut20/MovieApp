@@ -67,7 +67,7 @@ public class BottomRecyclerViewAdapter extends RecyclerView.Adapter<BottomRecycl
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewHolder holder, int position) {
         //포스터만 출력.
-        String url = "https://image.tmdb.org/t/p/w500" + mMovieList.get(position).getPoster_path();
+        String url = "https://image.tmdb.org/t/p/w1280" + mMovieList.get(position).getPoster_path();
         Glide.with(mContext)
                 .load(url)
                 .centerCrop()

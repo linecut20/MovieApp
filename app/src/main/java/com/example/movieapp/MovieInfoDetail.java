@@ -123,11 +123,10 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
         Intent intent = getIntent();
         MovieInfo movieInfo = (MovieInfo) intent.getSerializableExtra("movieInfo");
 
-        String url = "https://image.tmdb.org/t/p/w500" + movieInfo.getBackdrop_path();
+        String url = "https://image.tmdb.org/t/p/w1280" + movieInfo.getBackdrop_path();
         Glide.with(this)
                 .load(url)
                 .centerCrop()
-                .crossFade()
                 .into(posterView);
         tvTitle.setText(movieInfo.getTitle());
         tvStory.setText(movieInfo.getOverview());
