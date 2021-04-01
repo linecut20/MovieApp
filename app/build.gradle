@@ -59,4 +59,8 @@ dependencies {
     //구글 파이어베이스 레포지토리
     implementation platform('com.google.firebase:firebase-bom:26.8.0')
     implementation 'com.google.firebase:firebase-analytics'
+    //레트로핏 라이브러리
+    implementation 'com.squareup.retrofit2:retrofit:2.6.4'
+    // Gson 변환기 라이브러리
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.4'
 }

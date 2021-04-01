@@ -7,11 +7,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -49,7 +51,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import Resources.NaverMovieRepository;
+import Resources.OnGetNaverMovieCallback;
 import model.MovieInfo;
+import model.NaverMovie;
 import model.Youtube;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -62,10 +67,11 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
 
     private MovieInfo movieInfo;
 
+    private RecyclerView recyclerReview;
     private ImageView posterView;
     private YouTubePlayerView youtube;
     private RatingBar ratingBar;
-    private TextView tvTitle, tvYear, tvRating, tvStory, reviewList, tvMemo;
+    private TextView tvTitle, tvYear, tvRating, tvStory, tvMemo;
     private LinearLayout addLayout, shareLayout, memoLayout, ratingLayout, instaLayout;
     private ImageButton ibMore1, ibMore2, addBtn, shareBtn;
     private View view;
@@ -79,6 +85,8 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
     private YouTubePlayerView youTubeView;
     private String trailer;
     private String m_id;
+
+    private Context context;
 
     @Override
     protected void onCreate(Bundle bundle) {
@@ -96,6 +104,8 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
         memoLayout.setOnClickListener(this);
 
         getDataFromMainFunc();
+        storyDetail();
+        reviewListFunc();
 
     }
 
@@ -132,6 +142,7 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
         tvStory.setText(movieInfo.getOverview());
         tvYear.setText(movieInfo.getRelease_date());
         ratingBar.setRating((float) movieInfo.getVote_average() / 2);
+        tvRating.setText(String.valueOf(movieInfo.getVote_average()));
 
         YoutubeAsyncTask mProcessTask = new YoutubeAsyncTask();
 
@@ -145,7 +156,6 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
         tvYear = findViewById(R.id.tvYear);
         tvRating = findViewById(R.id.tvRating);
         tvStory = findViewById(R.id.tvStory);
-        reviewList = findViewById(R.id.reviewList);
         addLayout = (LinearLayout) findViewById(R.id.addLayout);
         shareLayout = (LinearLayout) findViewById(R.id.shareLayout);
         memoLayout = (LinearLayout) findViewById(R.id.memoLayout);
@@ -156,6 +166,7 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
         addBtn = findViewById(R.id.addBtn);
         shareBtn = findViewById(R.id.shareBtn);
         tvMemo = findViewById(R.id.tvMemo);
+        recyclerReview = findViewById(R.id.recyclerReview);
     }
 
     @Override
@@ -174,11 +185,9 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
                 break;
             case R.id.ibMore2:
                 if (ib2flag == true) {
-                    reviewList.setMaxLines(Integer.MAX_VALUE);
                     ibMore2.setImageResource(R.drawable.movie_less);
                     ib2flag = false;
                 } else {
-                    reviewList.setMinLines(Integer.MIN_VALUE);
                     ibMore2.setImageResource(R.drawable.movie_more);
                     ib2flag = true;
                 }
@@ -205,11 +214,11 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
                 startActivity(Intent.createChooser(shareIntent, "앱을 선택하십시오."));
                 break;
             case R.id.memoLayout:
-                Intent intent = new Intent(this, DialogMemo.class);
-                startActivity(intent);
+                DialogMemo dialog = new DialogMemo(this);
+                dialog.show();
                 break;
             case R.id.ratingLayout:
-                showDialog();
+
 
                 break;
             case R.id.instaLayout:
@@ -263,8 +272,8 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
     }
 
     public void showDialog() {
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        final RatingBar ratingBar = new RatingBar(this);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        RatingBar ratingBar = new RatingBar(this);
         ratingBar.setMax(5);
 
         dialog.setTitle("영화 평가");
@@ -342,4 +351,69 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
                     }
                 });
     }
+
+    private void storyDetail() {
+        tvStory.setMaxLines(Integer.MAX_VALUE);
+        tvStory.post(() -> {
+            int lineCnt = tvStory.getLineCount();
+            if (lineCnt < 6) {
+                ibMore1.setVisibility(View.GONE);
+            } else {
+                tvStory.setMaxLines(5);
+                ibMore1.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    private void reviewListFunc() {
+        final NaverMovieRepository naverMovieRepository = NaverMovieRepository.getInstance();
+
+        //개봉년도 구하기 (연도만 추출)
+        String releaseDate = movieInfo.getRelease_date();
+        String releaseYear = releaseDate.substring(0, 4);
+        //네이버 영화api 검색실행(한국,미국간 개봉일 차이때문에 시작하는 검색 시작하는 년도는 한국 개봉년도에-1을 해줌)
+        naverMovieRepository.getMovieResult(context, movieInfo.getTitle(), "" + (Integer.parseInt(releaseYear) - 1), releaseYear
+                , new OnGetNaverMovieCallback() {
+                    @Override
+                    public void onSuccess(NaverMovie.ItemsBean movieItem) {
+                        Log.d("네이버", movieItem.getLink());
+                        //영화 기본페이지 링크
+                        String basicLink = movieItem.getLink();
+                        //아이디만 추출
+                        String movieId = basicLink.replaceAll("[^0-9]", "");
+                        //댓글 프래그먼트 로드
+//                        FrgMovieComments dialog = (FrgMovieComments.newInstance(movieId, 1));
+//                        dialog.show(((MainActivity) mContext).getSupportFragmentManager(), null);
+
+                    }
+
+                    @Override
+                    public void onError(Boolean research) {
+                        //개봉년도 포함하지 않고 재검색
+                        if (research) {
+                            naverMovieRepository.researchWithoutYearParams(context, movieInfo.getTitle()
+                                    , new OnGetNaverMovieCallback() {
+                                        @Override
+                                        public void onSuccess(NaverMovie.ItemsBean movieItem) {
+                                            Log.d("네이버", movieItem.getLink());
+                                            //영화 기본페이지 링크
+                                            String basicLink = movieItem.getLink();
+                                            //아이디만 추출
+                                            String movieId = basicLink.replaceAll("[^0-9]", "");
+                                            //댓글 프래그먼트 로드
+//                                            FrgMovieComments dialog = (FrgMovieComments.newInstance(movieId, 1));
+//                                            dialog.show(((MainActivity) context).getSupportFragmentManager(), null);
+                                        }
+
+                                        @Override
+                                        public void onError(Boolean research) {
+                                            Toast.makeText(context, "네이버 댓글 로드에 실패하였습니다", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                        } else
+                            Toast.makeText(context, "네이버 댓글 로드에 실패하였습니다", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
 }

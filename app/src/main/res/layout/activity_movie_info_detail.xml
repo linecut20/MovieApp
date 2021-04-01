@@ -288,16 +288,10 @@
                 android:textSize="17sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/reviewList"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerReview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:ellipsize="end"
-                android:text="리뷰가 없습니다."
-                android:textColor="@color/yellow"
-                android:textSize="14sp" />
+                android:layout_height="wrap_content"/>
 
 
             <ImageButton

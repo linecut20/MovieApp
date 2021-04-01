@@ -68,7 +68,6 @@ public class LoginDialog extends Dialog {
                 dismiss();
             }
         });
-
     }
 
     private void findViewByIdFunc() {
