@@ -1,30 +1,21 @@
 package com.example.movieapp;
 
-import androidx.annotation.NonNull;
-
 import android.app.Dialog;
 import android.content.Context;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
 import android.widget.Toast;
 
-import com.example.movieapp.util.DbOpenHelper;
 
+public class DialogRating extends Dialog {
 
-public class DialogMemo extends Dialog implements View.OnClickListener {
-
-    private static final String MOVIE_ID = "MOVIE_ID";
-    private static final String MOVIE_TITLE = "MOVIE_TITLE";
-    private static final String POSTER_PATH = "POSTER_PATH";
-    DbOpenHelper dbOpenHelper;
     private EditText mesgase;
     private Button okBtn, cancelBtn;
+    private Context context;
 
-    public DialogMemo(MovieInfoDetail movieInfoDetail) {
+    public DialogRating(MovieInfoDetail movieInfoDetail) {
         super(movieInfoDetail);
     }
 
@@ -45,22 +36,8 @@ public class DialogMemo extends Dialog implements View.OnClickListener {
         okBtn.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean flag = true;
-                while(flag)
-                {
-                    if (mesgase.getText().toString().equals(""))
-                    {
-                        Toast.makeText(getContext(), "입력이 이루어지지 않았습니다.", Toast.LENGTH_SHORT).show();
-                        dbOpenHelper.openMemo();
-                        dbOpenHelper.createMemoHelper();
-                        //dbOpenHelper.insertMemoColumn(mesgase.getText().toString().trim() + " ");
-                    }
-                    else
-                    {
-                        Toast.makeText(getContext(), "메모를 저장합니다.", Toast.LENGTH_SHORT).show();
-                        break;
-                    }
-                }
+                // '확인' 버튼 클릭시
+                Toast.makeText(context, "성공적으로 저장되었습니다.", Toast.LENGTH_SHORT).show();
                 // Dialog 종료
                 dismiss();
             }
@@ -70,7 +47,7 @@ public class DialogMemo extends Dialog implements View.OnClickListener {
             public void onClick(View view) {
                 // '취소' 버튼 클릭시
                 // 뒤로가기
-                Toast.makeText(getContext(), "메모가 취소되었습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "메모가 취소되었습니다.", Toast.LENGTH_SHORT).show();
                 // LoginDialog 종료
                 dismiss();
             }
@@ -81,10 +58,5 @@ public class DialogMemo extends Dialog implements View.OnClickListener {
         mesgase = findViewById(R.id.mesgase);
         okBtn = findViewById(R.id.okBtn);
         cancelBtn = findViewById(R.id.cancelBtn);
-    }
-
-    @Override
-    public void onClick(View view) {
-
     }
 }

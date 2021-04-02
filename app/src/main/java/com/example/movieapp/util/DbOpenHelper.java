@@ -69,32 +69,21 @@ public class DbOpenHelper {
     ///////////////////////////////////////////////////
     //MEMO 테이블 CRUD 모음
 
-    public long insertMemoColumn(int mv_id, String title, String poster, String mv_date, String post_date
-            , float star, String content) {
+    public long insertMemoColumn(int mv_id, String content) {
         ContentValues values = new ContentValues();
-        values.put(MoiveAppDB.CreateMemo.STAR, star);
         values.put(MoiveAppDB.CreateMemo.MV_ID, mv_id);
-        values.put(MoiveAppDB.CreateMemo.POST_DATE, post_date);
-        values.put(MoiveAppDB.CreateMemo.MV_DATE, mv_date);
-        values.put(MoiveAppDB.CreateMemo.TITLE, title);
-        values.put(MoiveAppDB.CreateMemo.MV_POSTER, poster);
         values.put(MoiveAppDB.CreateMemo.CONTENT, content);
         return mDB.insert(MoiveAppDB.CreateMemo.MEMO_TBL, null, values);
     }
 
     public Cursor selectMemoColumns() {
-        return mDB.query(MoiveAppDB.CreateMemo.MEMO_TBL, null, null, null, null, null, MoiveAppDB.CreateMemo.MV_DATE);
+        return mDB.query(MoiveAppDB.CreateMemo.MEMO_TBL, null, null, null, null, null, MoiveAppDB.CreateMemo.MV_ID);
     }
 
     public boolean updateMemoColumn(int mv_id, String title, String poster, String mv_date, String post_date
             , float star, String content) {
         ContentValues values = new ContentValues();
         values.put(MoiveAppDB.CreateMemo.MV_ID, mv_id);
-        values.put(MoiveAppDB.CreateMemo.TITLE, title);
-        values.put(MoiveAppDB.CreateMemo.MV_POSTER, poster);
-        values.put(MoiveAppDB.CreateMemo.MV_DATE, mv_date);
-        values.put(MoiveAppDB.CreateMemo.POST_DATE, post_date);
-        values.put(MoiveAppDB.CreateMemo.STAR, star);
         values.put(MoiveAppDB.CreateMemo.CONTENT, content);
         return mDB.update(MoiveAppDB.CreateMemo.MEMO_TBL, values, "mv_id=" + mv_id, null) > 0;
 
