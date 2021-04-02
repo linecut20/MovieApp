@@ -42,11 +42,10 @@ import java.util.List;
 
 import static com.example.movieapp.MainActivity.searchDataList;
 
-
+//
 public class FragmentSearch extends Fragment {
     private Context context;
     private Activity activity;
-
 
     private RecyclerView drawerRcyclerView;
     private FrameLayout frmDrawer;
