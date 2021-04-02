@@ -79,6 +79,8 @@ public class LikeAdapter extends RecyclerView.Adapter<LikeAdapter.LikeViewHolder
         ImageView imageView;
         public LikeViewHolder(@NonNull View itemView) {
             super(itemView);
+            ViewGroup.LayoutParams layoutParams = imageView.getLayoutParams();
+
 
         }
     }

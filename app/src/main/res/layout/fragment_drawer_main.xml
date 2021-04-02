@@ -4,40 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/deep_navy">
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolBarSearch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <SearchView
-                android:id="@+id/searchView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:iconifiedByDefault="true"
-                android:queryHint="영화 제목을 입력하세요"
-                android:closeIcon="@drawable/ic_baseline_clear_24"
-                android:searchIcon="@drawable/ic_baseline_search_24" />
-
-            <Button
-                android:id="@+id/btnSearch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/yellow"
-                android:textColor="@color/deep_navy"
-                android:text="search"
-                android:visibility="invisible" />
-
-        </LinearLayout>
-
-
-    </androidx.appcompat.widget.Toolbar>
-
 
     <LinearLayout
         android:layout_width="match_parent"

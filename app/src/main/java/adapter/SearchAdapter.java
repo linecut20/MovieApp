@@ -29,19 +29,31 @@ import com.example.movieapp.fragment.FragmentSearch;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import model.MovieInfo;
+
+import static com.example.movieapp.MainActivity.searchDataList;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearcViewhHolder>implements Filterable,Parcelable {
 
     private ArrayList<MovieInfo> searchList;
+    private ArrayList<String> list;
     private Context context;
     ArrayList<String> unFilteredlist;
     ArrayList<String> filteredList;
 
+
     public SearchAdapter(ArrayList<MovieInfo> searchList, Context context) {
         this.searchList = searchList;
         this.context = context;
+    }
+
+    public SearchAdapter(ArrayList<MovieInfo> searchList, Context context, ArrayList<String> list) {
+        this.searchList =searchList;
+        this.context = context;
+        this.unFilteredlist =list;
+        this.filteredList =list;
     }
 
     protected SearchAdapter(Parcel in) {
@@ -77,7 +89,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearcViewh
         SearchAdapter.SearcViewhHolder searcViewhHolder = new SearchAdapter.SearcViewhHolder(view);
         context = parent.getContext();
 
-        return searcViewhHolder;
+
+        return new SearcViewhHolder(view);
     }
 
     @Override
@@ -93,7 +106,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearcViewh
         holder.tvMovieInfo.setText(searchList.get(position).getOverview()+"... (더보기)");
 
 
-        //각 아이템 클릭 이벤트
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,20 +115,14 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearcViewh
                 context.startActivity(intent);
             }
         });
-/*
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, MovieInfoDetail.class);
-                intent.putExtra("id", searchList.get(position).getId());
-                intent.putExtra("title", searchList.get(position).getTitle());
-                intent.putExtra("poster_path", searchList.get(position).getPoster_path());
-                intent.putExtra("overview", searchList.get(position).getOverview());
-                intent.putExtra("release_date", searchList.get(position).getRelease_date());
-                intent.putExtra("vote_average", searchList.get(position).getVote_average());
-                context.startActivity(intent);
-            }
-        });*/
+
+    }
+
+    //이부분 중요!! 검색 리스트를 나오게하기 위해 꼭 필요
+    public void setFilter(List<MovieInfo> searchIems) {
+        searchDataList.clear();
+        searchDataList.addAll(searchIems);
+        notifyDataSetChanged();
     }
 
 
@@ -129,6 +135,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearcViewh
     public void setSearchList(ArrayList<MovieInfo> searchDataList) {
         this.searchList = searchList;
     }
+
 
     @Override
     public Filter getFilter() {
@@ -174,55 +181,5 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearcViewh
 
         }
     }
-
-    //---------------------------------------------------
-
-    //이미지 사이즈 맞추기
-    private Bitmap getMoviePhoto(Context context, int parseInt, int size) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        ContentResolver contentResolver = context.getContentResolver();
-
-        //가져올 파일경로 자리였으니 api주소를 여기에 넣으면 되는 것인가,,,,
-        Uri uri = Uri.parse("" + parseInt);
-
-
-        if (uri != null) {
-            ParcelFileDescriptor parcelFileDescriptor = null;
-            try {
-                parcelFileDescriptor = contentResolver.openFileDescriptor(uri, "");
-                options.inJustDecodeBounds = true;
-
-                int scale = 0;
-                if (options.outHeight > size || options.outWidth > size) {
-                    scale = (int) Math.pow(2, (int) Math.round(Math.log(size / (double) Math.max(options.outHeight, options.outWidth)) / Math.log(0.5)));
-                }
-                options.inJustDecodeBounds = false;
-                options.inSampleSize = scale;
-
-                Bitmap bitmap = BitmapFactory.decodeFileDescriptor(parcelFileDescriptor.getFileDescriptor(), null, options);
-
-                if (bitmap != null) {
-                    if (options.outWidth != size || options.outHeight != size) {
-                        Bitmap tmp = Bitmap.createScaledBitmap(bitmap, size, size, true);
-                        bitmap.recycle();
-                        bitmap = tmp;
-                    }
-                }
-                return bitmap;
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    parcelFileDescriptor.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return null;
-    }
-
 
 }

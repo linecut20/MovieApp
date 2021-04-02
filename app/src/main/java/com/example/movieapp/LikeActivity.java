@@ -8,12 +8,17 @@ import android.content.Context;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toolbar;
 
 import java.util.ArrayList;
 
 public class LikeActivity extends AppCompatActivity {
     private ListView likeListView;
     private Context context;
+    private TextView likeListSize;
+    private ArrayList<LikeData> likeDataArrayList = new ArrayList<>();
+    private Toolbar supportActionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,8 +26,20 @@ public class LikeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_like);
 
         likeListView = findViewById(R.id.likeListView);
+        likeListSize = findViewById(R.id.likeListSize);
 
+        eventHandler();
+    }
 
+    private void eventHandler() {
+        if(likeDataArrayList.size() == 0){
+            likeListSize.setText("0");
+        }else{
+            likeListSize.setText(String.valueOf(likeDataArrayList.size()));
+        }
+    }
 
+    public void setSupportActionBar(Toolbar supportActionBar) {
+        this.supportActionBar = supportActionBar;
     }
 }
