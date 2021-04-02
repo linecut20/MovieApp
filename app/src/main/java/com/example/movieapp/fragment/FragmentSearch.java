@@ -89,7 +89,7 @@ public class FragmentSearch extends Fragment {
         //어뎁터 만들기
         makeAdapter(container);
         //어뎁터 세팅하기
-        settingAdapterDataList(searchDataList);
+        settingAdapterDataList(arrayList);
         //이벤트 처리하기
         eventHandler();
 
