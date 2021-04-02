@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     private FragmentProfile fragmentProfile;
 
     public static ArrayList<MovieInfo> searchDataList = new ArrayList<>();
+    public static ArrayList<MovieInfo> allDataList = new ArrayList<>();
     public SearchAdapter searchAdapter;
     private SearchContent searchContent;
 
@@ -115,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         btnNowPlaying.performClick();
         topRecyclerViewAdapter.notifyDataSetChanged();
 
+        searchDataList = tmdbdao.getMovieList();
 
     }
 
@@ -257,19 +259,22 @@ public class MainActivity extends AppCompatActivity {
 
     //검색시 입력받은 영화가 있는지 찾아주는 함수
     public void findMovieFunc(String s) {
-
-        ArrayList<MovieInfo> movieInfoArrayList = new ArrayList<MovieInfo>();
-        movieInfoArrayList = tmdbdao.getMovieList();
-
+        //searchDataList.clear();
+        ArrayList<MovieInfo>  selectlist = new ArrayList<>();
+        ArrayList<MovieInfo>  movielist = new ArrayList<>();
+        selectlist = tmdbdao.getMovieList();
         String query = String.valueOf(searchView.getQuery());
 
-        for (MovieInfo mi : movieInfoArrayList) {
+        for (MovieInfo mi : selectlist) {
 
-            if (mi.getTitle().equals(query)) {
+            if (mi.getTitle().contains(query)) {
 
-                searchDataList.add(mi);
+                movielist.add(mi);
             }
         }
+        searchDataList = movielist;
+        setSearchFragment(true) ;
+
     }
 //
 //    @Override
@@ -306,13 +311,15 @@ public class MainActivity extends AppCompatActivity {
 
     //드로어 화면 전환하기
     private void setSearchFragment(Boolean flag) {
+       // searchDataList = allDataList;
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-
+      //  searchDataList = tmdbdao.getMovieList();
         fragmentSearch = new FragmentSearch();
         fragmentProfile = new FragmentProfile();
 
         if (flag == true) {
+
             fragmentTransaction.replace(R.id.frmDrawer, fragmentSearch);
 
         } else {
