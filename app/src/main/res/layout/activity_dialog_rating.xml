@@ -7,12 +7,12 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/titleRating"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center"
         android:background="@color/deep_navy"
-        android:text="내용 작성"
+        android:text="영화 평가"
         android:textColor="@color/yellow"
         android:textSize="16dp" />
 
@@ -21,16 +21,19 @@
         android:layout_height="1dp"
         android:background="@color/yellow" />
 
-    <EditText
-        android:id="@+id/mesgase"
+    <RatingBar
+        android:id="@+id/ratingBar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:forceDarkAllowed="false"
         android:gravity="center"
-        android:background="@color/deep_navy"
-        android:hint="내용을 입력하세요."
-        android:textColorHint="@color/yellow"
-        android:textColor="@color/yellow"
-        android:textSize="16dp" />
+        android:isIndicator="false"
+        android:max="5"
+        android:numStars="5"
+        android:outlineAmbientShadowColor="@color/yellow"
+        android:outlineSpotShadowColor="@color/yellow"
+        android:rating="0"
+        android:stepSize="0.5" />
 
     <View
         android:layout_width="match_parent"
@@ -44,7 +47,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/okBtn"
+            android:id="@+id/okRatingBtn"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_weight="1"
@@ -60,7 +63,7 @@
             android:background="@color/yellow" />
 
         <Button
-            android:id="@+id/cancelBtn"
+            android:id="@+id/cancelRatingBtn"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_weight="1"

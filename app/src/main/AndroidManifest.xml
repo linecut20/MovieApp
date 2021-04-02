@@ -14,7 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".DialogMemo"></activity>
         <activity android:name=".ProfileActivity" />
         <activity android:name=".LikeActivity" />
         <activity android:name=".MovieInfoDetail"></activity>

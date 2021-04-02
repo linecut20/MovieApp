@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -30,6 +31,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.movieapp.util.DbOpenHelper;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -59,8 +61,7 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
     private YouTubePlayerView youtube;
     private RatingBar ratingBar;
     private TextView tvTitle, tvYear, tvRating, tvStory, tvMemo;
-    private LinearLayout addLayout, shareLayout, memoLayout, ratingLayout, instaLayout;
-    private ImageButton ibMore1, ibMore2, addBtn, shareBtn;
+    private ImageButton ibMore1, ibMore2, addBtn, shareBtn, memoBtn, ratingBtn, instaBtn;
     private View view;
     //더보기를 위해 설정해둔 변수
     private boolean ib1flag = true;
@@ -73,26 +74,28 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
     private String trailer;
     private String m_id;
 
+    private int movie_id;
+    DbOpenHelper dbOpenHelper;
+
     private Context context;
 
     @Override
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
         setContentView(R.layout.activity_movie_info_detail);
+        dbOpenHelper = new DbOpenHelper(getApplicationContext());
 
         findViewByIdFunc();
 
         ibMore1.setOnClickListener(this);
         ibMore2.setOnClickListener(this);
-        addLayout.setOnClickListener(this);
-        shareLayout.setOnClickListener(this);
-        memoLayout.setOnClickListener(this);
-        memoLayout.setOnClickListener(this);
-        memoLayout.setOnClickListener(this);
+        addBtn.setOnClickListener(this);
+        shareBtn.setOnClickListener(this);
+        memoBtn.setOnClickListener(this);
 
         getDataFromMainFunc();
         storyDetail();
-        reviewListFunc();
+        //reviewListFunc();
 
     }
 
@@ -102,13 +105,12 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
 
         //ID 찾아주기
 
-        ibMore1.setOnClickListener(this);
-        ibMore2.setOnClickListener(this);
-        addLayout.setOnClickListener(this);
-        shareLayout.setOnClickListener(this);
-        memoLayout.setOnClickListener(this);
-        memoLayout.setOnClickListener(this);
-        memoLayout.setOnClickListener(this);
+//        ibMore1.setOnClickListener(this);
+//        ibMore2.setOnClickListener(this);
+//        addLayout.setOnClickListener(this);
+//        shareLayout.setOnClickListener(this);
+//        memoLayout.setOnClickListener(this);
+
 
         return view;
     }
@@ -143,17 +145,16 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
         tvYear = findViewById(R.id.tvYear);
         tvRating = findViewById(R.id.tvRating);
         tvStory = findViewById(R.id.tvStory);
-        addLayout = (LinearLayout) findViewById(R.id.addLayout);
-        shareLayout = (LinearLayout) findViewById(R.id.shareLayout);
-        memoLayout = (LinearLayout) findViewById(R.id.memoLayout);
-        ratingLayout = findViewById(R.id.ratingLayout);
-        instaLayout = (LinearLayout) findViewById(R.id.instaLayout);
         ibMore1 = findViewById(R.id.ibMore1);
         ibMore2 = findViewById(R.id.ibMore2);
         addBtn = findViewById(R.id.addBtn);
         shareBtn = findViewById(R.id.shareBtn);
         tvMemo = findViewById(R.id.tvMemo);
         recyclerReview = findViewById(R.id.recyclerReview);
+        shareBtn = findViewById(R.id.shareBtn);
+        memoBtn = findViewById(R.id.memoBtn);
+        ratingBtn = findViewById(R.id.ratingBtn);
+        instaBtn = findViewById(R.id.instaBtn);
     }
 
     @Override
@@ -179,17 +180,34 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
                     ib2flag = true;
                 }
                 break;
-            case R.id.addLayout:
+            case R.id.addBtn:
                 if (addflag == true) {
+                    Log.d("DbData", "like클릭 -> 찜하기삭제됨");
+                    dbOpenHelper.createLikeHelper();
+                    dbOpenHelper.openLike();
+                    Log.d("DbData", "db열기완료");
+                    //컬럼삭제
+                    dbOpenHelper.deleteLikeColumns(movie_id);
+                    showDatabase("like_tbl", "mv_id");
+                    dbOpenHelper.close();
                     addBtn.setImageResource(R.drawable.movie_added);
                     addflag = false;
-                    //DB넣는거 해야함!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
                 } else {
+                    Log.d("DbData", "unlike클릭 -> 찜하기추가됨");
+                    dbOpenHelper.createLikeHelper();
+                    dbOpenHelper.openLike();
+                    Log.d("DbData", "db열기완료");
+                    //컬럼추가
+                    dbOpenHelper.insertLikeColumn(movie_id, movieInfo.getTitle()
+                            , movieInfo.getPoster_path());
+                    showDatabase("like_tbl", "mv_id");
+                    dbOpenHelper.close();
                     addBtn.setImageResource(R.drawable.movie_add);
                     addflag = true;
                 }
                 break;
-            case R.id.shareLayout:
+            case R.id.shareBtn:
 
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
 
@@ -200,15 +218,17 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
 
                 startActivity(Intent.createChooser(shareIntent, "앱을 선택하십시오."));
                 break;
-            case R.id.memoLayout:
+            case R.id.memoBtn:
                 DialogMemo dialog = new DialogMemo(this);
+                dialog.setCancelable(false);
                 dialog.show();
                 break;
-            case R.id.ratingLayout:
-
-
+            case R.id.ratingBtn:
+                DialogRating dialogRating = new DialogRating(this);
+                dialogRating.setCancelable(false);
+                dialogRating.show();
                 break;
-            case R.id.instaLayout:
+            case R.id.instaBtn:
                 onRequestPermission();
 
                 if (permissionCheck) {
@@ -255,6 +275,21 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
 
                     break;
                 }//switch
+        }
+    }
+
+    public void showDatabase(String tbl_name, String sort) {
+        Cursor iCursor = dbOpenHelper.sortColumn(tbl_name, sort);
+        Log.d("DbData", "DB Size: " + iCursor.getCount());
+
+        while (iCursor.moveToNext()) {
+
+            int tempMvId = iCursor.getInt(iCursor.getColumnIndex("mv_id"));
+            String tempTitle = iCursor.getString(iCursor.getColumnIndex("title"));
+            String tempPoster = iCursor.getString(iCursor.getColumnIndex("mv_poster"));
+            String Result = tempMvId + ", " + tempTitle + ", " + tempPoster;
+
+            Log.d("DbData", Result);
         }
     }
 
@@ -312,8 +347,7 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
                             permissionCheck = false;
                         }
                     }
-                }
-                break;
+                }break;
         }
     }
 
@@ -352,55 +386,47 @@ public class MovieInfoDetail extends YouTubeBaseActivity implements View.OnClick
         });
     }
 
-    private void reviewListFunc() {
-        final NaverMovieRepository naverMovieRepository = NaverMovieRepository.getInstance();
-
-        //개봉년도 구하기 (연도만 추출)
-        String releaseDate = movieInfo.getRelease_date();
-        String releaseYear = releaseDate.substring(0, 4);
-        //네이버 영화api 검색실행(한국,미국간 개봉일 차이때문에 시작하는 검색 시작하는 년도는 한국 개봉년도에-1을 해줌)
-        naverMovieRepository.getMovieResult(context, movieInfo.getTitle(), "" + (Integer.parseInt(releaseYear) - 1), releaseYear
-                , new OnGetNaverMovieCallback() {
-                    @Override
-                    public void onSuccess(NaverMovie.ItemsBean movieItem) {
-                        Log.d("네이버", movieItem.getLink());
-                        //영화 기본페이지 링크
-                        String basicLink = movieItem.getLink();
-                        //아이디만 추출
-                        String movieId = basicLink.replaceAll("[^0-9]", "");
-                        //댓글 프래그먼트 로드
-//                        FrgMovieComments dialog = (FrgMovieComments.newInstance(movieId, 1));
-//                        dialog.show(((MainActivity) mContext).getSupportFragmentManager(), null);
-
-                    }
-
-                    @Override
-                    public void onError(Boolean research) {
-                        //개봉년도 포함하지 않고 재검색
-                        if (research) {
-                            naverMovieRepository.researchWithoutYearParams(context, movieInfo.getTitle()
-                                    , new OnGetNaverMovieCallback() {
-                                        @Override
-                                        public void onSuccess(NaverMovie.ItemsBean movieItem) {
-                                            Log.d("네이버", movieItem.getLink());
-                                            //영화 기본페이지 링크
-                                            String basicLink = movieItem.getLink();
-                                            //아이디만 추출
-                                            String movieId = basicLink.replaceAll("[^0-9]", "");
-                                            //댓글 프래그먼트 로드
-//                                            FrgMovieComments dialog = (FrgMovieComments.newInstance(movieId, 1));
-//                                            dialog.show(((MainActivity) context).getSupportFragmentManager(), null);
-                                        }
-
-                                        @Override
-                                        public void onError(Boolean research) {
-                                            Toast.makeText(context, "네이버 댓글 로드에 실패하였습니다", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                        } else
-                            Toast.makeText(context, "네이버 댓글 로드에 실패하였습니다", Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
+//    private void reviewListFunc() {
+//        final NaverMovieRepository naverMovieRepository = NaverMovieRepository.getInstance();
+//
+//        //개봉년도 구하기 (연도만 추출)
+//        String releaseDate = movieInfo.getRelease_date();
+//        String releaseYear = releaseDate.substring(0, 4);
+//        //네이버 영화api 검색실행(한국,미국간 개봉일 차이때문에 시작하는 검색 시작하는 년도는 한국 개봉년도에-1을 해줌)
+//        naverMovieRepository.getMovieResult(context, movieInfo.getTitle(), "" + (Integer.parseInt(releaseYear) - 1), releaseYear
+//            , new OnGetNaverMovieCallback() {
+//                @Override
+//                public void onSuccess(NaverMovie.ItemsBean movieItem) {
+//                    Log.d("네이버", movieItem.getLink());
+//                    //영화 기본페이지 링크
+//                    String basicLink = movieItem.getLink();
+//                    //아이디만 추출
+//                    String movieId = basicLink.replaceAll("[^0-9]", "");
+//                }
+//
+//                @Override
+//                public void onError(Boolean research) {
+//                    //개봉년도 포함하지 않고 재검색
+//                    if (research) {
+//                        naverMovieRepository.researchWithoutYearParams(context, movieInfo.getTitle(), new OnGetNaverMovieCallback() {
+//                            @Override
+//                            public void onSuccess(NaverMovie.ItemsBean movieItem) {
+//                                Log.d("네이버", movieItem.getLink());
+//                                //영화 기본페이지 링크
+//                                String basicLink = movieItem.getLink();
+//                                //아이디만 추출
+//                                String movieId = basicLink.replaceAll("[^0-9]", "");
+//                            }
+//                            @Override
+//                            public void onError(Boolean research) {
+//                                Toast.makeText(context, "네이버 댓글 로드에 실패하였습니다", Toast.LENGTH_SHORT).show();
+//                            }
+//                        });
+//                    }
+//                    else
+//                    Toast.makeText(context, "네이버 댓글 로드에 실패하였습니다", Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//    }
 
 }
