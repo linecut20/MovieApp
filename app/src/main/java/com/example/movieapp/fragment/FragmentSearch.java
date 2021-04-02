@@ -86,10 +86,11 @@ public class FragmentSearch extends Fragment {
 
         //initView();
 
+        //어뎁터 만들기
         makeAdapter(container);
-
+        //어뎁터 세팅하기
         settingAdapterDataList(searchDataList);
-
+        //이벤트 처리하기
         eventHandler();
 
 
@@ -110,7 +111,7 @@ public class FragmentSearch extends Fragment {
 //        drawerRcyclerView.setAdapter(searchAdapter);
 //    }
 
-
+    //리사이클러뷰에 어뎁터 세팅
     private void settingAdapterDataList(ArrayList<MovieInfo> searchDataList) {
 
         searchAdapter.setSearchList(searchDataList);
@@ -118,7 +119,7 @@ public class FragmentSearch extends Fragment {
         searchAdapter.notifyDataSetChanged();
 
     }
-
+    //어뎁터 만들기
     private void makeAdapter(ViewGroup container) {
 
         searchAdapter = new SearchAdapter(arrayList, context);
@@ -132,8 +133,10 @@ public class FragmentSearch extends Fragment {
 
     }
 
+    //이벤트 처리하기
     public void eventHandler() {
 
+        //버튼을 눌렀을 때 프레그먼트 전환
         ivbBack.setOnClickListener(v -> {
 
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
@@ -147,8 +150,7 @@ public class FragmentSearch extends Fragment {
     }
 
 
-
-
+    /*//
     public ArrayList<MovieInfo> filter(List<MovieInfo> seachList, String query) {
         query = query.toLowerCase();
 
@@ -165,11 +167,11 @@ public class FragmentSearch extends Fragment {
             }
         }
         return filteredNoticeList;
-    }
+    }*/
 
 
 
-
+    //객체찾기
     public void findViewByIdFunc(View view) {
 
         drawerRcyclerView = view.findViewById(R.id.drawerRcyclerView);

@@ -35,7 +35,7 @@ import model.MovieInfo;
 
 import static com.example.movieapp.MainActivity.searchDataList;
 
-public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearcViewhHolder>implements Filterable,Parcelable {
+public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearcViewhHolder>implements Parcelable {
 
     private ArrayList<MovieInfo> searchList;
     private ArrayList<String> list;
@@ -136,37 +136,37 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearcViewh
         this.searchList = searchList;
     }
 
-
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence charSequence) {
-                String charString = charSequence.toString();
-                if (charString.isEmpty()){
-                    filteredList = unFilteredlist;
-                }else{
-                    ArrayList<String> filteredList = new ArrayList<>();
-                    for (String name : unFilteredlist){
-                        if (name.toLowerCase().contains(charString.toLowerCase())){
-                            filteredList.add(name);
-                        }
-                    }
-                    filteredList = filteredList;
-                }
-                FilterResults filterResults = new FilterResults();
-                filterResults.values = filteredList;
-                return filterResults;
-            }
-
-            @Override
-            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                filteredList = (ArrayList<String>) filterResults.values;
-                notifyDataSetChanged();
-            }
-        };
-    }
-
+//
+//    @Override
+//    public Filter getFilter() {
+//        return new Filter() {
+//            @Override
+//            protected FilterResults performFiltering(CharSequence charSequence) {
+//                String charString = charSequence.toString();
+//                if (charString.isEmpty()){
+//                    filteredList = unFilteredlist;
+//                }else{
+//                    ArrayList<String> filteredList = new ArrayList<>();
+//                    for (String name : unFilteredlist){
+//                        if (name.toLowerCase().contains(charString.toLowerCase())){
+//                            filteredList.add(name);
+//                        }
+//                    }
+//                    filteredList = filteredList;
+//                }
+//                FilterResults filterResults = new FilterResults();
+//                filterResults.values = filteredList;
+//                return filterResults;
+//            }
+//
+//            @Override
+//            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+//                filteredList = (ArrayList<String>) filterResults.values;
+//                notifyDataSetChanged();
+//            }
+//        };
+//    }
+//
 
     //내부클래스 만들기
     public class SearcViewhHolder extends RecyclerView.ViewHolder {

@@ -32,6 +32,8 @@ public class LikeActivity extends AppCompatActivity {
     }
 
     private void eventHandler() {
+
+        //좋아요 리스트 목록 개수 표시하기
         if(likeDataArrayList.size() == 0){
             likeListSize.setText("0");
         }else{
@@ -39,6 +41,7 @@ public class LikeActivity extends AppCompatActivity {
         }
     }
 
+    //액션바 설치
     public void setSupportActionBar(Toolbar supportActionBar) {
         this.supportActionBar = supportActionBar;
     }
