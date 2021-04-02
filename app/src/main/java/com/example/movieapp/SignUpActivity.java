@@ -24,6 +24,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+import com.example.movieapp.request.RegisterRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -33,85 +42,90 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
+
 public class SignUpActivity extends AppCompatActivity {
 
-    // 리퀘스트코드
-    private static final int PICK_FROM_CAMERA = 2;
-    private static final int PICK_FROM_ALBUM = 1;
+    private EditText edtID,edtPassword,edtName, edtImage, edtPhone, edtEmail, edtBirth, edtGender;
+    private Button btnRegister, btnBack;
 
-    String TAG = "파일복사";
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_sign_up);
 
-    //Shared Preference 키값
-    private static final String USER = "User", INIT = "init";
+        findFunc();
+        eventFunc();
+    }
 
-    private Context mContext;
-    private View view;
-
-    private ImageView profileImage;
-    private EditText edtName;
-    private EditText edtDescription;
-
-    private File tempFile;
-    private File copyFile;
-    private String profileImgPath;
+    private void eventFunc() {
 
 
 
 
+        btnRegister.setOnClickListener(v->{
+            String ID = edtID.getText().toString();
+            String password = edtPassword.getText().toString();
+            String name = edtName.getText().toString();
+//            String image = "이미지 파일 임시 주소";
+//            String image = edtImage.getText().toString();
+            String phone = edtPhone.getText().toString();
+            String email = edtEmail.getText().toString();
+            String birth = edtBirth.getText().toString();
+            String gender = edtGender.getText().toString();
 
 
-    private File createImageFile() throws IOException {
-
-        // 이미지 파일 이름 ( profileImage_{시간}_ )
-        String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
-        String imageFileName = "profileImage_" + timeStamp + "_";
-
-        Log.d(TAG, "이미지저장" + imageFileName);
-        // 이미지가 저장될 폴더 이름
-        File storageDir = new File(Environment.getExternalStorageDirectory() + "/ProfileImage/");
-
-        // 프로필 이미지 바꿀때 안에 있는 파일 지워줌. 용량 차지하지 못하게 한다.
-        if (storageDir.exists()) {
-            File[] fileList = storageDir.listFiles();
-            for (int i = 0; i < fileList.length; i++) {
-                if (fileList.length == 0) {
-                    break;
+            Response.Listener<String> listener = new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject jo = new JSONObject(response);
+                        boolean success = jo.getBoolean("success");
+                        if(success==true){
+                            toastMessage(name + "님 회원가입 성공");
+                            Intent intent = new Intent(SignUpActivity.this,ProfileActivity.class);
+                            startActivity(intent);
+                        }else{
+                            toastMessage("회원 가입 실패");
+                            return;
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-                fileList[i].delete();
+            };
+
+//            RegisterRequest registerRequest = new RegisterRequest(ID, password, name, image, phone, email, birth, gender, listener);
+            RegisterRequest registerRequest = new RegisterRequest(ID, password, name, phone, email, birth, gender, listener);
+            RequestQueue queue = Volley.newRequestQueue(SignUpActivity.this);
+            queue.add(registerRequest);
+        });
+
+        btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
-            //storageDir.delete();
-        } else if (!storageDir.exists()) {
-            storageDir.mkdirs();
-        }
-
-        // 빈 파일 생성
-        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
-        //이미지경로저장
-        profileImgPath = image.getAbsolutePath();
-        return image;
+        });
     }
 
-
-    // 각도를 조절해서 다시 만든 비트맵
-    private Bitmap rotate(Bitmap bitmap, int exifDegree) {
-        Matrix matrix = new Matrix();
-        matrix.postRotate(exifDegree);
-        Bitmap tempBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(),
-                matrix, true);
-        return tempBitmap;
+    private void toastMessage(String s) {
+        Toast.makeText(getApplicationContext(),s,Toast.LENGTH_SHORT).show();
     }
 
-    private int exifOrientationToDegree(int exifOrientation) {
+    private void findFunc() {
+        edtID = findViewById(R.id.edtID);
+        edtPassword = findViewById(R.id.edtPassword);
+        edtName = findViewById(R.id.edtName);
+//        edtImage= findViewById(R.id.edtImage);
+        edtPhone= findViewById(R.id.edtPhone);
+        edtEmail= findViewById(R.id.edtEmail);
+        edtBirth= findViewById(R.id.edtBirth);
+        edtGender= findViewById(R.id.edtGender);
 
-        switch (exifOrientation) {
-            case ExifInterface.ORIENTATION_ROTATE_90:
-                return 90;
-            case ExifInterface.ORIENTATION_ROTATE_180:
-                return 180;
-            case ExifInterface.ORIENTATION_ROTATE_270:
-                return 270;
-        }
-        return 0;
+        btnRegister = findViewById(R.id.btnRegister);
+        btnBack = findViewById(R.id.btnBack);
     }
 
 }

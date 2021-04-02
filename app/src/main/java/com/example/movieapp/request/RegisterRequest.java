@@ -7,8 +7,7 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-public class
-RegisterRequest extends StringRequest {
+public class RegisterRequest extends StringRequest {
     public static final String URL = "http://itb2021.dothome.co.kr/MovieRegister.php";
     private String ID,password,name,image,phone,email,birth,gender;
     private int userAge;

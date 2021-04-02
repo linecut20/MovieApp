@@ -7,7 +7,7 @@ public final class MoiveAppDB {
 
     public static final class CreateMemo implements BaseColumns{
 
-        public static final String POSTING_TBL = "posting_tbl";
+        public static final String MEMO_TBL = "memo_tbl";
         public static final String MV_ID = "mv_id";
         public static final String TITLE = "title";
         public static final String MV_POSTER = "mv_poster";
@@ -15,8 +15,8 @@ public final class MoiveAppDB {
         public static final String POST_DATE = "post_date"; //포스팅한날짜
         public static final String STAR = "star";
         public static final String CONTENT = "content";
-        public static final String CREATE_POSTING = "create table if not exists "
-                +POSTING_TBL+" ("
+        public static final String CREATE_MEMO = "create table if not exists "
+                +MEMO_TBL+" ("
                 +MV_ID+" integer primary key, "
                 +MV_POSTER+" text , "
                 +TITLE+" text not null , "

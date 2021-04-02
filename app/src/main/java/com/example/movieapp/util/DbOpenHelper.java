@@ -27,7 +27,7 @@ public class DbOpenHelper {
 
 
 
-    public void createPostingHelper() {
+    public void createMemoHelper() {
         memoHelper.onCreate(mDB);
     }
 
@@ -37,7 +37,7 @@ public class DbOpenHelper {
 
 
 
-    public void upgradePostingHelper() {
+    public void upgradeMemoHelper() {
         memoHelper.onUpgrade(mDB, VERSION, VERSION);
     }
 
@@ -47,7 +47,7 @@ public class DbOpenHelper {
 
 
 
-    public DbOpenHelper openPosting() throws SQLException {
+    public DbOpenHelper openMemo() throws SQLException {
         memoHelper = new MemoTBLHelper(mContext, DB_NAME, null, VERSION);
         mDB = memoHelper.getWritableDatabase();
         return this;
@@ -67,9 +67,9 @@ public class DbOpenHelper {
 
 
     ///////////////////////////////////////////////////
-    //포스팅 테이블 CRUD 모음
+    //MEMO 테이블 CRUD 모음
 
-    public long insertPostingColumn(int mv_id, String title, String poster, String mv_date, String post_date
+    public long insertMemoColumn(int mv_id, String title, String poster, String mv_date, String post_date
             , float star, String content) {
         ContentValues values = new ContentValues();
         values.put(MoiveAppDB.CreateMemo.STAR, star);
@@ -79,14 +79,14 @@ public class DbOpenHelper {
         values.put(MoiveAppDB.CreateMemo.TITLE, title);
         values.put(MoiveAppDB.CreateMemo.MV_POSTER, poster);
         values.put(MoiveAppDB.CreateMemo.CONTENT, content);
-        return mDB.insert(MoiveAppDB.CreateMemo.POSTING_TBL, null, values);
+        return mDB.insert(MoiveAppDB.CreateMemo.MEMO_TBL, null, values);
     }
 
-    public Cursor selectPostingColumns() {
-        return mDB.query(MoiveAppDB.CreateMemo.POSTING_TBL, null, null, null, null, null, MoiveAppDB.CreateMemo.MV_DATE);
+    public Cursor selectMemoColumns() {
+        return mDB.query(MoiveAppDB.CreateMemo.MEMO_TBL, null, null, null, null, null, MoiveAppDB.CreateMemo.MV_DATE);
     }
 
-    public boolean updatePostingColumn(int mv_id, String title, String poster, String mv_date, String post_date
+    public boolean updateMemoColumn(int mv_id, String title, String poster, String mv_date, String post_date
             , float star, String content) {
         ContentValues values = new ContentValues();
         values.put(MoiveAppDB.CreateMemo.MV_ID, mv_id);
@@ -96,22 +96,22 @@ public class DbOpenHelper {
         values.put(MoiveAppDB.CreateMemo.POST_DATE, post_date);
         values.put(MoiveAppDB.CreateMemo.STAR, star);
         values.put(MoiveAppDB.CreateMemo.CONTENT, content);
-        return mDB.update(MoiveAppDB.CreateMemo.POSTING_TBL, values, "mv_id=" + mv_id, null) > 0;
+        return mDB.update(MoiveAppDB.CreateMemo.MEMO_TBL, values, "mv_id=" + mv_id, null) > 0;
 
     }
 
-    public void deletePostingColumns(int mv_id) {
-        mDB.delete(MoiveAppDB.CreateMemo.POSTING_TBL, "mv_id=" + mv_id, null);
+    public void deleteMemoColumns(int mv_id) {
+        mDB.delete(MoiveAppDB.CreateMemo.MEMO_TBL, "mv_id=" + mv_id, null);
 
     }
 
-    public Cursor searchPostingColumn(String columnName, String str) {
-        Cursor c = mDB.rawQuery("SELECT * FROM posting_tbl WHERE " + columnName + " LIKE '%" + str + "%';", null);
+    public Cursor searchMemoColumn(String columnName, String str) {
+        Cursor c = mDB.rawQuery("SELECT * FROM memo_tbl WHERE " + columnName + " LIKE '%" + str + "%';", null);
         return c;
     }
 
-    public boolean isExistPostingColumn(int mv_id) {
-        Cursor c = mDB.rawQuery("SELECT * FROM posting_tbl WHERE mv_id = " + mv_id, null);
+    public boolean isExistMemoColumn(int mv_id) {
+        Cursor c = mDB.rawQuery("SELECT * FROM memo_tbl WHERE mv_id = " + mv_id, null);
         return c.getCount() > 0;
     }
 
@@ -163,13 +163,13 @@ public class DbOpenHelper {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
-            db.execSQL(MoiveAppDB.CreateMemo.CREATE_POSTING);
+            db.execSQL(MoiveAppDB.CreateMemo.CREATE_MEMO);
 
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            db.execSQL("DROP TABLE IF EXISTS " + MoiveAppDB.CreateMemo.POSTING_TBL);
+            db.execSQL("DROP TABLE IF EXISTS " + MoiveAppDB.CreateMemo.MEMO_TBL);
             onCreate(db);
         }
 
