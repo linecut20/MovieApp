@@ -22,6 +22,7 @@ import com.example.movieapp.LikeData;
 import com.example.movieapp.MainActivity;
 import com.example.movieapp.MovieInfoDetail;
 import com.example.movieapp.R;
+import com.example.movieapp.util.DbOpenHelper;
 
 import java.util.ArrayList;
 
@@ -32,6 +33,8 @@ public class LikeAdapter extends RecyclerView.Adapter<LikeAdapter.LikeViewHolder
     private ArrayList<MovieInfo> list;
     private View view;
     private Context context;
+
+    private DbOpenHelper dbOpenHelper;
 
     public LikeAdapter(int layout, ArrayList<MovieInfo> list) {
         this.layout = layout;
@@ -52,8 +55,6 @@ public class LikeAdapter extends RecyclerView.Adapter<LikeAdapter.LikeViewHolder
     @Override
     public void onBindViewHolder(@NonNull LikeViewHolder holder, int position) {
 
-        final MovieInfo likeList = list.get(position);
-
         String url = "https://image.tmdb.org/t/p/w500"+ list.get(position).getPoster_path() ;
         Glide.with(context)
                 .load(url)
@@ -62,7 +63,6 @@ public class LikeAdapter extends RecyclerView.Adapter<LikeAdapter.LikeViewHolder
                 .into(holder.ivLikePost);
 
         holder.tvLikeTitle.setText(list.get(position).getTitle());
-
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,16 +92,24 @@ public class LikeAdapter extends RecyclerView.Adapter<LikeAdapter.LikeViewHolder
         builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                if (list.size() != 0){
-                    Toast.makeText(context,"정상 삭제되었습니다",Toast.LENGTH_SHORT).show();
-                }
+                dbOpenHelper = new DbOpenHelper(context);
+                dbOpenHelper.openLike();
+                dbOpenHelper.deleteLikeColumns(list.get(id).getId());
+                dbOpenHelper.close();
+
             }
         });
 
+        builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                // 삭제 취소
+            }
+        });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+        alertDialog.show();
     }
-
     @Override
     public int getItemCount() {
 
