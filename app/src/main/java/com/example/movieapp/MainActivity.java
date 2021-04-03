@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         btnNowPlaying.performClick();
         topRecyclerViewAdapter.notifyDataSetChanged();
 
+
         searchDataList = tmdbdao.getMovieList();
 
     }
@@ -259,7 +260,6 @@ public class MainActivity extends AppCompatActivity {
 
     //검색시 입력받은 영화가 있는지 찾아주는 함수
     public void findMovieFunc(String s) {
-        //searchDataList.clear();
         ArrayList<MovieInfo>  selectlist = new ArrayList<>();
         ArrayList<MovieInfo>  movielist = new ArrayList<>();
         selectlist = tmdbdao.getMovieList();
@@ -274,7 +274,6 @@ public class MainActivity extends AppCompatActivity {
         }
         searchDataList = movielist;
         setSearchFragment(true) ;
-
     }
 //
 //    @Override
@@ -324,6 +323,7 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
             fragmentTransaction.replace(R.id.frmDrawer, fragmentProfile);
+
         }
         fragmentTransaction.commit();
         flag = false;
