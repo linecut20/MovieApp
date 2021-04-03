@@ -11,8 +11,10 @@ public class MovieInfo implements Serializable {
     private String backdrop_path;
     private String release_date;
     private double vote_average;
+    private int like;
 
-    public MovieInfo(int id, String title, String original_title, String poster_path, String overview, String backdrop_path, String release_date, double vote_average) {
+
+    public MovieInfo(int id, String title, String original_title, String poster_path, String overview, String backdrop_path, String release_date, double vote_average,int like) {
         this.id = id;
         this.title = title;
         this.original_title = original_title;
@@ -21,6 +23,14 @@ public class MovieInfo implements Serializable {
         this.backdrop_path = backdrop_path;
         this.release_date = release_date;
         this.vote_average = vote_average;
+        this.like = like;
+    }
+
+    public MovieInfo(int tempMvId, String tempPoster, String tempTitle, int tempLike) {
+        this.id = id;
+        this.title = title;
+        this.poster_path = poster_path;
+        this.like = like;
     }
 
     public int getId() {

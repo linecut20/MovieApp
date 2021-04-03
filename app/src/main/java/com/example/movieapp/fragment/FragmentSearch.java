@@ -114,10 +114,10 @@ public class FragmentSearch extends Fragment {
     private void settingAdapterDataList(ArrayList<MovieInfo> searchDataList) {
 
         searchAdapter.setSearchList(searchDataList);
-        drawerRcyclerView.setAdapter(searchAdapter);
         searchAdapter.notifyDataSetChanged();
 
     }
+
     //어뎁터 만들기
     private void makeAdapter(ViewGroup container) {
 
