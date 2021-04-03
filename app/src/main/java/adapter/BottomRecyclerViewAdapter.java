@@ -22,15 +22,29 @@ import java.util.ArrayList;
 
 import model.MovieInfo;
 
-public class BottomRecyclerViewAdapter extends RecyclerView.Adapter<BottomRecyclerViewAdapter.RecyclerViewHolder> {
+public class BottomRecyclerViewAdapter extends RecyclerView.Adapter<BottomRecyclerViewAdapter.RecyclerViewHolder> implements Parcelable{
     private ArrayList<MovieInfo> mMovieList;
     private Context mContext;
 
-    //constructor
-    public BottomRecyclerViewAdapter(Context context, ArrayList<MovieInfo> itemList) {
-        this.mContext = context;
-        this.mMovieList = itemList;
+    public BottomRecyclerViewAdapter(ArrayList<MovieInfo> mMovieList, Context mContext) {
+        this.mMovieList = mMovieList;
+        this.mContext = mContext;
     }
+
+    protected BottomRecyclerViewAdapter(Parcel in) {
+    }
+
+    public static final Creator<BottomRecyclerViewAdapter> CREATOR = new Creator<BottomRecyclerViewAdapter>() {
+        @Override
+        public BottomRecyclerViewAdapter createFromParcel(Parcel in) {
+            return new BottomRecyclerViewAdapter(in);
+        }
+
+        @Override
+        public BottomRecyclerViewAdapter[] newArray(int size) {
+            return new BottomRecyclerViewAdapter[size];
+        }
+    };
 
     @NonNull
     @Override
@@ -50,6 +64,7 @@ public class BottomRecyclerViewAdapter extends RecyclerView.Adapter<BottomRecycl
                 .crossFade()
                 .into(holder.iv_bottom);
 
+
         //각 아이템 클릭 이벤트
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +82,15 @@ public class BottomRecyclerViewAdapter extends RecyclerView.Adapter<BottomRecycl
         return this.mMovieList.size();
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+    }
+
 
     public static class RecyclerViewHolder extends RecyclerView.ViewHolder {
         public ImageView iv_bottom;
@@ -76,4 +100,10 @@ public class BottomRecyclerViewAdapter extends RecyclerView.Adapter<BottomRecycl
             iv_bottom = (ImageView) itemView.findViewById(R.id.iv_bottom);
         }
     }
+
+    public void addItem(ArrayList<MovieInfo> item) {
+        mMovieList.addAll(item);
+        notifyDataSetChanged();
+    }
+
 }

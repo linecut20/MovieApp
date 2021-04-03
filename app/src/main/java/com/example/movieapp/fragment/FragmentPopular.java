@@ -26,12 +26,11 @@ import model.MovieInfo;
 
 public class FragmentPopular extends Fragment {
     private RecyclerView rvPopular;
+    private MainActivity mainActivity;
     private BottomRecyclerViewAdapter adapter;
     private Context context;
-    private TMDBDAO tmdbdao;
-    private int count = 1;
     private GridLayoutManager gridLayoutManager;
-    private ArrayList<MovieInfo> list;
+
 
     public FragmentPopular(Context context) {
         this.context = context;
@@ -42,13 +41,9 @@ public class FragmentPopular extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_bottom_popular,container,false);
-
         rvPopular = view.findViewById(R.id.rvPopular);
-        gridLayoutManager = new GridLayoutManager(context, 3);
-        tmdbdao = new TMDBDAO("popular",count);
-        tmdbdao.execute();
-        list = new ArrayList<>();
-        list = tmdbdao.getMovieList();
+        gridLayoutManager = new GridLayoutManager(context,3);
+
         adapterFunc();
 
         //리사이클러뷰가 최하단에 도달할 경우, 다음 페이지의 목록을 로드
@@ -56,19 +51,22 @@ public class FragmentPopular extends Fragment {
             @Override
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if(!rvPopular.canScrollVertically(1)) {
-                    count++;
                     Log.d("바텀그리드뷰", "last Position...");
+                    mainActivity.popularCount++;
+                    mainActivity.showBottomGridViewPopular();
                     adapterFunc();
                 }
+
             }
         });
+
         return view;
     }
 
     private void adapterFunc() {
-        adapter = new BottomRecyclerViewAdapter(context, list);
+        adapter = getArguments().getParcelable("adapter");
         rvPopular.setLayoutManager(gridLayoutManager);
-        rvPopular.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+        rvPopular.setAdapter(adapter);
     }
 }

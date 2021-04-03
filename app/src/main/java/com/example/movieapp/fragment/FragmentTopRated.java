@@ -26,12 +26,10 @@ import model.MovieInfo;
 
 public class FragmentTopRated extends Fragment {
     private RecyclerView rvTopRated;
+    private MainActivity mainActivity;
     private BottomRecyclerViewAdapter adapter;
-    private Context context = getContext();
-    private TMDBDAO tmdbdao;
-    private int count = 1;
+    private Context context;
     private GridLayoutManager gridLayoutManager;
-    private ArrayList<MovieInfo> list;
 
     public FragmentTopRated(Context context) {
         this.context = context;
@@ -42,13 +40,10 @@ public class FragmentTopRated extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_bottom_top_rated,container,false);
-
         rvTopRated = view.findViewById(R.id.rvTopRated);
-        gridLayoutManager = new GridLayoutManager(context, 3);
-        tmdbdao = new TMDBDAO("top_rated",count);
-        tmdbdao.execute();
-        list = new ArrayList<>();
-        list = tmdbdao.getMovieList();
+
+        gridLayoutManager = new GridLayoutManager(context,3);
+
         adapterFunc();
 
         //리사이클러뷰가 최하단에 도달할 경우, 다음 페이지의 목록을 로드
@@ -56,19 +51,22 @@ public class FragmentTopRated extends Fragment {
             @Override
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if(!rvTopRated.canScrollVertically(1)) {
-                    count++;
                     Log.d("바텀그리드뷰", "last Position...");
+                    mainActivity.topRatedCount++;
+                    mainActivity.showBottomGridViewTopRated();
                     adapterFunc();
                 }
+
             }
         });
+
         return view;
     }
 
     private void adapterFunc() {
-        adapter = new BottomRecyclerViewAdapter(context, list);
+        adapter = getArguments().getParcelable("adapter");
         rvTopRated.setLayoutManager(gridLayoutManager);
-        rvTopRated.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+        rvTopRated.setAdapter(adapter);
     }
 }

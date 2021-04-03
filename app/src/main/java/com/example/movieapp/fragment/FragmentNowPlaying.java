@@ -19,6 +19,8 @@ import com.example.movieapp.MainActivity;
 import com.example.movieapp.R;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import MovieInfoDAO.TMDBDAO;
 import adapter.BottomRecyclerViewAdapter;
@@ -26,12 +28,11 @@ import model.MovieInfo;
 
 public class FragmentNowPlaying extends Fragment {
     private RecyclerView rvNowPlaying;
+    private MainActivity mainActivity;
     private BottomRecyclerViewAdapter adapter;
     private Context context;
-    private TMDBDAO tmdbdao;
-    private int count = 1;
     private GridLayoutManager gridLayoutManager;
-    private ArrayList<MovieInfo>list;
+
 
     public FragmentNowPlaying(Context context) {
         this.context = context;
@@ -41,13 +42,10 @@ public class FragmentNowPlaying extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.main_bottom_now_playing,container,false);
+        View view = inflater.inflate(R.layout.main_bottom_now_playing, container, false);
         rvNowPlaying = view.findViewById(R.id.rvNowPlaying);
-        gridLayoutManager = new GridLayoutManager(context, 3);
-        tmdbdao = new TMDBDAO("now_playing",count);
-        tmdbdao.execute();
-        list = new ArrayList<>();
-        list = tmdbdao.getMovieList();
+        gridLayoutManager = new GridLayoutManager(context,3);
+
         adapterFunc();
 
         //리사이클러뷰가 최하단에 도달할 경우, 다음 페이지의 목록을 로드
@@ -55,19 +53,22 @@ public class FragmentNowPlaying extends Fragment {
             @Override
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if(!rvNowPlaying.canScrollVertically(1)) {
-                    count++;
                     Log.d("바텀그리드뷰", "last Position...");
+                    mainActivity.nowPlayingCount++;
+                    mainActivity.showBottomGridViewNowPlaying();
                     adapterFunc();
                 }
+
             }
         });
+
         return view;
     }
 
     private void adapterFunc() {
-        adapter = new BottomRecyclerViewAdapter(context, list);
+        adapter = getArguments().getParcelable("adapter");
         rvNowPlaying.setLayoutManager(gridLayoutManager);
-        rvNowPlaying.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+        rvNowPlaying.setAdapter(adapter);
     }
 }

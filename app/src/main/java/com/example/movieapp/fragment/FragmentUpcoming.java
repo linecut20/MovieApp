@@ -26,12 +26,10 @@ import model.MovieInfo;
 
 public class FragmentUpcoming extends Fragment {
     private RecyclerView rvUpcoming;
+    private MainActivity mainActivity;
     private BottomRecyclerViewAdapter adapter;
-    private Context context = getContext();
-    private TMDBDAO tmdbdao;
-    private int count = 1;
+    private Context context;
     private GridLayoutManager gridLayoutManager;
-    private ArrayList<MovieInfo> list;
 
     public FragmentUpcoming(Context context) {
         this.context = context;
@@ -42,13 +40,10 @@ public class FragmentUpcoming extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.main_bottom_upcoming,container,false);
-
         rvUpcoming = view.findViewById(R.id.rvUpcoming);
-        gridLayoutManager = new GridLayoutManager(context, 3);
-        tmdbdao = new TMDBDAO("upcoming",count);
-        tmdbdao.execute();
-        list = new ArrayList<>();
-        list = tmdbdao.getMovieList();
+
+        gridLayoutManager = new GridLayoutManager(context,3);
+
         adapterFunc();
 
         //리사이클러뷰가 최하단에 도달할 경우, 다음 페이지의 목록을 로드
@@ -56,19 +51,22 @@ public class FragmentUpcoming extends Fragment {
             @Override
             public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if(!rvUpcoming.canScrollVertically(1)) {
-                    count++;
                     Log.d("바텀그리드뷰", "last Position...");
+                    mainActivity.upcomingCount++;
+                    mainActivity.showBottomGridViewUpcoming();
                     adapterFunc();
                 }
+
             }
         });
+
         return view;
     }
 
     private void adapterFunc() {
-        adapter = new BottomRecyclerViewAdapter(context, list);
+        adapter = getArguments().getParcelable("adapter");
         rvUpcoming.setLayoutManager(gridLayoutManager);
-        rvUpcoming.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+        rvUpcoming.setAdapter(adapter);
     }
 }
