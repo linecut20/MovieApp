@@ -42,21 +42,23 @@ public class LikeActivity extends AppCompatActivity {
         findViewByIdFunc();
 
         //DB 세팅하기
-        /*dbOpenHelper = new DbOpenHelper(this);
-        if (dbOpenHelper == null){
+        //dbOpenHelper = new DbOpenHelper(this);
+        /*if (dbOpenHelper == null) {
             dbOpenHelper.createLikeHelper();
             dbOpenHelper.openLike();
-        }*/
+        }else{*/
+
         linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         likeRecyclerReview.setLayoutManager(linearLayoutManager);
 
-        if (dbOpenHelper != null){
-            insertList("like_tbl","no DES");
-        }else{
+        insertList("like_tbl", "id DES");
+        //insertList("like_tbl", "no DES");
+        /*if (dbOpenHelper == null) {
+        } else {
             dbOpenHelper.createLikeHelper();
             dbOpenHelper.openLike();
         }
-
+*/
         likeAdapter = new LikeAdapter(R.layout.item_likelist, likeDataArrayList);
         likeRecyclerReview.setAdapter(likeAdapter);
         likeAdapter.notifyDataSetChanged();
@@ -81,18 +83,18 @@ public class LikeActivity extends AppCompatActivity {
         /*tmdbdao = new TMDBDAO("upcoming", 1);
         tmdbdao.execute();
         allmovieList = tmdbdao.getMovieList();
-*/    }
+*/
+    }
 
 
     private void insertList(String tbl_name, String sort) {
 
         likeDataArrayList.clear();
-        if (dbOpenHelper == null){
             dbOpenHelper = new DbOpenHelper(getApplicationContext());
             dbOpenHelper.openLike();
-        }
 
-        Cursor cursor = dbOpenHelper.sortColumn(tbl_name, sort);
+        //Cursor cursor = dbOpenHelper.sortColumn(tbl_name, sort);
+        Cursor cursor = dbOpenHelper.selectLikeColumns();
 
         while (cursor.moveToNext()) {
 
@@ -128,6 +130,7 @@ public class LikeActivity extends AppCompatActivity {
         likeListSize.setOnClickListener(v -> {
             //Toast.makeText(getApplicationContext(), allmovieList.size() + "", Toast.LENGTH_SHORT).show();
         });
+
 
     }
 
